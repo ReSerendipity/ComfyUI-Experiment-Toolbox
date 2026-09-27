@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>ComfyUI 实验与改造工具箱 · Web 面板</title>
+<style>
+  :root { --bd:#e2e5ea; --bg:#f7f8fa; --card:#fff; --tx:#1c2330; --sub:#68738a;
+          --hi:#c0392b; --warn:#b7791f; --ok:#2e7d32; --acc:#2563eb; }
+  * { box-sizing:border-box; }
+  body { margin:0; font:14px/1.6 "Microsoft YaHei","Segoe UI",sans-serif; color:var(--tx); background:var(--bg); }
+  header { padding:14px 22px; background:var(--card); border-bottom:1px solid var(--bd);
+           display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+  header h1 { font-size:17px; margin:0; }
+  .dot { width:9px; height:9px; border-radius:50%; background:#c33; display:inline-block; margin-right:5px; }
+  .dot.on { background:#2e9e44; }
+  nav { display:flex; gap:2px; padding:0 22px; background:var(--card); border-bottom:1px solid var(--bd); }
+  nav button { border:0; background:none; padding:10px 18px; font-size:14px; cursor:pointer;
+               color:var(--sub); border-bottom:2px solid transparent; }
+  nav button.on { color:var(--acc); border-bottom-color:var(--acc); font-weight:600; }
+  main { padding:18px 22px; max-width:1280px; margin:0 auto; }
+  section { display:none; } section.on { display:block; }
+  .card { background:var(--card); border:1px solid var(--bd); border-radius:8px; padding:14px 16px; margin-bottom:14px; }
+  .card h2 { font-size:14px; margin:0 0 10px; color:var(--sub); font-weight:600; }
+  table { border-collapse:collapse; width:100%; font-size:13px; }
+  th,td { border:1px solid var(--bd); padding:5px 9px; text-align:left; white-space:nowrap; }
+  th { background:#f0f2f5; color:var(--sub); font-weight:600; }
+  td.wrap { white-space:normal; }
+  .badge { padding:1px 8px; border-radius:9px; font-size:12px; color:#fff; }
+  .b-高危 { background:var(--hi); } .b-注意 { background:var(--warn); } .b-安全 { background:var(--ok); }
+  .muted { color:var(--sub); } .mono { font-family:Consolas,monospace; font-size:12px; }
+  .btn { background:var(--acc); color:#fff; border:0; border-radius:6px; padding:7px 16px; cursor:pointer; font-size:13px; }
+  .btn:disabled { background:#a9b6cf; cursor:not-allowed; }
+  .btn.gray { background:#69738a; }
+  input,select,textarea { border:1px solid var(--bd); border-radius:5px; padding:5px 8px; font:13px/1.5 inherit; background:#fff; color:var(--tx); }
+  textarea { width:100%; min-height:64px; resize:vertical; }
+  .row { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom:8px; }
+  .combo-row, .combo-head { display:grid; grid-template-columns: 130px 1fr 1fr 80px 70px 32px; gap:6px; margin-bottom:6px; }
+  .bar { height:8px; background:#e8ebf0; border-radius:4px; overflow:hidden; }
+  .bar>i { display:block; height:100%; background:var(--acc); width:0; transition:width .4s; }
+  .log-ok { color:var(--ok); } .log-error { color:var(--hi); } .log-running { color:var(--acc); }
+  #montage { max-width:100%; border:1px solid var(--bd); border-radius:6px; }
+  .hint { font-size:12px; color:var(--sub); }
+  .err { color:var(--hi); }
+</style>
+</head>
+<body>
+<header>
+  <h1>✦ ComfyUI 实验与改造工具箱 · Web 面板</h1>
+  <span><i class="dot" id="comfyDot"></i><span id="comfyTxt" class="muted">ComfyUI 检测中…</span></span>
+  <span class="hint mono" id="portTxt"></span>
+</header>
+<nav>
+  <button data-t="wf" class="on">① 工作流真值</button>
+  <button data-t="sigma">② σ 风险矩阵</button>
+  <button data-t="run">③ 受控跑测</button>
+  <button data-t="result">④ 结果分析</button>
+</nav>
+<main>
+  <section id="t-wf" class="on">
+    <div class="card">
+      <h2>各工作流运行时真值（容器 positional 为准，flatten 实时解析）</h2>
+      <div class="row"><button class="btn gray" onclick="loadWF()">刷新</button>
+        <span class="hint">读取自 <span id="wfDir" class="mono"></span></span></div>
+      <div id="wfTable"></div>
+    </div>
+  </section>
+
+  <section id="t-sigma">
+    <div class="card">
+      <h2>调度器 σ 适配风险矩阵（离线计算，不跑图；判据：首步 Δσ% >15% 或高噪声区步数不足 → 高危）</h2>
+      <div id="sigmaBody"><p class="muted">计算中（首次需导入 comfy + torch，约 20~60 秒）…</p></div>
+    </div>
+  </section>
+
+  <section id="t-run">
+    <div class="card">
+      <h2>任务配置（控制变量：固定提示词与种子，每轮只变勾选的维度）</h2>
+      <div class="row"><b>工作流</b><button class="btn gray" style="padding:3px 10px" onclick="toggleAllWF(true)">全选</button>
+        <button class="btn gray" style="padding:3px 10px" onclick="toggleAllWF(false)">全不选</button>
+        <span class="hint" id="runComfyHint"></span></div>
+      <div id="wfChecks" class="row" style="gap:14px"></div>
+      <div class="row"><b>组合</b><span class="hint">采样器/调度器为下拉框（ComfyUI 合法值全集，后端提交前再校验一道）；<b>steps / CFG 留空 = 用各工作流当前值</b>（当前值见①工作流真值）</span></div>
+      <div class="combo-head" style="font-weight:600;color:var(--sub)"><span>组合名</span><span>采样器</span><span>调度器</span><span>steps</span><span>cfg</span><span></span></div>
+      <div id="combos"></div>
+      <div class="row"><button class="btn gray" style="padding:4px 12px" onclick="addCombo()">＋ 加组合</button></div>
+      <div class="row"><b style="min-width:52px">提示词</b></div>
+      <textarea id="prompt"></textarea>
+      <div class="row" style="margin-top:8px">
+        <b>种子</b><input id="seed" type="number" style="width:130px">
+        <b>产物子目录</b><input id="subdir" value="web_test" style="width:140px">
+        <button class="btn" id="runBtn" onclick="startRun()">开始跑测</button>
+        <span class="hint">需 ComfyUI 已启动（8188）；产物写入 09_Web面板/output/&lt;子目录&gt;/</span>
+      </div>
+    </div>
+    <div class="card" id="runProgressCard" style="display:none">
+      <h2>跑测进度 <span class="muted" id="runStat"></span></h2>
+      <div class="bar"><i id="runBar"></i></div>
+      <div style="height:8px"></div>
+      <div id="runLog"></div>
+    </div>
+  </section>
+
+  <section id="t-result">
+    <div class="card">
+      <h2>结果分析（客观指标 + 与基线相似度 + 拼版）</h2>
+      <div class="row">子目录 <input id="resDir" value="web_test" style="width:140px">
+        <button class="btn" onclick="analyze()">分析</button>
+        <span class="hint">基线 = base 组合（无则字母序第一个）；相似度 = 灰度 128² 的 1−MSE/255²</span></div>
+      <div id="resBody"></div>
+    </div>
+  </section>
+</main>
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let WFS = [], LISTS = {samplers:[],schedulers:[]};
+
+document.querySelectorAll('nav button').forEach(b => b.onclick = () => {
+  document.querySelectorAll('nav button').forEach(x=>x.classList.remove('on'));
+  document.querySelectorAll('section').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on'); $('#t-'+b.dataset.t).classList.add('on');
+  if (b.dataset.t==='sigma') pollSigma();
+});
+
+async function jget(u){ const r = await fetch(u); return {code:r.status, data:await r.json()}; }
+async function jpost(u,b){ const r = await fetch(u,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)}); return {code:r.status, data:await r.json()}; }
+
+async function refreshComfy(){
+  try { const {data} = await jget('/api/health');
+    $('#portTxt').textContent = '127.0.0.1:' + (location.port||'8189') + ' · 工具箱已加载';
+    const on = data.comfy.running;
+    $('#comfyDot').className = 'dot' + (on?' on':'');
+    $('#comfyTxt').textContent = 'ComfyUI(8188): ' + (on?'运行中':'未启动');
+    $('#runComfyHint').innerHTML = on ? '' : '<span class="err">⚠ ComfyUI 未启动，跑测前请先启动</span>';
+    // 合法值列表：ComfyUI 在线时取权威值；离线时面板返回回退表（下拉框始终可用）
+    LISTS = await (await jget('/api/comfy_lists')).data;
+    refreshComboSelects();
+  } catch(e){ $('#comfyTxt').textContent = '面板通信失败'; }
+}
+setInterval(refreshComfy, 5000); refreshComfy();
+
+/* ① 工作流真值 */
+function fmtVal(v){ return (v===undefined||v==='')?'<span class="muted">—</span>':esc(String(v).length>42?String(v).slice(0,42)+'…':v); }
+async function loadWF(){
+  const {data} = await jget('/api/workflows');
+  $('#wfDir').textContent = data.wf_dir;
+  let h = '<table><tr><th>工作流</th><th>链路</th><th>采样器</th><th>调度器</th><th>steps</th><th>cfg</th><th>seed</th><th>UNET</th><th>CLIP</th><th>提示词</th></tr>';
+  for (const r of data.rows){
+    if (r.error){ h += `<tr><td>${esc(r.file)}</td><td colspan="9" class="err">${esc(r.error)}</td></tr>`; continue; }
+    const v = r.values;
+    h += `<tr><td>${esc(r.file)}</td><td>${r.route}</td><td class="mono">${fmtVal(v.sampler_name)}</td>
+      <td class="mono">${fmtVal(v.scheduler)}</td><td>${fmtVal(v.steps)}</td><td>${fmtVal(v.cfg)}</td>
+      <td class="mono">${fmtVal(v.seed)}</td><td class="mono">${fmtVal(v.unet_name)}</td><td class="mono">${fmtVal(v.clip_name)}</td>
+      <td>${r.prompt_chars? r.prompt_chars+' 字符':'<span class="err">空</span>'}</td></tr>`;
+  }
+  $('#wfTable').innerHTML = h + '</table>';
+  WFS = data.rows.filter(r=>!r.error).map(r=>r.file);
+  $('#wfChecks').innerHTML = WFS.map(f=>`<label><input type="checkbox" class="wfc" value="${esc(f)}"> ${esc(f)}</label>`).join('');
+}
+function toggleAllWF(on){ document.querySelectorAll('.wfc').forEach(c=>c.checked=on); }
+loadWF();
+
+/* ② σ 矩阵 */
+async function pollSigma(){
+  const {code, data} = await jget('/api/sigma');
+  if (code===202){ $('#sigmaBody').innerHTML='<p class="muted">σ 矩阵计算中…（本页每 2 秒自动刷新）</p>'; setTimeout(pollSigma,2000); return; }
+  if (code!==200){ $('#sigmaBody').innerHTML = `<p class="err">${esc(data.error)}</p>`; return; }
+  let h = '';
+  for (const [name, m] of Object.entries(data.models)){
+    h += `<h2 style="margin:14px 0 6px">${esc(name)} <span class="hint">官方 ${m.steps} 步 / ${esc(m.official)}</span></h2>
+      <table><tr><th>调度器</th><th>首步 Δσ%</th><th>高噪声区步数</th><th>低噪声区步数</th><th>末步前σ</th><th>风险</th></tr>`;
+    for (const [sc,s] of Object.entries(m.scheds)){
+      h += `<tr><td class="mono">${esc(sc)}</td><td>${s.first_d_pct}%</td><td>${s.hi_steps}</td><td>${s.lo_steps}</td>
+        <td>${s.last_sigma}</td><td><span class="badge b-${esc(s.risk)}">${esc(s.risk)}</span></td></tr>`;
+    }
+    h += '</table>';
+  }
+  $('#sigmaBody').innerHTML = h;
+}
+
+/* ③ 跑测 */
+function fillSelect(sel, list, cur){
+  const v = cur ?? sel.value;
+  sel.innerHTML = '<option value="">留空=当前值</option>' +
+    list.map(s=>`<option value="${esc(s)}"${s===v?' selected':''}>${esc(s)}</option>`).join('');
+}
+function comboRow(c={}){
+  const d = document.createElement('div'); d.className='combo-row';
+  d.innerHTML = `<input class="cname" placeholder="组合名" value="${esc(c.name||'')}">
+    <select class="csamp" title="留空 = 用各工作流当前采样器"></select>
+    <select class="cschd" title="留空 = 用各工作流当前调度器"></select>
+    <input class="csteps" type="number" min="1" placeholder="留空=当前值" title="留空 = 用各工作流当前 steps（见①工作流真值）" value="${esc(c.steps||'')}">
+    <input class="ccfg" type="number" step="0.1" min="0" placeholder="留空=当前值" title="留空 = 用各工作流当前 cfg / guidance" value="${esc(c.cfg||'')}">
+    <button class="btn gray" style="padding:2px 8px" onclick="this.parentNode.remove()">×</button>`;
+  fillSelect(d.querySelector('.csamp'), LISTS.samplers, c.sampler);
+  fillSelect(d.querySelector('.cschd'), LISTS.schedulers, c.scheduler);
+  return d;
+}
+function refreshComboSelects(){
+  document.querySelectorAll('.combo-row').forEach(r=>{
+    fillSelect(r.querySelector('.csamp'), LISTS.samplers);
+    fillSelect(r.querySelector('.cschd'), LISTS.schedulers);
+  });
+}
+function addCombo(c){ $('#combos').appendChild(comboRow(c)); }
+async function initRun(){
+  addCombo({name:'base'});
+  const {data} = await jget('/api/default_prompt');
+  $('#prompt').value = data.prompt || '';
+  $('#seed').value = data.seed;
+}
+initRun();
+
+async function startRun(){
+  const wfs = [...document.querySelectorAll('.wfc:checked')].map(c=>c.value);
+  const combos = [...document.querySelectorAll('.combo-row')].filter(r=>r.querySelector('.cname')).map(r=>({
+    name: r.querySelector('.cname').value.trim(),
+    sampler_name: r.querySelector('.csamp').value.trim() || null,
+    scheduler: r.querySelector('.cschd').value.trim() || null,
+    steps: r.querySelector('.csteps').value.trim() || null,
+    cfg: r.querySelector('.ccfg').value.trim() || null,
+  })).filter(c=>c.name);
+  const body = { workflows:wfs, combos, prompt:$('#prompt').value, seed:$('#seed').value||null, subdir:$('#subdir').value };
+  const {code, data} = await jpost('/api/run', body);
+  if (code!==200){ alert('启动失败: '+data.error); return; }
+  $('#runProgressCard').style.display='';
+  pollRun();
+}
+async function pollRun(){
+  const {data} = await jget('/api/run_status');
+  $('#runStat').textContent = data.status==='running' ? `（${data.started} 启动，${data.done}/${data.total}）`
+    : data.status==='done' ? `（已完成 ${data.finished}）` : '';
+  $('#runBar').style.width = data.total? (100*data.done/data.total)+'%' : '0';
+  $('#runLog').innerHTML = '<table>' + data.log.map(l=>{
+    const cls = l.status==='ok'?'log-ok':l.status==='error'?'log-error':l.status==='done'?'log-ok':'log-running';
+    const tag = l.label==='_summary' ? '<b>'+esc(l.msg)+'</b>' :
+      `${esc(l.label)} · ${esc(l.combo)} — <span class="${cls}">${esc(l.status)}</span> ${esc(l.msg)}`;
+    return `<tr><td class="wrap">${tag}</td></tr>`;
+  }).join('') + '</table>';
+  $('#runBtn').disabled = data.status==='running';
+  if (data.status==='running') setTimeout(pollRun, 1500);
+  else if (data.status==='done' && data.out_subdir){ $('#resDir').value = data.out_subdir; }
+}
+pollRun();
+
+/* ④ 结果分析 */
+async function analyze(){
+  $('#resBody').innerHTML = '<p class="muted">分析中…</p>';
+  const {code, data} = await jpost('/api/analyze', {subdir:$('#resDir').value});
+  if (code!==200){ $('#resBody').innerHTML = `<p class="err">${esc(data.error)}</p>`; return; }
+  let h = data.montage ? `<img id="montage" src="${data.montage}" alt="拼版图">` : '<p class="err">拼版生成失败</p>';
+  h += '<div style="height:10px"></div><table><tr><th>模型/工作流</th><th>组合</th><th>尺寸</th><th>亮度</th><th>对比度σ</th><th>锐度</th><th>色彩度</th><th>与基线相似度</th></tr>';
+  for (const r of data.rows){
+    const sim = r.similarity<0.97 && !r.is_baseline ? 'log-error' : 'log-ok';
+    h += `<tr><td>${esc(r.wf)}</td><td>${esc(r.combo)}${r.is_baseline?' <span class="hint">(基线)</span>':''}</td>
+      <td>${esc(r.size)}</td><td>${r.brightness}</td><td>${r.contrast_std}</td><td>${r.sharpness_lapvar}</td>
+      <td>${r.colorfulness}</td><td class="${sim}">${r.similarity}</td></tr>`;
+  }
+  $('#resBody').innerHTML = h + '</table>';
+}
+</script>
+</body>
+</html>

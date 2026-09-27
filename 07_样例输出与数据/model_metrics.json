@@ -1,0 +1,222 @@
+[
+ {
+  "model": "Flux2Klein_4step_Flux2Sched",
+  "combo": "base_euler",
+  "sim": 1.0,
+  "sec": 0,
+  "bright": 98.3,
+  "contrast": 49.9,
+  "sharp": 205.1,
+  "color": 57.84,
+  "rel": "锐度+0% 对比度+0%"
+ },
+ {
+  "model": "Flux2Klein_4step_Flux2Sched",
+  "combo": "dpmpp_2m",
+  "sim": 0.9913,
+  "sec": 0,
+  "bright": 110.7,
+  "contrast": 53.84,
+  "sharp": 231.4,
+  "color": 53.2,
+  "rel": "锐度+13% 对比度+8%"
+ },
+ {
+  "model": "Flux2Klein_4step_Flux2Sched",
+  "combo": "res_multistep",
+  "sim": 0.9912,
+  "sec": 0,
+  "bright": 111.0,
+  "contrast": 54.05,
+  "sharp": 232.8,
+  "color": 52.81,
+  "rel": "锐度+14% 对比度+8%"
+ },
+ {
+  "model": "Qwen_image_2512_50step",
+  "combo": "base_euler_simple",
+  "sim": 1.0,
+  "sec": 0,
+  "bright": 71.4,
+  "contrast": 49.43,
+  "sharp": 110.0,
+  "color": 59.37,
+  "rel": "锐度+0% 对比度+0%"
+ },
+ {
+  "model": "Qwen_image_2512_50step",
+  "combo": "euler_exponential",
+  "sim": 0.966,
+  "sec": 0,
+  "bright": 58.3,
+  "contrast": 42.87,
+  "sharp": 39.8,
+  "color": 116.67,
+  "rel": "锐度-64% 对比度-13%"
+ },
+ {
+  "model": "Qwen_image_2512_50step",
+  "combo": "euler_karras",
+  "sim": 0.9685,
+  "sec": 0,
+  "bright": 59.2,
+  "contrast": 40.59,
+  "sharp": 82.1,
+  "color": 90.94,
+  "rel": "锐度-25% 对比度-18%"
+ },
+ {
+  "model": "Z_image_25step",
+  "combo": "base_resmultistep_simple",
+  "sim": 1.0,
+  "sec": 0,
+  "bright": 74.4,
+  "contrast": 57.69,
+  "sharp": 102.5,
+  "color": 62.57,
+  "rel": "锐度+0% 对比度+0%"
+ },
+ {
+  "model": "Z_image_25step",
+  "combo": "euler_exponential",
+  "sim": 0.9227,
+  "sec": 0,
+  "bright": 72.7,
+  "contrast": 55.51,
+  "sharp": 5.1,
+  "color": 111.17,
+  "rel": "锐度-95% 对比度-4%"
+ },
+ {
+  "model": "Z_image_25step",
+  "combo": "euler_karras",
+  "sim": 0.9227,
+  "sec": 0,
+  "bright": 72.9,
+  "contrast": 56.21,
+  "sharp": 3.4,
+  "color": 106.87,
+  "rel": "锐度-97% 对比度-3%"
+ },
+ {
+  "model": "Z_image_turbo_8step",
+  "combo": "base_resmultistep_simple",
+  "sim": 1.0,
+  "sec": 0,
+  "bright": 95.5,
+  "contrast": 62.39,
+  "sharp": 376.2,
+  "color": 46.79,
+  "rel": "锐度+0% 对比度+0%"
+ },
+ {
+  "model": "Z_image_turbo_8step",
+  "combo": "euler_exponential",
+  "sim": 0.9598,
+  "sec": 0,
+  "bright": 87.2,
+  "contrast": 24.95,
+  "sharp": 153.4,
+  "color": 66.84,
+  "rel": "锐度-59% 对比度-60%"
+ },
+ {
+  "model": "Z_image_turbo_8step",
+  "combo": "euler_karras",
+  "sim": 0.9611,
+  "sec": 0,
+  "bright": 86.8,
+  "contrast": 25.18,
+  "sharp": 168.8,
+  "color": 66.23,
+  "rel": "锐度-55% 对比度-60%"
+ },
+ {
+  "model": "Z_image_turbo_8step",
+  "combo": "euler_kl_optimal",
+  "sim": 0.9676,
+  "sec": 0,
+  "bright": 90.0,
+  "contrast": 34.81,
+  "sharp": 432.9,
+  "color": 58.43,
+  "rel": "锐度+15% 对比度-44%"
+ },
+ {
+  "model": "flux1dev_20step",
+  "combo": "base_euler_simple",
+  "sim": 1.0,
+  "sec": 0,
+  "bright": 145.6,
+  "contrast": 64.02,
+  "sharp": 751.3,
+  "color": 22.09,
+  "rel": "锐度+0% 对比度+0%"
+ },
+ {
+  "model": "flux1dev_20step",
+  "combo": "euler_exponential",
+  "sim": 0.9597,
+  "sec": 0,
+  "bright": 145.6,
+  "contrast": 22.46,
+  "sharp": 49.4,
+  "color": 16.79,
+  "rel": "锐度-93% 对比度-65%"
+ },
+ {
+  "model": "flux1dev_20step",
+  "combo": "euler_karras",
+  "sim": 0.9617,
+  "sec": 0,
+  "bright": 145.7,
+  "contrast": 23.86,
+  "sharp": 49.6,
+  "color": 16.12,
+  "rel": "锐度-93% 对比度-63%"
+ },
+ {
+  "model": "krea2_turbo_8step",
+  "combo": "base_euler_simple",
+  "sim": 1.0,
+  "sec": 0,
+  "bright": 98.1,
+  "contrast": 55.91,
+  "sharp": 386.7,
+  "color": 64.06,
+  "rel": "锐度+0% 对比度+0%"
+ },
+ {
+  "model": "krea2_turbo_8step",
+  "combo": "euler_exponential",
+  "sim": 0.9465,
+  "sec": 0,
+  "bright": 99.5,
+  "contrast": 43.27,
+  "sharp": 129.0,
+  "color": 70.49,
+  "rel": "锐度-67% 对比度-23%"
+ },
+ {
+  "model": "krea2_turbo_8step",
+  "combo": "euler_karras",
+  "sim": 0.9527,
+  "sec": 0,
+  "bright": 86.3,
+  "contrast": 75.26,
+  "sharp": 143.8,
+  "color": 98.55,
+  "rel": "锐度-63% 对比度+35%"
+ },
+ {
+  "model": "krea2_turbo_8step",
+  "combo": "euler_kl_optimal",
+  "sim": 0.9705,
+  "sec": 0,
+  "bright": 85.3,
+  "contrast": 62.88,
+  "sharp": 259.4,
+  "color": 72.88,
+  "rel": "锐度-33% 对比度+12%"
+ }
+]

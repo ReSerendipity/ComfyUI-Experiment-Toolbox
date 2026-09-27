@@ -1,0 +1,57 @@
+[
+ {
+  "label": "C1_cfg1_neg_empty",
+  "cfg": 1.0,
+  "neg": "空",
+  "note": "基线：cfg=1 + 空负向",
+  "ok": true,
+  "sec": 40.2,
+  "files": [
+   "C1_cfg1_neg_empty_00001.png"
+  ]
+ },
+ {
+  "label": "C2_cfg2_neg_empty",
+  "cfg": 2.0,
+  "neg": "空",
+  "note": "cfg=2 + 空负向",
+  "ok": true,
+  "sec": 48.6,
+  "files": [
+   "C2_cfg2_neg_empty_00001.png"
+  ]
+ },
+ {
+  "label": "C3_cfg4_neg_empty",
+  "cfg": 4.0,
+  "neg": "空",
+  "note": "cfg=4 + 空负向",
+  "ok": true,
+  "sec": 44.3,
+  "files": [
+   "C3_cfg4_neg_empty_00001.png"
+  ]
+ },
+ {
+  "label": "C4_cfg2_neg_real",
+  "cfg": 2.0,
+  "neg": "有",
+  "note": "cfg=2 + 实际负向提示词",
+  "ok": true,
+  "sec": 54.4,
+  "files": [
+   "C4_cfg2_neg_real_00001.png"
+  ]
+ },
+ {
+  "label": "C5_cfg4_neg_real",
+  "cfg": 4.0,
+  "neg": "有",
+  "note": "cfg=4 + 实际负向提示词",
+  "ok": true,
+  "sec": 46.2,
+  "files": [
+   "C5_cfg4_neg_real_00001.png"
+  ]
+ }
+]

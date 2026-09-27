@@ -1,0 +1,344 @@
+[
+ {
+  "label": "01_euler_simple",
+  "nearest": [
+   [
+    "03_euler_sgm_uniform",
+    1.0
+   ],
+   [
+    "02_euler_beta",
+    0.999
+   ],
+   [
+    "05_res_multistep_simple",
+    0.998
+   ]
+  ],
+  "max_sim": 1.0
+ },
+ {
+  "label": "02_euler_beta",
+  "nearest": [
+   [
+    "03_euler_sgm_uniform",
+    0.999
+   ],
+   [
+    "01_euler_simple",
+    0.999
+   ],
+   [
+    "05_res_multistep_simple",
+    0.998
+   ]
+  ],
+  "max_sim": 0.999
+ },
+ {
+  "label": "03_euler_sgm_uniform",
+  "nearest": [
+   [
+    "01_euler_simple",
+    1.0
+   ],
+   [
+    "02_euler_beta",
+    0.999
+   ],
+   [
+    "05_res_multistep_simple",
+    0.998
+   ]
+  ],
+  "max_sim": 1.0
+ },
+ {
+  "label": "04_euler_karras",
+  "nearest": [
+   [
+    "07_dpmpp_2m_karras",
+    1.0
+   ],
+   [
+    "13_uni_pc_bh2_karras",
+    0.999
+   ],
+   [
+    "12_heun_karras",
+    0.999
+   ]
+  ],
+  "max_sim": 1.0
+ },
+ {
+  "label": "05_res_multistep_simple",
+  "nearest": [
+   [
+    "02_euler_beta",
+    0.998
+   ],
+   [
+    "03_euler_sgm_uniform",
+    0.998
+   ],
+   [
+    "01_euler_simple",
+    0.998
+   ]
+  ],
+  "max_sim": 0.998
+ },
+ {
+  "label": "06_res_multistep_beta",
+  "nearest": [
+   [
+    "17_euler_linear_quadratic",
+    0.999
+   ],
+   [
+    "05_res_multistep_simple",
+    0.996
+   ],
+   [
+    "02_euler_beta",
+    0.995
+   ]
+  ],
+  "max_sim": 0.999
+ },
+ {
+  "label": "07_dpmpp_2m_karras",
+  "nearest": [
+   [
+    "13_uni_pc_bh2_karras",
+    1.0
+   ],
+   [
+    "12_heun_karras",
+    1.0
+   ],
+   [
+    "04_euler_karras",
+    1.0
+   ]
+  ],
+  "max_sim": 1.0
+ },
+ {
+  "label": "08_dpmpp_2m_sde_gpu_karras",
+  "nearest": [
+   [
+    "09_dpmpp_3m_sde_gpu_karras",
+    1.0
+   ],
+   [
+    "04_euler_karras",
+    0.995
+   ],
+   [
+    "07_dpmpp_2m_karras",
+    0.993
+   ]
+  ],
+  "max_sim": 1.0
+ },
+ {
+  "label": "09_dpmpp_3m_sde_gpu_karras",
+  "nearest": [
+   [
+    "08_dpmpp_2m_sde_gpu_karras",
+    1.0
+   ],
+   [
+    "04_euler_karras",
+    0.995
+   ],
+   [
+    "07_dpmpp_2m_karras",
+    0.993
+   ]
+  ],
+  "max_sim": 1.0
+ },
+ {
+  "label": "10_dpmpp_2s_ancestral_karras",
+  "nearest": [
+   [
+    "04_euler_karras",
+    0.997
+   ],
+   [
+    "07_dpmpp_2m_karras",
+    0.996
+   ],
+   [
+    "13_uni_pc_bh2_karras",
+    0.996
+   ]
+  ],
+  "max_sim": 0.997
+ },
+ {
+  "label": "11_euler_ancestral_simple",
+  "nearest": [
+   [
+    "15_er_sde_simple",
+    0.982
+   ],
+   [
+    "10_dpmpp_2s_ancestral_karras",
+    0.977
+   ],
+   [
+    "P1_euler_karras_steps50",
+    0.976
+   ]
+  ],
+  "max_sim": 0.982
+ },
+ {
+  "label": "12_heun_karras",
+  "nearest": [
+   [
+    "13_uni_pc_bh2_karras",
+    1.0
+   ],
+   [
+    "07_dpmpp_2m_karras",
+    1.0
+   ],
+   [
+    "04_euler_karras",
+    0.999
+   ]
+  ],
+  "max_sim": 1.0
+ },
+ {
+  "label": "13_uni_pc_bh2_karras",
+  "nearest": [
+   [
+    "12_heun_karras",
+    1.0
+   ],
+   [
+    "07_dpmpp_2m_karras",
+    1.0
+   ],
+   [
+    "04_euler_karras",
+    0.999
+   ]
+  ],
+  "max_sim": 1.0
+ },
+ {
+  "label": "14_euler_cfg_pp_simple",
+  "nearest": [
+   [
+    "03_euler_sgm_uniform",
+    0.988
+   ],
+   [
+    "01_euler_simple",
+    0.988
+   ],
+   [
+    "05_res_multistep_simple",
+    0.987
+   ]
+  ],
+  "max_sim": 0.988
+ },
+ {
+  "label": "15_er_sde_simple",
+  "nearest": [
+   [
+    "11_euler_ancestral_simple",
+    0.982
+   ],
+   [
+    "10_dpmpp_2s_ancestral_karras",
+    0.974
+   ],
+   [
+    "P1_euler_karras_steps50",
+    0.969
+   ]
+  ],
+  "max_sim": 0.982
+ },
+ {
+  "label": "16_euler_kl_optimal",
+  "nearest": [
+   [
+    "P1_euler_karras_steps50",
+    0.998
+   ],
+   [
+    "12_heun_karras",
+    0.995
+   ],
+   [
+    "13_uni_pc_bh2_karras",
+    0.995
+   ]
+  ],
+  "max_sim": 0.998
+ },
+ {
+  "label": "17_euler_linear_quadratic",
+  "nearest": [
+   [
+    "06_res_multistep_beta",
+    0.999
+   ],
+   [
+    "05_res_multistep_simple",
+    0.997
+   ],
+   [
+    "02_euler_beta",
+    0.997
+   ]
+  ],
+  "max_sim": 0.999
+ },
+ {
+  "label": "P1_euler_karras_steps50",
+  "nearest": [
+   [
+    "13_uni_pc_bh2_karras",
+    0.998
+   ],
+   [
+    "12_heun_karras",
+    0.998
+   ],
+   [
+    "16_euler_kl_optimal",
+    0.998
+   ]
+  ],
+  "max_sim": 0.998
+ },
+ {
+  "label": "P2_euler_normal_steps25",
+  "nearest": [
+   [
+    "01_euler_simple",
+    0.998
+   ],
+   [
+    "03_euler_sgm_uniform",
+    0.998
+   ],
+   [
+    "02_euler_beta",
+    0.996
+   ]
+  ],
+  "max_sim": 0.998
+ }
+]

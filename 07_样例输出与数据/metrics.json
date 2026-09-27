@@ -1,0 +1,173 @@
+[
+ {
+  "label": "01_euler_simple",
+  "size": "1024x1024",
+  "brightness": 100.0,
+  "contrast_std": 42.18,
+  "sharpness_lapvar": 151.3,
+  "colorfulness": 54.81,
+  "file_kb": 1801
+ },
+ {
+  "label": "02_euler_beta",
+  "size": "1024x1024",
+  "brightness": 97.7,
+  "contrast_std": 43.78,
+  "sharpness_lapvar": 157.1,
+  "colorfulness": 53.89,
+  "file_kb": 1820
+ },
+ {
+  "label": "03_euler_sgm_uniform",
+  "size": "1024x1024",
+  "brightness": 100.0,
+  "contrast_std": 42.35,
+  "sharpness_lapvar": 151.5,
+  "colorfulness": 54.81,
+  "file_kb": 1803
+ },
+ {
+  "label": "04_euler_karras",
+  "size": "1024x1024",
+  "brightness": 115.7,
+  "contrast_std": 21.31,
+  "sharpness_lapvar": 54.6,
+  "colorfulness": 45.5,
+  "file_kb": 1498
+ },
+ {
+  "label": "05_res_multistep_simple",
+  "size": "1024x1024",
+  "brightness": 97.2,
+  "contrast_std": 47.35,
+  "sharpness_lapvar": 194.8,
+  "colorfulness": 55.15,
+  "file_kb": 1857
+ },
+ {
+  "label": "06_res_multistep_beta",
+  "size": "1024x1024",
+  "brightness": 94.1,
+  "contrast_std": 49.45,
+  "sharpness_lapvar": 228.1,
+  "colorfulness": 54.95,
+  "file_kb": 1900
+ },
+ {
+  "label": "07_dpmpp_2m_karras",
+  "size": "1024x1024",
+  "brightness": 114.5,
+  "contrast_std": 22.22,
+  "sharpness_lapvar": 81.5,
+  "colorfulness": 45.47,
+  "file_kb": 1610
+ },
+ {
+  "label": "08_dpmpp_2m_sde_gpu_karras",
+  "size": "1024x1024",
+  "brightness": 120.8,
+  "contrast_std": 21.93,
+  "sharpness_lapvar": 74.3,
+  "colorfulness": 45.49,
+  "file_kb": 1615
+ },
+ {
+  "label": "09_dpmpp_3m_sde_gpu_karras",
+  "size": "1024x1024",
+  "brightness": 120.7,
+  "contrast_std": 22.13,
+  "sharpness_lapvar": 77.3,
+  "colorfulness": 45.35,
+  "file_kb": 1628
+ },
+ {
+  "label": "10_dpmpp_2s_ancestral_karras",
+  "size": "1024x1024",
+  "brightness": 115.6,
+  "contrast_std": 22.32,
+  "sharpness_lapvar": 68.6,
+  "colorfulness": 44.6,
+  "file_kb": 1573
+ },
+ {
+  "label": "11_euler_ancestral_simple",
+  "size": "1024x1024",
+  "brightness": 112.0,
+  "contrast_std": 41.99,
+  "sharpness_lapvar": 139.8,
+  "colorfulness": 36.34,
+  "file_kb": 1732
+ },
+ {
+  "label": "12_heun_karras",
+  "size": "1024x1024",
+  "brightness": 113.8,
+  "contrast_std": 22.75,
+  "sharpness_lapvar": 92.5,
+  "colorfulness": 45.65,
+  "file_kb": 1646
+ },
+ {
+  "label": "13_uni_pc_bh2_karras",
+  "size": "1024x1024",
+  "brightness": 113.2,
+  "contrast_std": 22.55,
+  "sharpness_lapvar": 83.1,
+  "colorfulness": 46.02,
+  "file_kb": 1616
+ },
+ {
+  "label": "14_euler_cfg_pp_simple",
+  "size": "1024x1024",
+  "brightness": 109.3,
+  "contrast_std": 50.38,
+  "sharpness_lapvar": 150.2,
+  "colorfulness": 57.43,
+  "file_kb": 1656
+ },
+ {
+  "label": "15_er_sde_simple",
+  "size": "1024x1024",
+  "brightness": 116.3,
+  "contrast_std": 45.25,
+  "sharpness_lapvar": 180.9,
+  "colorfulness": 38.5,
+  "file_kb": 1708
+ },
+ {
+  "label": "16_euler_kl_optimal",
+  "size": "1024x1024",
+  "brightness": 109.6,
+  "contrast_std": 29.32,
+  "sharpness_lapvar": 114.1,
+  "colorfulness": 49.92,
+  "file_kb": 1723
+ },
+ {
+  "label": "17_euler_linear_quadratic",
+  "size": "1024x1024",
+  "brightness": 96.0,
+  "contrast_std": 46.65,
+  "sharpness_lapvar": 134.7,
+  "colorfulness": 56.18,
+  "file_kb": 1795
+ },
+ {
+  "label": "P1_euler_karras_steps50",
+  "size": "1024x1024",
+  "brightness": 112.5,
+  "contrast_std": 23.81,
+  "sharpness_lapvar": 87.5,
+  "colorfulness": 45.74,
+  "file_kb": 1649
+ },
+ {
+  "label": "P2_euler_normal_steps25",
+  "size": "1024x1024",
+  "brightness": 100.7,
+  "contrast_std": 41.6,
+  "sharpness_lapvar": 148.5,
+  "colorfulness": 55.53,
+  "file_kb": 1791
+ }
+]
