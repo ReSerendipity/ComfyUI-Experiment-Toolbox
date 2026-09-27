@@ -34,6 +34,9 @@
 ```
 ComfyUI-实验与改造工具箱/
 ├── README.md                      ← 本文件（总索引）
+├── run.py                         ★ 根目录统一入口（panel/sigma/unify/models/analyze/pipeline/flatten）
+├── run.bat                        ★ Windows 命令行入口（内含 ComfyUI python 路径，转发给 run.py）
+├── start.bat                      ★ Windows 双击入口 = `run.bat panel`（启动 Web 面板）
 ├── 01_工作流扁平化/               ← 【原实验工具包01，编号不变】
 │   ├── flatten.py               ★ 通用扁平化器（bypass 透传、可达性裁剪、类型守卫）
 │   └── build_prompt.py            单工作流手写版（已被 flatten 取代，留作范本）
@@ -81,6 +84,8 @@ ComfyUI-实验与改造工具箱/
 | ComfyUI | 已启动在 `127.0.0.1:8188` | 02 轨离线 σ 分析不需要服务；03 轨跑测需要 |
 | 显卡 | 本机 RTX 5070 Ti Laptop（11.94GB） | 参数矩阵跑测按此写的，换卡只影响耗时 |
 
+> `run.bat` 已把 ComfyUI 的 python 路径写死在顶部 `PY=` 变量；换机器只改那一行，根目录入口本身不用动。
+
 启动 ComfyUI（无人值守）：
 
 ```bash
@@ -96,7 +101,13 @@ python/python.exe -s ComfyUI/main.py --port 8188 --disable-auto-launch --disable
 
 脚本靠**同目录 import** 互调（每个脚本开头有 `sys.path.insert(0, 脚本所在目录)`）。直接双击会 import 失败。
 
-**方式 A（推荐，不改脚本）**：
+**方式 0（最省事，推荐）**：走根目录 `run.py`——它已自动把 `01~04` 注入 `PYTHONPATH`，无需手工 export：
+
+```bat
+run.bat models          :: 等价于下面方式 A/B，但不用配任何环境变量
+```
+
+**方式 A（手工指定，不改脚本）**：
 
 ```bash
 ROOT="%USERPROFILE%/Desktop/ComfyUI-实验与改造工具箱"
@@ -106,7 +117,7 @@ export PYTHONPATH="$ROOT/01_工作流扁平化;$ROOT/03_受控跑测;$ROOT/04_�
 
 > Windows 下 `PYTHONPATH` 分隔符是分号 `;`。
 
-**方式 B（最省事）**：把要用的脚本临时拷到同一目录再跑。
+**方式 B（兜底）**：把要用的脚本临时拷到同一目录再跑。
 
 依赖矩阵：
 
@@ -142,27 +153,43 @@ export PYTHONPATH="$ROOT/01_工作流扁平化;$ROOT/03_受控跑测;$ROOT/04_�
 
 ## 六、快速上手
 
-**参数轨（4 步）**：
+**先记住一件事：根目录就是入口。** 不用 cd 进子目录，也不用记 ComfyUI 的 python 路径。
 
-```bash
-PY="%USERPROFILE%/APP/ComfyUI-aki-v3/python/python.exe"
-P="%USERPROFILE%/Desktop/ComfyUI-实验与改造工具箱"
+```bat
+:: 方式一：Windows 双击
+start.bat              :: 直接启动 Web 面板（最常用）
 
-# ① 离线筛调度器：不跑图，直接得到「该模型该避开哪些调度器」
-$PY "$P/02_调度器sigma分析/sigma_matrix.py"
-
-# ② 统一提示词与种子（先 dry-run 看清单，确认再加 --apply；会自动备份）
-$PY "$P/03_受控跑测/unify_prompt_seed.py"
-$PY "$P/03_受控跑测/unify_prompt_seed.py" --apply
-
-# ③ 跑测（ONLY=<标签> 只跑一个模型）
-$PY "$P/03_受控跑测/run_models.py"
-
-# ④ 出指标与拼版
-$PY "$P/04_结果分析/analyze_models.py"
+:: 方式二：Windows 命令行
+run.bat                :: 列出所有入口
+run.bat panel          :: ★ 启动 Web 面板 → http://127.0.0.1:8189
+run.bat sigma          :: 参数轨① 离线 σ 风险矩阵
+run.bat unify --apply  :: 参数轨② 统一提示词与种子（写盘）
+run.bat models         :: 参数轨③ 跨模型跑测
+run.bat analyze        :: 参数轨④ 结果分析
+run.bat pipeline       :: ①→②→③→④ 一次跑完
 ```
 
-**结构轨**：见 `05_结构改造脚本/README.md` 的操作清单（选基准→补节点→删冗余→融合→官方对齐→统一布局→清 prompt→备份）。
+```bash
+# 方式三：任意终端（含 Git Bash），自己指定解释器
+PY="%USERPROFILE%/APP/ComfyUI-aki-v3/python/python.exe"
+"$PY" run.py list      # 同一套子命令：panel/sigma/unify/models/analyze/pipeline/flatten
+```
+
+> `run.py` 只做三件事：把 `01~04` 子目录加进 `PYTHONPATH`（脚本之间靠同目录 import 互调）、
+> 强制 UTF-8 输出（避免 GBK 控制台打印中文报 UnicodeEncodeError）、以子进程方式调用目标脚本。
+> 因此每个脚本的行为与「单独运行」完全一致——**脚本本体刻意不搬到根目录**：`panel.py` 靠
+> `__file__` 反推 TOOLBOX 并读同目录 `index.html`，`run_models.py` 裸 `import flatten`，搬运会直接破坏它们。
+
+**参数轨四步（根入口 ↔ 原生命令对照）**：
+
+| 步 | 根入口 | 等价原生命令 |
+|---|---|---|
+| ① 离线筛调度器（不跑图） | `run.bat sigma` | `python 02_调度器sigma分析/sigma_matrix.py` |
+| ② 统一提示词与种子 | `run.bat unify`（先 dry-run，确认后加 `--apply`，会自动备份） | `python 03_受控跑测/unify_prompt_seed.py` |
+| ③ 跨模型跑测 | `run.bat models` | `python 03_受控跑测/run_models.py` |
+| ④ 指标 + 拼版 | `run.bat analyze` | `python 04_结果分析/analyze_models.py` |
+
+**结构轨**：见 `05_结构改造脚本/README.md` 的操作清单（选基准→补节点→删冗余→融合→官方对齐→统一布局→清 prompt→备份）。结构轨**刻意不进根入口**——低频高风险，且 `05` 的 `CONFIG` 是本机 11 份工作流的节点指纹，必须当说明书读、不能盲跑。
 
 ---
 
