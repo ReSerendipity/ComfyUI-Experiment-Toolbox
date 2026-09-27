@@ -1,0 +1,194 @@
+[
+ {
+  "label": "02_euler_beta",
+  "sampler": "euler",
+  "scheduler": "beta",
+  "note": "Qwen-Image 官方教程推荐调度器",
+  "ok": true,
+  "sec": 36.3,
+  "files": [
+   "02_euler_beta__02_euler_beta_00001.png"
+  ],
+  "error": null
+ },
+ {
+  "label": "03_euler_sgm_uniform",
+  "sampler": "euler",
+  "scheduler": "sgm_uniform",
+  "note": "新一代 DiT 通用均匀调度",
+  "ok": true,
+  "sec": 20.2,
+  "files": [
+   "03_euler_sgm_uniform__03_euler_sgm_uniform_00001.png"
+  ],
+  "error": null
+ },
+ {
+  "label": "04_euler_karras",
+  "sampler": "euler",
+  "scheduler": "karras",
+  "note": "通用最优非线性调度",
+  "ok": true,
+  "sec": 22.1,
+  "files": [
+   "04_euler_karras__04_euler_karras_00001.png"
+  ],
+  "error": null
+ },
+ {
+  "label": "05_res_multistep_simple",
+  "sampler": "res_multistep",
+  "scheduler": "simple",
+  "note": "新一代蒸馏模型官方配套",
+  "ok": true,
+  "sec": 20.1,
+  "files": [
+   "05_res_multistep_simple__05_res_multistep_simple_00001.png"
+  ],
+  "error": null
+ },
+ {
+  "label": "06_res_multistep_beta",
+  "sampler": "res_multistep",
+  "scheduler": "beta",
+  "note": "重启多步 + beta",
+  "ok": true,
+  "sec": 22.1,
+  "files": [
+   "06_res_multistep_beta__06_res_multistep_beta_00001.png"
+  ],
+  "error": null
+ },
+ {
+  "label": "07_dpmpp_2m_karras",
+  "sampler": "dpmpp_2m",
+  "scheduler": "karras",
+  "note": "主流首选：二阶多步",
+  "ok": true,
+  "sec": 18.3,
+  "files": [
+   "07_dpmpp_2m_karras__07_dpmpp_2m_karras_00001.png"
+  ],
+  "error": null
+ },
+ {
+  "label": "08_dpmpp_2m_sde_gpu_karras",
+  "sampler": "dpmpp_2m_sde_gpu",
+  "scheduler": "karras",
+  "note": "写实向 SDE",
+  "ok": true,
+  "sec": 22.3,
+  "files": [
+   "08_dpmpp_2m_sde_gpu_karras__08_dpmpp_2m_sde_gpu_karras_00001.png"
+  ],
+  "error": null
+ },
+ {
+  "label": "09_dpmpp_3m_sde_gpu_karras",
+  "sampler": "dpmpp_3m_sde_gpu",
+  "scheduler": "karras",
+  "note": "三阶多步 SDE",
+  "ok": true,
+  "sec": 18.2,
+  "files": [
+   "09_dpmpp_3m_sde_gpu_karras__09_dpmpp_3m_sde_gpu_karras_00001.png"
+  ],
+  "error": null
+ },
+ {
+  "label": "10_dpmpp_2s_ancestral_karras",
+  "sampler": "dpmpp_2s_ancestral",
+  "scheduler": "karras",
+  "note": "二阶单步祖先（创意型）",
+  "ok": true,
+  "sec": 34.5,
+  "files": [
+   "10_dpmpp_2s_ancestral_karras__10_dpmpp_2s_ancestral_karras_00001.png"
+  ],
+  "error": null
+ },
+ {
+  "label": "11_euler_ancestral_simple",
+  "sampler": "euler_ancestral",
+  "scheduler": "simple",
+  "note": "一阶祖先（随机型）",
+  "ok": true,
+  "sec": 18.1,
+  "files": [
+   "11_euler_ancestral_simple__11_euler_ancestral_simple_00001.png"
+  ],
+  "error": null
+ },
+ {
+  "label": "12_heun_karras",
+  "sampler": "heun",
+  "scheduler": "karras",
+  "note": "二阶梯形法",
+  "ok": true,
+  "sec": 36.3,
+  "files": [
+   "12_heun_karras__12_heun_karras_00001.png"
+  ],
+  "error": null
+ },
+ {
+  "label": "13_uni_pc_bh2_karras",
+  "sampler": "uni_pc_bh2",
+  "scheduler": "karras",
+  "note": "统一预测-校正二阶",
+  "ok": true,
+  "sec": 18.1,
+  "files": [
+   "13_uni_pc_bh2_karras__13_uni_pc_bh2_karras_00001.png"
+  ],
+  "error": null
+ },
+ {
+  "label": "14_euler_cfg_pp_simple",
+  "sampler": "euler_cfg_pp",
+  "scheduler": "simple",
+  "note": "CFG++ 引导变体（cfg=1 对照组）",
+  "ok": true,
+  "sec": 36.2,
+  "files": [
+   "14_euler_cfg_pp_simple__14_euler_cfg_pp_simple_00001.png"
+  ],
+  "error": null
+ },
+ {
+  "label": "15_er_sde_simple",
+  "sampler": "er_sde",
+  "scheduler": "simple",
+  "note": "扩展反向时间 SDE",
+  "ok": true,
+  "sec": 18.1,
+  "files": [
+   "15_er_sde_simple__15_er_sde_simple_00001.png"
+  ],
+  "error": null
+ },
+ {
+  "label": "16_euler_kl_optimal",
+  "sampler": "euler",
+  "scheduler": "kl_optimal",
+  "note": "训练分布最优调度",
+  "ok": true,
+  "sec": 20.2,
+  "files": [
+   "16_euler_kl_optimal__16_euler_kl_optimal_00001.png"
+  ],
+  "error": null
+ },
+ {
+  "label": "17_euler_linear_quadratic",
+  "sampler": "euler",
+  "scheduler": "linear_quadratic",
+  "note": "线性-二次混合调度",
+  "ok": true,
+  "sec": 18.2,
+  "files": [
+   "17_euler_linear_quadratic__17_euler_linear_quadratic_00001.png"
+  ],
+  "error": null
+ }
+]

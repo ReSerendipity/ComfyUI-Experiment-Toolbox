@@ -1,0 +1,32 @@
+[
+ {
+  "model": "flux1dev_20step",
+  "combo": "base_euler_simple",
+  "ok": true,
+  "sec": 48.2,
+  "files": [
+   "flux1dev_20step__base_euler_simple__flux1dev_20step__base_euler_simple_00002.png"
+  ],
+  "error": null
+ },
+ {
+  "model": "flux1dev_20step",
+  "combo": "euler_karras",
+  "ok": true,
+  "sec": 39.2,
+  "files": [
+   "flux1dev_20step__euler_karras__flux1dev_20step__euler_karras_00002.png"
+  ],
+  "error": null
+ },
+ {
+  "model": "flux1dev_20step",
+  "combo": "euler_exponential",
+  "ok": true,
+  "sec": 45.2,
+  "files": [
+   "flux1dev_20step__euler_exponential__flux1dev_20step__euler_exponential_00002.png"
+  ],
+  "error": null
+ }
+]

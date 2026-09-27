@@ -1,0 +1,22 @@
+# 文本统一：仓库内存 LF，检出时按平台还原（Windows → CRLF）
+* text=auto
+
+# 二进制资源：不做文本转换、不参与行级 diff
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.webp binary
+*.gif  binary
+*.ico  binary
+*.bmp  binary
+*.tif  binary
+*.tiff binary
+*.zip  binary
+*.7z   binary
+*.pdf  binary
+*.pyc  binary
+
+# 常见二进制资源 diff 时按图片处理（GitHub 等平台友好）
+*.png  diff=image
+*.jpg  diff=image
+*.jpeg diff=image
