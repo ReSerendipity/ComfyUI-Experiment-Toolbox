@@ -232,3 +232,11 @@ PY="%USERPROFILE%/APP/ComfyUI-aki-v3/python/python.exe"
 
 - **Web UI 化（已落地，2026-09-24）**：`09_Web面板/` —— 本机轻量面板（纯标准库，端口 8189），四页复用参数轨 01~04：工作流真值 / σ 风险矩阵 / 受控跑测（进度条+日志）/ 结果分析（指标+拼版）。启动方式见 `09_Web面板/README.md`。结构轨（05/08）**刻意不 Web 化**——低频高风险的 JSON 手术，前端（Autogrow 加槽）或 agent 脚本更稳。
 - 官方模板升级时：用 `05_结构改造脚本/diff_edit.py` 复查对齐状态。
+
+---
+
+## 十、许可
+
+**MIT License** —— 见 [`LICENSE`](LICENSE)。Copyright (c) 2026 ReSerendipity。
+
+> 移植提示：本包内含多处本机绝对路径（如 `%USERPROFILE%\APP\ComfyUI-aki-v3`），换机器需按第五节「必须按需修改的硬编码常量」逐项调整。
