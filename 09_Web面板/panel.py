@@ -15,7 +15,7 @@ ComfyUI 实验与改造工具箱 · Web 面板（参数轨）
   ③ 受控跑测   —— flatten + /prompt 提交，固定提示词与种子
   ④ 结果分析   —— metrics.py 指标 + 拼版 + 相似度
 """
-import json, os, re, sys, time, threading, shutil, urllib.request, urllib.error
+import json, os, re, sys, time, threading, shutil, subprocess, webbrowser, urllib.request, urllib.error
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 # ---------------- 路径配置（复用到别处时改这里） ----------------
@@ -30,6 +30,12 @@ WF_DIR     = os.path.join(COMFY_ROOT, "user", "default", "workflows", "Image")
 CF_OUT     = os.path.join(COMFY_ROOT, "output")
 OUT_ROOT   = os.path.join(PANEL_DIR, "output")
 PORT       = 8189
+
+# ComfyUI 进程管理：面板可代为启动（跑测前自动拉起，或点「启动 ComfyUI」）
+COMFY_BASE = os.path.dirname(COMFY_ROOT)                        # ...\ComfyUI-aki-v3
+COMFY_PY   = os.path.join(COMFY_BASE, "python", "python.exe")
+COMFY_MAIN = os.path.join(COMFY_ROOT, "main.py")
+COMFY_PORT = int(COMFY_URL.rsplit(":", 1)[1])
 
 DEFAULT_SEED = 1111119
 FALLBACK_SAMPLERS = ["euler", "euler_ancestral", "euler_cfg_pp", "heun", "dpmpp_2m", "dpmpp_2m_sde_gpu",
@@ -69,7 +75,58 @@ def http_json(url, payload=None, timeout=20, method=None):
 
 def comfy_status():
     st, err = http_json(COMFY_URL + "/system_stats", timeout=3)
-    return {"running": st is not None, "stats": st, "error": None if st is not None else (err or "未启动")}
+    return {"running": st is not None, "stats": st,
+            "error": None if st is not None else (err or "未启动"),
+            "launcher": comfy_proc_info()}
+
+
+# ---------------- ComfyUI 进程管理（面板代启动，避免用户手动开服务） ----------------
+COMFY_PROC = {"proc": None, "pid": None, "started": None, "error": None}
+COMFY_PROC_LOCK = threading.Lock()
+CREATE_NEW_CONSOLE = 0x00000010
+
+
+def comfy_proc_info():
+    """面板自己拉起的 ComfyUI 进程状态（外部启动的进程这里看不到）。"""
+    with COMFY_PROC_LOCK:
+        p = COMFY_PROC["proc"]
+        alive = bool(p is not None and p.poll() is None)
+        return {"managed": p is not None, "pid": COMFY_PROC["pid"], "alive": alive,
+                "exit_code": (None if (p is None or alive) else p.returncode),
+                "started": COMFY_PROC["started"], "error": COMFY_PROC["error"]}
+
+
+def start_comfy():
+    """启动 ComfyUI（幂等）：已在运行/正在启动则直接返回，不重复拉起。
+
+    命令与根 README 第三节一致：
+        cd ComfyUI-aki-v3 && python/python.exe -s ComfyUI/main.py --port 8188 ...
+    用 CREATE_NEW_CONSOLE 拉起独立控制台窗口，便于用户看加载日志、按 Ctrl+C 停止。
+    """
+    if comfy_status()["running"]:
+        return 200, {"ok": True, "already": True, "msg": "ComfyUI 已在运行"}
+    if not os.path.isfile(COMFY_PY):
+        return 500, {"error": "找不到 ComfyUI 的 python：%s（请改 panel.py 顶部 COMFY_BASE）" % COMFY_PY}
+    if not os.path.isfile(COMFY_MAIN):
+        return 500, {"error": "找不到 ComfyUI 入口 main.py：%s" % COMFY_MAIN}
+    with COMFY_PROC_LOCK:
+        p = COMFY_PROC["proc"]
+        if p is not None and p.poll() is None:
+            return 200, {"ok": True, "already": True, "pid": p.pid, "msg": "启动中，请稍候"}
+        cmd = [COMFY_PY, "-s", COMFY_MAIN, "--port", str(COMFY_PORT),
+               "--disable-auto-launch", "--disable-comfy-compiler"]
+        try:
+            proc = subprocess.Popen(
+                cmd, cwd=COMFY_BASE,
+                creationflags=(CREATE_NEW_CONSOLE if os.name == "nt" else 0))
+        except Exception as e:
+            COMFY_PROC["error"] = "%s: %s" % (type(e).__name__, e)
+            log("启动 ComfyUI 失败:", COMFY_PROC["error"])
+            return 500, {"error": "启动 ComfyUI 失败：%s" % COMFY_PROC["error"]}
+        COMFY_PROC.update({"proc": proc, "pid": proc.pid, "error": None,
+                           "started": time.strftime("%H:%M:%S")})
+        log("已拉起 ComfyUI（PID %d，独立控制台窗口），等待就绪…" % proc.pid)
+    return 200, {"ok": True, "already": False, "pid": proc.pid, "msg": "已启动，正在加载"}
 
 
 def comfy_lists():
@@ -365,8 +422,15 @@ def start_run(body):
         prompt = (body.get("prompt") or "").strip()
         seed = int(body.get("seed") or DEFAULT_SEED)
         out_subdir = re.sub(r"[^\w\-]+", "_", body.get("out_subdir") or "web_test")
-        if not wfs or not combos or not prompt:
-            return 400, {"error": "workflows / combos / prompt 均不能为空"}
+        missing = []
+        if not wfs:
+            missing.append("未勾选任何工作流")
+        if not combos:
+            missing.append("未添加任何组合")
+        if not prompt:
+            missing.append("提示词为空")
+        if missing:
+            return 400, {"error": "无法启动：" + "；".join(missing)}
         # 合法值校验（仅当能从 ComfyUI 拿到权威列表时才校验，避免回退表误杀）
         lists = comfy_lists()
         if lists["source"] == "object_info":
@@ -488,12 +552,16 @@ class Handler(BaseHTTPRequestHandler):
 
     def _send(self, code, obj, ctype="application/json; charset=utf-8"):
         body = obj if isinstance(obj, bytes) else json.dumps(obj, ensure_ascii=False).encode()
-        self.send_response(code)
-        self.send_header("Content-Type", ctype)
-        self.send_header("Content-Length", str(len(body)))
-        self.send_header("Cache-Control", "no-store")
-        self.end_headers()
-        self.wfile.write(body)
+        try:
+            self.send_response(code)
+            self.send_header("Content-Type", ctype)
+            self.send_header("Content-Length", str(len(body)))
+            self.send_header("Cache-Control", "no-store")
+            self.end_headers()
+            self.wfile.write(body)
+        except (BrokenPipeError, ConnectionAbortedError, ConnectionResetError):
+            # 浏览器刷新/关标签页、健康探测超时都会这样提前断开——正常现象，不该刷 traceback
+            pass
 
     def _img(self, subdir, name):
         root = os.path.realpath(OUT_ROOT)
@@ -536,6 +604,9 @@ class Handler(BaseHTTPRequestHandler):
         try:
             n = int(self.headers.get("Content-Length") or 0)
             body = json.loads(self.rfile.read(n).decode()) if n else {}
+            if self.path == "/api/comfy_start":
+                code, data = start_comfy()
+                return self._send(code, data)
             if self.path == "/api/run":
                 code, data = start_run(body)
                 return self._send(code, data)
@@ -547,10 +618,52 @@ class Handler(BaseHTTPRequestHandler):
             return self._send(500, {"error": "%s: %s" % (type(e).__name__, e)})
 
 
+class Server(ThreadingHTTPServer):
+    # Windows 下 SO_REUSEADDR 允许两个进程绑同一端口 → 新旧面板会互相抢答，
+    # 请求随机落到旧代码上，极难排查。关掉它，端口被占就直接报错。
+    allow_reuse_address = False
+    daemon_threads = True
+
+    def handle_error(self, request, client_address):
+        exc = sys.exc_info()[1]
+        if isinstance(exc, (BrokenPipeError, ConnectionAbortedError, ConnectionResetError)):
+            return                      # 客户端提前断开：静默，不打印堆栈
+        super().handle_error(request, client_address)
+
+
+def open_panel_browser(url, timeout=15.0):
+    """等服务真正可访问后再打开浏览器，避免打开一个「无法连接」的空白页。"""
+    deadline = time.time() + timeout
+    while time.time() < deadline:
+        try:
+            with _OPENER.open(url + "/api/health", timeout=2) as r:
+                r.read()          # 必须读完 body：否则连接被提前关闭，服务端会抛 ConnectionAbortedError
+            break
+        except Exception:
+            time.sleep(0.2)
+    try:
+        webbrowser.open(url)
+        log("已自动打开浏览器:", url)
+    except Exception as e:
+        log("自动打开浏览器失败（请手动访问 %s）：%s" % (url, e))
+
+
 if __name__ == "__main__":
-    srv = ThreadingHTTPServer(("127.0.0.1", PORT), Handler)
-    log("Web 面板启动 → http://127.0.0.1:%d  （Ctrl+C 停止）" % PORT)
+    url = "http://127.0.0.1:%d" % PORT
+    try:
+        srv = Server(("127.0.0.1", PORT), Handler)
+    except OSError as e:
+        log("× 端口 %d 被占用，面板未能启动：%s" % (PORT, e))
+        log("  多半是已经有一个面板在运行 —— 直接访问 %s 即可；" % url)
+        log("  要跑这份新代码，请先关掉旧面板窗口（在它的窗口按 Ctrl+C），再重新启动。")
+        sys.exit(1)
+    log("Web 面板启动 → %s  （Ctrl+C 停止）" % url)
     log("工具箱根目录:", TOOLBOX)
     log("工作流目录:", WF_DIR)
     log("产物目录:", OUT_ROOT)
+    log("ComfyUI 入口:", COMFY_MAIN)
+    if "--no-browser" in sys.argv:
+        log("（--no-browser：跳过自动打开浏览器）")
+    else:
+        threading.Thread(target=open_panel_browser, args=(url,), daemon=True).start()
     srv.serve_forever()
