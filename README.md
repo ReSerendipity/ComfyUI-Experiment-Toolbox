@@ -95,6 +95,8 @@ python/python.exe -s ComfyUI/main.py --port 8188 --disable-auto-launch --disable
 
 停止：本包脚本不负责停服务。用 `tasklist | grep -i python` 找 PID 精确结束，**不要用 `taskkill /IM python.exe`**（会连带杀其它 python 进程）。
 
+> 走 Web 面板（09）时**不用手动执行上面这条**：③ 页点「开始跑测」若发现 ComfyUI 没起，会自动按同样命令拉起它并等就绪；顶栏也有「启动 ComfyUI」按钮可单独启动。
+
 ---
 
 ## 四、脚本依赖与 PYTHONPATH（跨目录 import 必读）
@@ -157,17 +159,20 @@ export PYTHONPATH="$ROOT/01_工作流扁平化;$ROOT/03_受控跑测;$ROOT/04_�
 
 ```bat
 :: 方式一：Windows 双击
-start.bat              :: 直接启动 Web 面板（最常用）
+start.bat              :: 启动 Web 面板（最常用）—— 启动后自动帮你打开浏览器
 
 :: 方式二：Windows 命令行
 run.bat                :: 列出所有入口
-run.bat panel          :: ★ 启动 Web 面板 → http://127.0.0.1:8189
+run.bat panel          :: ★ 启动 Web 面板 → http://127.0.0.1:8189（自动开浏览器）
 run.bat sigma          :: 参数轨① 离线 σ 风险矩阵
 run.bat unify --apply  :: 参数轨② 统一提示词与种子（写盘）
 run.bat models         :: 参数轨③ 跨模型跑测
 run.bat analyze        :: 参数轨④ 结果分析
 run.bat pipeline       :: ①→②→③→④ 一次跑完
 ```
+
+> 面板内建两条省事行为：**启动即自动打开浏览器**；**ComfyUI 没起时点「开始跑测」会自动帮你拉起**。
+> 不想要自动开浏览器就加 `--no-browser`（`run.bat panel --no-browser`）。细节见 `09_Web面板/README.md`。
 
 ```bash
 # 方式三：任意终端（含 Git Bash），自己指定解释器

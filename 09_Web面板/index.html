@@ -47,6 +47,7 @@
 <header>
   <h1>✦ ComfyUI 实验与改造工具箱 · Web 面板</h1>
   <span><i class="dot" id="comfyDot"></i><span id="comfyTxt" class="muted">ComfyUI 检测中…</span></span>
+  <button class="btn gray" id="comfyBtn" style="padding:3px 12px;display:none" onclick="manualStartComfy()">启动 ComfyUI</button>
   <span class="hint mono" id="portTxt"></span>
 </header>
 <nav>
@@ -89,7 +90,10 @@
         <b>种子</b><input id="seed" type="number" style="width:130px">
         <b>产物子目录</b><input id="subdir" value="web_test" style="width:140px">
         <button class="btn" id="runBtn" onclick="startRun()">开始跑测</button>
-        <span class="hint">需 ComfyUI 已启动（8188）；产物写入 09_Web面板/output/&lt;子目录&gt;/</span>
+        <span class="hint">ComfyUI 未启动时点「开始跑测」会<b>自动帮你拉起</b>，无需手动开服务；产物写入 09_Web面板/output/&lt;子目录&gt;/</span>
+      </div>
+      <div class="row" id="runStageRow" style="display:none">
+        <span id="runStage" class="hint"></span>
       </div>
     </div>
     <div class="card" id="runProgressCard" style="display:none">
@@ -125,19 +129,67 @@ document.querySelectorAll('nav button').forEach(b => b.onclick = () => {
 async function jget(u){ const r = await fetch(u); return {code:r.status, data:await r.json()}; }
 async function jpost(u,b){ const r = await fetch(u,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)}); return {code:r.status, data:await r.json()}; }
 
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+function setStage(msg, cls){
+  const row = $('#runStageRow'), el = $('#runStage');
+  if (!msg){ row.style.display = 'none'; el.textContent = ''; return; }
+  row.style.display = ''; el.className = cls || 'hint'; el.textContent = msg;
+}
+
 async function refreshComfy(){
   try { const {data} = await jget('/api/health');
     $('#portTxt').textContent = '127.0.0.1:' + (location.port||'8189') + ' · 工具箱已加载';
-    const on = data.comfy.running;
+    const on = data.comfy.running, lp = data.comfy.launcher || {};
+    const loading = !on && lp.managed && lp.alive;      // 面板已拉起、尚未就绪
+    const died    = !on && lp.managed && !lp.alive;     // 面板拉起的进程已退出
     $('#comfyDot').className = 'dot' + (on?' on':'');
-    $('#comfyTxt').textContent = 'ComfyUI(8188): ' + (on?'运行中':'未启动');
-    $('#runComfyHint').innerHTML = on ? '' : '<span class="err">⚠ ComfyUI 未启动，跑测前请先启动</span>';
+    $('#comfyTxt').textContent = 'ComfyUI(8188): ' + (on ? '运行中'
+      : loading ? `启动中…（PID ${lp.pid}）` : died ? `已退出（exit=${lp.exit_code}）` : '未启动');
+    $('#comfyBtn').style.display = on ? 'none' : '';
+    $('#comfyBtn').disabled = loading;
+    $('#comfyBtn').textContent = loading ? '启动中…' : '启动 ComfyUI';
+    $('#runComfyHint').innerHTML = on ? '<span class="log-ok">✓ ComfyUI 运行中</span>'
+      : '<span class="hint">ComfyUI 未启动 —— 点「开始跑测」会自动拉起</span>';
     // 合法值列表：ComfyUI 在线时取权威值；离线时面板返回回退表（下拉框始终可用）
     LISTS = await (await jget('/api/comfy_lists')).data;
     refreshComboSelects();
   } catch(e){ $('#comfyTxt').textContent = '面板通信失败'; }
 }
 setInterval(refreshComfy, 5000); refreshComfy();
+
+/* ComfyUI 自动拉起：跑测前调用；已在运行则秒过 */
+async function ensureComfy(){
+  let h = await jget('/api/health');
+  if (h.data.comfy.running) return true;
+
+  setStage('ComfyUI 未启动，正在自动拉起…');
+  const r = await jpost('/api/comfy_start', {});
+  if (r.code !== 200){ setStage(''); alert('启动 ComfyUI 失败：' + (r.data.error || '')); return false; }
+
+  const t0 = Date.now(), LIMIT = 300000;               // 首次加载模型慢，给 5 分钟
+  while (Date.now() - t0 < LIMIT){
+    await sleep(2000);
+    h = await jget('/api/health');
+    if (h.data.comfy.running){
+      setStage('ComfyUI 已就绪 ✓', 'log-ok');
+      setTimeout(() => setStage(''), 3000);
+      return true;
+    }
+    const lp = h.data.comfy.launcher || {};
+    if (lp.managed && !lp.alive){
+      setStage('');
+      alert(`ComfyUI 启动后立即退出（exit=${lp.exit_code}）。\n请查看它自己弹出的那个控制台窗口里的报错。`);
+      return false;
+    }
+    setStage(`ComfyUI 加载中… 已等 ${Math.round((Date.now()-t0)/1000)}s（首次加载模型较慢，请稍候）`);
+  }
+  setStage('');
+  alert('等待 ComfyUI 就绪超时（5 分钟）。请查看 ComfyUI 控制台窗口的日志。');
+  return false;
+}
+
+async function manualStartComfy(){ await ensureComfy(); refreshComfy(); }
 
 /* ① 工作流真值 */
 function fmtVal(v){ return (v===undefined||v==='')?'<span class="muted">—</span>':esc(String(v).length>42?String(v).slice(0,42)+'…':v); }
@@ -220,11 +272,31 @@ async function startRun(){
     steps: r.querySelector('.csteps').value.trim() || null,
     cfg: r.querySelector('.ccfg').value.trim() || null,
   })).filter(c=>c.name);
-  const body = { workflows:wfs, combos, prompt:$('#prompt').value, seed:$('#seed').value||null, subdir:$('#subdir').value };
-  const {code, data} = await jpost('/api/run', body);
-  if (code!==200){ alert('启动失败: '+data.error); return; }
-  $('#runProgressCard').style.display='';
-  pollRun();
+  const prompt = $('#prompt').value;
+
+  // 先在本地把缺项点名，别让用户对着「均不能为空」猜是哪一项
+  const missing = [];
+  if (!wfs.length)        missing.push('未勾选任何工作流');
+  if (!combos.length)     missing.push('未添加任何组合');
+  if (!prompt.trim())     missing.push('提示词为空');
+  if (missing.length){ alert('无法启动：' + missing.join('；')); return; }
+
+  const btn = $('#runBtn');
+  btn.disabled = true; btn.textContent = '准备中…';
+  let submitted = false;
+  try {
+    if (!await ensureComfy()) return;              // 未启动则自动拉起并等待就绪
+    const body = { workflows:wfs, combos, prompt, seed:$('#seed').value||null, subdir:$('#subdir').value };
+    const {code, data} = await jpost('/api/run', body);
+    if (code!==200){ setStage(''); alert('启动失败：' + data.error); return; }
+    setStage('');
+    $('#runProgressCard').style.display='';
+    submitted = true;
+    pollRun();                                     // 由 pollRun 接管按钮禁用状态
+  } finally {
+    btn.textContent = '开始跑测';
+    if (!submitted) btn.disabled = false;          // 早退分支要恢复可点
+  }
 }
 async function pollRun(){
   const {data} = await jget('/api/run_status');
