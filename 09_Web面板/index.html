@@ -286,7 +286,7 @@ async function startRun(){
   let submitted = false;
   try {
     if (!await ensureComfy()) return;              // 未启动则自动拉起并等待就绪
-    const body = { workflows:wfs, combos, prompt, seed:$('#seed').value||null, subdir:$('#subdir').value };
+    const body = { workflows:wfs, combos, prompt, seed:$('#seed').value||null, out_subdir:$('#subdir').value };
     const {code, data} = await jpost('/api/run', body);
     if (code!==200){ setStage(''); alert('启动失败：' + data.error); return; }
     setStage('');

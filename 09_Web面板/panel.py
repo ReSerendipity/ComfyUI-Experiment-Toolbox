@@ -421,7 +421,10 @@ def start_run(body):
                 c["sampler_name"] = c.pop("sampler")
         prompt = (body.get("prompt") or "").strip()
         seed = int(body.get("seed") or DEFAULT_SEED)
-        out_subdir = re.sub(r"[^\w\-]+", "_", body.get("out_subdir") or "web_test")
+        # 键名兼容：前端历史上发 subdir，后端字段叫 out_subdir —— 两个都收，否则界面上
+        # 的「产物子目录」会被静默忽略、全部落到默认 web_test（曾真实踩到）
+        raw_sub = str(body.get("out_subdir") or body.get("subdir") or "").strip()
+        out_subdir = re.sub(r"[^\w\-]+", "_", raw_sub) or "web_test"
         missing = []
         if not wfs:
             missing.append("未勾选任何工作流")
@@ -611,7 +614,7 @@ class Handler(BaseHTTPRequestHandler):
                 code, data = start_run(body)
                 return self._send(code, data)
             if self.path == "/api/analyze":
-                code, data = analyze(body.get("subdir") or "")
+                code, data = analyze(body.get("subdir") or body.get("out_subdir") or "")
                 return self._send(code, data)
             return self._send(404, {"error": "no route"})
         except Exception as e:
