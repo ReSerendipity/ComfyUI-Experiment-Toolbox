@@ -29,3 +29,7 @@ env/
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# ---------- 仅本地内容（不随公开仓库分发） ----------
+# 本仓为 PUBLIC，下列素材仅本地保留（见 10_模型家族横评/README.md 的 prompt 矩阵）
+10_模型家族横评/prompts/S8_adult_nude_frontal.txt
