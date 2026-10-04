@@ -1,0 +1,154 @@
+{
+  "_comment": "模型家族横评 · 配置样板。family 键 = models/unet 下的文件夹名。复制为 family_config.json 后按本机改。字段说明见 README.md。",
+  "_schema": "family-bench/1",
+
+  "comfy": {
+    "_comment": "comfy_root 为 ComfyUI 目录（含 user/ 与 models/）。可用 --comfy 覆盖。",
+    "comfy_root": "C:/Users/Doro/APP/ComfyUI-aki-v3/ComfyUI",
+    "api": "http://127.0.0.1:8188",
+    "out_subdir": "model_benchmark",
+    "raw_out_subdir": "model_benchmark_raw",
+    "_raw_out_subdir_note": "SaveImage 的 filename_prefix 指向这里。SaveImage 会自动加 _00001 后缀，若直接指向最终四层目录会留下重复文件导致 fanalyze 重复计数，所以原始输出走独立目录再由脚本复制成规范文件名。"
+  },
+
+  "bench": {
+    "_comment": "跨全部权重恒定的量。width/height 对所有权重、所有 prompt 一致。",
+    "width": 1024,
+    "height": 1024,
+    "seeds": [20260930, 424242, 7777777],
+    "prompts": ["S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9"],
+    "prompt_dir": "prompts",
+    "prompt_files": {
+      "S1": "S1_portrait_frontal.txt",
+      "S2": "S2_fullbody_threequarter.txt",
+      "S3": "S3_multiperson_eyelevel.txt",
+      "S4": "S4_anime_lowangle.txt",
+      "S5": "S5_gongbi_hanfu_glanceback.txt",
+      "S6": "S6_cyberpunk_highangle.txt",
+      "S7": "S7_product_text_macro.txt",
+      "S8": "S8_adult_nude_frontal.txt",
+      "S9": "S9_props_spatial_eyelevel.txt"
+    },
+    "_prompt_files_note": "id -> 文件名映射；不填则退化到 <id>*.txt 通配。可被 --prompts 覆盖。",
+    "poll_timeout_s": 2400,
+    "client_id": "family_bench"
+  },
+
+  "discovery": {
+    "_comment": "discover 自动识别多模型文件夹的判定门槛。",
+    "min_unique_weights": 2,
+    "extensions": [".safetensors"],
+    "arch_probe": "header_only",
+    "arch_probe_note": "header_only = 只读 safetensors 头部 JSON + meta 张量，零 payload、零出图；不会加载权重。"
+  },
+
+  "prune": {
+    "_comment": "剪枝规则。DROP_TYPES/DROP_ALWAYS 出处：03_受控跑测/run_models.py（见 bench_family.py 内注释）。prompt_enhance_off=true 时启用 LLM 链剪枝与批量读取器旁路。",
+    "prompt_enhance_off": true,
+    "drop_types": ["TextGenerate", "PrimitiveStringMultiline", "PreviewAny", "PrimitiveBoolean"],
+    "drop_always": ["BatchPromptReaderWithClip"],
+    "rebuild_batch_reader_as_empty_encode": true
+  },
+
+  "negative": {
+    "_comment": "zeroout = ConditioningZeroOut（官方口径，不用负向串）；real = 真负向串。",
+    "real_text": "blurry, low resolution, deformed hands, extra fingers, missing fingers, fused limbs, extra heads, distorted face, asymmetric eyes, warped text, gibberish letters, watermark, signature, jpeg artifacts, oversaturated colours, plastic waxy skin"
+  },
+
+  "families": {
+    "FLUX-1-dev": {
+      "enabled": true,
+      "workflow": "user/default/workflows/Image/flux.1-dev.json",
+      "unet_folder": "FLUX-1-dev",
+      "weights": [],
+      "_weights_note": "留空 = 由 discover_families.py 自动填入（已按 SHA256 去重）",
+      "chain": "flux1",
+      "clip_loaders": [
+        {"clip_name": "FLUX.1-dev/clip_l.safetensors", "type": "flux", "device": "default"},
+        {"clip_name": "FLUX-1-dev/t5xxl_fp8_e4m3fn.safetensors", "type": "flux", "device": "default"}
+      ],
+      "_clip_loaders_note": "两个 clip_* 条目 = DualCLIPLoader；只有一个 = CLIPLoader",
+      "vae": "FLUX-1-dev + Z-image-turbo/ae.safetensors",
+      "latent_class": "EmptySD3LatentImage",
+      "sampler": "euler",
+      "scheduler": "simple",
+      "steps": 20,
+      "cfg": 1.0,
+      "model_sampling": {"node": "ModelSamplingFlux", "max_shift": 1.15, "base_shift": 0.5},
+      "guidance": {"node": "FluxGuidance", "value": 4.0},
+      "negative_mode": "zeroout",
+      "sample_chain": "custom_basic_guider",
+      "declared_exception": false
+    },
+
+    "FLUX-2-klein-9b": {
+      "enabled": true,
+      "workflow": "user/default/workflows/Image/Flux.2_Klein-9B-Distilled.json",
+      "unet_folder": "FLUX-2-klein-9b",
+      "weights": [],
+      "chain": "flux2klein",
+      "clip_loaders": [
+        {"clip_name": "FLUX-2-klein-9b/qwen_3_8b_fp8mixed.safetensors", "type": "flux2", "device": "default"}
+      ],
+      "vae": "FLUX.2-klein-9b/flux2-vae.safetensors",
+      "latent_class": "EmptyFlux2LatentImage",
+      "sampler": "euler",
+      "scheduler": "Flux2Scheduler",
+      "steps": 20,
+      "cfg": 5.0,
+      "model_sampling": null,
+      "guidance": null,
+      "negative_mode": "real",
+      "sample_chain": "custom_cfg_guider",
+      "declared_exception": false,
+
+      "weight_overrides": {
+        "Flux.2 Klein 9B fp8 darkBeast.safetensors": {
+          "_why": "ComfyUI 架构判定为 ZImage/Lumina2（dim 3840, cap_feat_dim 2560），不是 FLUX.2。Klein 链路实测硬失败：RuntimeError normalized_shape=[2560] vs input [1,512,12288]（traceback 落在 comfy/ldm/lumina/model.py）。故整条链替换为 zimage。因与同族 W04/W05 不同链路，报告须单列 Stratum B。",
+          "declared_exception": true,
+          "chain": "zimage",
+          "workflow": "user/default/workflows/Image/Z_image.json",
+          "clip_loaders": [
+            {"clip_name": "Z-image-turbo/qwen_3_4b_fp8_mixed.safetensors", "type": "lumina2", "device": "default"}
+          ],
+          "vae": "FLUX-1-dev + Z-image-turbo/ae.safetensors",
+          "latent_class": "EmptySD3LatentImage",
+          "sampler": "res_multistep",
+          "scheduler": "simple",
+          "steps": 25,
+          "cfg": 4.0,
+          "model_sampling": {"node": "ModelSamplingAuraFlow", "shift": 3.0},
+          "guidance": null,
+          "negative_mode": "zeroout",
+          "sample_chain": "ksampler"
+        }
+      }
+    },
+
+    "Krea2-turbo": {
+      "enabled": true,
+      "workflow": "user/default/workflows/Image/krea2_turbo.json",
+      "unet_folder": "Krea2-turbo",
+      "weights": [],
+      "chain": "krea2",
+      "clip_loaders": [
+        {"clip_name": "Krea2/qwen3-vl-4b-heretic_fp8_e4m3fn.safetensors", "type": "krea2", "device": "default"}
+      ],
+      "vae": "Qwen-image-2512-edit + Krea2/qwen_image_vae.safetensors",
+      "latent_class": "EmptyLatentImage",
+      "sampler": "euler",
+      "scheduler": "simple",
+      "steps": 8,
+      "cfg": 1.0,
+      "model_sampling": null,
+      "guidance": null,
+      "negative_mode": "zeroout",
+      "sample_chain": "ksampler",
+      "declared_exception": false,
+      "_container_edits": {
+        "_why": "工作流容器 string_b_1 自带 'muted minimalist sketch style' 后缀，会污染受控提示词；置空。",
+        "10": ""
+      }
+    }
+  }
+}

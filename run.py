@@ -24,6 +24,9 @@ ComfyUI 实验与改造工具箱 · 根目录统一入口
     python run.py analyze         # 参数轨④ 结果分析（指标 + 拼版）
     python run.py pipeline        # ①→②→③→④ 顺序跑完（②默认 dry-run，加 --apply 才写盘）
     python run.py flatten [wf]    # 单工作流扁平化 / 查看运行时真值（参数透传）
+    python run.py fdiscover       # ★ 家族横评① 发现候选家族（只读取证，不出图）
+    python run.py fbench --dry-run    # ★ 家族横评② 配置驱动跑测（先看计划，0 提交）
+    python run.py fanalyze --out <目录>  # ★ 家族横评③ 结果分析
 
 Windows 用户可直接双击 `start.bat`（启动面板）或用 `run.bat <子命令>`，免记 python 路径。
 """
@@ -39,6 +42,7 @@ IMPORT_DIRS = [
     "02_调度器sigma分析",
     "03_受控跑测",
     "04_结果分析",
+    "10_模型家族横评",
 ]
 
 # 入口表：子命令 -> (说明, 相对脚本路径)
@@ -49,6 +53,9 @@ ENTRIES = {
     "models":  ("参数轨③ 跨模型统一变量跑测（需 ComfyUI 已在 8188）", "03_受控跑测/run_models.py"),
     "analyze": ("参数轨④ 结果分析：指标 + 拼版 + 相似度", "04_结果分析/analyze_models.py"),
     "flatten": ("单工作流扁平化 / 查看运行时真值（参数透传）", "01_工作流扁平化/flatten.py"),
+    "fdiscover": ("★ 家族横评① 发现候选家族（SHA256 去重，只读取证）", "10_模型家族横评/discover_families.py"),
+    "fbench":   ("★ 家族横评② 配置驱动跑测（需 ComfyUI 已在 8188）", "10_模型家族横评/bench_family.py"),
+    "fanalyze": ("★ 家族横评③ 结果分析：指标+稳定性+拼版+评分表", "10_模型家族横评/analyze_family.py"),
 }
 
 # pipeline 的顺序（参数轨四步）
