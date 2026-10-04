@@ -1,0 +1,341 @@
+{
+ "generated": "2026-09-30 21:32:42",
+ "unet_root": "C:/Users/Doro/APP/ComfyUI-aki-v3/ComfyUI\\models\\unet",
+ "min_unique_weights": 2,
+ "arch_probe": "fingerprint",
+ "sha256_elapsed_s": 139.4,
+ "summary": {
+  "eligible_families": 3,
+  "skipped_families": 4,
+  "eligible_weights_total": 8
+ },
+ "families": {
+  "FLUX-1-dev": {
+   "unet_folder": "FLUX-1-dev",
+   "status": "eligible",
+   "reason": "3 个唯一权重；去重 1 个（pornworksNudePeoplePhoto_0==pornworks-nude-people-phot）",
+   "n_files": 4,
+   "n_unique": 3,
+   "n_duplicates": 1,
+   "weights": [
+    {
+     "file": "Flux-Capacity-NSFW-V2-fp8.safetensors",
+     "rel": "FLUX-1-dev/Flux-Capacity-NSFW-V2-fp8.safetensors",
+     "size_bytes": 11901543328,
+     "size_mb": 11350.2,
+     "mtime": "2026-04-04 22:45:12",
+     "sha256": "35b7ccf710ca3ad0d46b1889a24b11c4feabeb5f34df12ea106d51318aa9891b",
+     "sha256_head": "35b7ccf710ca3ad0",
+     "sha256_tail": "106d51318aa9891b",
+     "n_tensors": 780,
+     "dtypes": {
+      "F8_E5M2": 780
+     },
+     "arch_fingerprint": "FLUX.1-dev",
+     "embedded_metadata_keys": [
+      "prompt",
+      "workflow"
+     ]
+    },
+    {
+     "file": "fluxNSFWUNLOCKED.safetensors",
+     "rel": "FLUX-1-dev/fluxNSFWUNLOCKED.safetensors",
+     "size_bytes": 11901513960,
+     "size_mb": 11350.17,
+     "mtime": "2026-04-04 22:04:26",
+     "sha256": "3b9e388080e8641767f575bb6bf95bd519751030cc140b41d61c673c4a1e4ab4",
+     "sha256_head": "3b9e388080e86417",
+     "sha256_tail": "d61c673c4a1e4ab4",
+     "n_tensors": 780,
+     "dtypes": {
+      "F8_E4M3": 780
+     },
+     "arch_fingerprint": "FLUX.1-dev"
+    },
+    {
+     "file": "pornworks-nude-people-photo-realistic-nsfw-flux-1d-checkpoint.safetensors",
+     "rel": "FLUX-1-dev/pornworks-nude-people-photo-realistic-nsfw-flux-1d-checkpoint.safetensors",
+     "size_bytes": 11901496800,
+     "size_mb": 11350.15,
+     "mtime": "2026-04-04 15:22:26",
+     "sha256": "62b8e563af4ac4b7fdc254d628fdb77bcbe6eb38f1f757233bbac4bead433556",
+     "sha256_head": "62b8e563af4ac4b7",
+     "sha256_tail": "3bbac4bead433556",
+     "n_tensors": 780,
+     "dtypes": {
+      "F8_E4M3": 780
+     },
+     "arch_fingerprint": "FLUX.1-dev"
+    }
+   ],
+   "duplicate_files": [
+    {
+     "file": "pornworksNudePeoplePhoto_02.safetensors",
+     "rel": "FLUX-1-dev/pornworksNudePeoplePhoto_02.safetensors",
+     "size_bytes": 11901496800,
+     "size_mb": 11350.15,
+     "mtime": "2026-04-04 16:18:22",
+     "sha256": "62b8e563af4ac4b7fdc254d628fdb77bcbe6eb38f1f757233bbac4bead433556",
+     "sha256_head": "62b8e563af4ac4b7",
+     "sha256_tail": "3bbac4bead433556",
+     "n_tensors": 780,
+     "dtypes": {
+      "F8_E4M3": 780
+     },
+     "arch_fingerprint": "FLUX.1-dev",
+     "duplicate_of": "pornworks-nude-people-photo-realistic-nsfw-flux-1d-checkpoint.safetensors"
+    }
+   ]
+  },
+  "FLUX-2-klein-9b": {
+   "unet_folder": "FLUX-2-klein-9b",
+   "status": "eligible",
+   "reason": "3 个唯一权重",
+   "n_files": 3,
+   "n_unique": 3,
+   "n_duplicates": 0,
+   "weights": [
+    {
+     "file": "BigLoveKlein2_fp8.safetensors",
+     "rel": "FLUX-2-klein-9b/BigLoveKlein2_fp8.safetensors",
+     "size_bytes": 9078604336,
+     "size_mb": 8658.03,
+     "mtime": "2026-04-22 10:17:10",
+     "sha256": "02b68dec8f5b8e6dfa06d0b48973aae9fa5007b438dfdbbd76a574b3b2caae85",
+     "sha256_head": "02b68dec8f5b8e6d",
+     "sha256_tail": "76a574b3b2caae85",
+     "n_tensors": 201,
+     "dtypes": {
+      "F8_E4M3": 201
+     },
+     "arch_fingerprint": "FLUX.2"
+    },
+    {
+     "file": "DarkBeast-Klein9b-V2-BFS-FP8.safetensors",
+     "rel": "FLUX-2-klein-9b/DarkBeast-Klein9b-V2-BFS-FP8.safetensors",
+     "size_bytes": 9078610848,
+     "size_mb": 8658.04,
+     "mtime": "2026-04-23 16:09:26",
+     "sha256": "b20b6f2744e152fd3efa2638e88a5feab478c778ee25c81b183fd80e03a099c3",
+     "sha256_head": "b20b6f2744e152fd",
+     "sha256_tail": "183fd80e03a099c3",
+     "n_tensors": 201,
+     "dtypes": {
+      "F8_E4M3": 201
+     },
+     "arch_fingerprint": "FLUX.2",
+     "embedded_metadata_keys": [
+      "prompt",
+      "workflow"
+     ]
+    },
+    {
+     "file": "Flux.2 Klein 9B fp8 darkBeast.safetensors",
+     "rel": "FLUX-2-klein-9b/Flux.2 Klein 9B fp8 darkBeast.safetensors",
+     "size_bytes": 12309959360,
+     "size_mb": 11739.69,
+     "mtime": "2026-04-23 17:52:16",
+     "sha256": "d1be7aec7616ead1e494761c1d895b04145c52136e1c37236c693c91cd06490f",
+     "sha256_head": "d1be7aec7616ead1",
+     "sha256_tail": "6c693c91cd06490f",
+     "n_tensors": 453,
+     "dtypes": {
+      "F16": 453
+     },
+     "arch_fingerprint": "Z-Image/Lumina2",
+     "embedded_metadata_keys": [
+      "prompt",
+      "workflow"
+     ]
+    }
+   ],
+   "duplicate_files": []
+  },
+  "Krea2-turbo": {
+   "unet_folder": "Krea2-turbo",
+   "status": "eligible",
+   "reason": "2 个唯一权重",
+   "n_files": 2,
+   "n_unique": 2,
+   "n_duplicates": 0,
+   "weights": [
+    {
+     "file": "krea2TurboNSFWAIO_v10.safetensors",
+     "rel": "Krea2-turbo/krea2TurboNSFWAIO_v10.safetensors",
+     "size_bytes": 17833778294,
+     "size_mb": 17007.62,
+     "mtime": "2026-08-20 21:02:10",
+     "sha256": "c40a22059317f968b9cc99f7c55a93e0077161d423c1014bcd2d55fcd39ede68",
+     "sha256_head": "c40a22059317f968",
+     "sha256_tail": "cd2d55fcd39ede68",
+     "n_tensors": 2354,
+     "dtypes": {
+      "F32": 509,
+      "BF16": 513,
+      "F8_E4M3": 824,
+      "U8": 508
+     },
+     "arch_fingerprint": "Krea2"
+    },
+    {
+     "file": "krea2_turbo_fp8_scaled.safetensors",
+     "rel": "Krea2-turbo/krea2_turbo_fp8_scaled.safetensors",
+     "size_bytes": 13141730842,
+     "size_mb": 12532.93,
+     "mtime": "2026-08-20 21:05:22",
+     "sha256": "4ec95180856b33ee2476d6da2a3dd6e92e0598ab70a1f9a547043241502931da",
+     "sha256_head": "4ec95180856b33ee",
+     "sha256_tail": "47043241502931da",
+     "n_tensors": 686,
+     "dtypes": {
+      "F32": 256,
+      "BF16": 174,
+      "F8_E4M3": 256
+     },
+     "arch_fingerprint": "Krea2",
+     "embedded_metadata_keys": [
+      "_quantization_metadata",
+      "format"
+     ]
+    }
+   ],
+   "duplicate_files": []
+  },
+  "Qwen-Image-2.1": {
+   "unet_folder": "Qwen-Image-2.1",
+   "status": "skipped",
+   "reason": "仅 1 个权重，未达门槛 2",
+   "n_files": 1,
+   "n_unique": 1,
+   "n_duplicates": 0,
+   "weights": [
+    {
+     "file": "qwen_image_2.1_int8_convrot.safetensors",
+     "rel": "Qwen-Image-2.1/qwen_image_2.1_int8_convrot.safetensors",
+     "size_bytes": 7256783064,
+     "size_mb": 6920.61,
+     "mtime": "2026-09-20 21:34:16",
+     "sha256": "cb74113cb03faecd79611b01fd7fd642f0aa60d6f0b95086abee214d75eaa57d",
+     "sha256_head": "cb74113cb03faecd",
+     "sha256_tail": "abee214d75eaa57d",
+     "n_tensors": 649,
+     "dtypes": {
+      "F32": 192,
+      "BF16": 73,
+      "I8": 192,
+      "U8": 192
+     },
+     "arch_fingerprint": "QwenImage21",
+     "embedded_metadata_keys": [
+      "format"
+     ]
+    }
+   ],
+   "duplicate_files": []
+  },
+  "Qwen-Image-Edit-2511": {
+   "unet_folder": "Qwen-Image-Edit-2511",
+   "status": "skipped",
+   "reason": "仅 1 个权重，未达门槛 2",
+   "n_files": 1,
+   "n_unique": 1,
+   "n_duplicates": 0,
+   "weights": [
+    {
+     "file": "qwen_image_edit_2511_nvfp4.safetensors",
+     "rel": "Qwen-Image-Edit-2511/qwen_image_edit_2511_nvfp4.safetensors",
+     "size_bytes": 11640471562,
+     "size_mb": 11101.22,
+     "mtime": "2026-07-31 19:50:24",
+     "sha256": "a1145911a0f9ea598f21f40b50b0ac5c38589e2abc154fb89ec77f44eb280ab4",
+     "sha256_head": "a1145911a0f9ea59",
+     "sha256_tail": "9ec77f44eb280ab4",
+     "n_tensors": 4451,
+     "dtypes": {
+      "F32": 840,
+      "BF16": 1094,
+      "F8_E4M3": 839,
+      "U8": 1678
+     },
+     "arch_fingerprint": "QwenImage",
+     "embedded_metadata_keys": [
+      "_quantization_metadata"
+     ]
+    }
+   ],
+   "duplicate_files": []
+  },
+  "Qwen-image-2512": {
+   "unet_folder": "Qwen-image-2512",
+   "status": "skipped",
+   "reason": "仅 1 个权重，未达门槛 2",
+   "n_files": 1,
+   "n_unique": 1,
+   "n_duplicates": 0,
+   "weights": [
+    {
+     "file": "qwen-image-2512-nvfp4-Ultra.safetensors",
+     "rel": "Qwen-image-2512/qwen-image-2512-nvfp4-Ultra.safetensors",
+     "size_bytes": 14896156794,
+     "size_mb": 14206.08,
+     "mtime": "2026-07-30 17:04:09",
+     "sha256": "a50bd810200bc397b4cf0109020b73cea77574bfb6e94157a76bfb2ab8b315df",
+     "sha256_head": "a50bd810200bc397",
+     "sha256_tail": "a76bfb2ab8b315df",
+     "n_tensors": 3730,
+     "dtypes": {
+      "F32": 599,
+      "BF16": 1334,
+      "F8_E4M3": 599,
+      "U8": 1198
+     },
+     "arch_fingerprint": "QwenImage",
+     "embedded_metadata_keys": [
+      "_quantization_metadata"
+     ]
+    }
+   ],
+   "duplicate_files": []
+  },
+  "Z-image-turbo": {
+   "unet_folder": "Z-image-turbo",
+   "status": "skipped",
+   "reason": "仅 1 个权重，未达门槛 2",
+   "n_files": 1,
+   "n_unique": 1,
+   "n_duplicates": 0,
+   "weights": [
+    {
+     "file": "zimageTurboNSFWByStable_2602NSFWFP8.safetensors",
+     "rel": "Z-image-turbo/zimageTurboNSFWByStable_2602NSFWFP8.safetensors",
+     "size_bytes": 6154969704,
+     "size_mb": 5869.84,
+     "mtime": "2026-04-21 15:32:42",
+     "sha256": "8dff149fbc5763e483d2a6fb375a5dffebb0ac54573ae2c0781cef7fb651b488",
+     "sha256_head": "8dff149fbc5763e4",
+     "sha256_tail": "781cef7fb651b488",
+     "n_tensors": 453,
+     "dtypes": {
+      "F8_E4M3": 453
+     },
+     "arch_fingerprint": "Z-Image/Lumina2",
+     "embedded_metadata_keys": [
+      "Author",
+      "Best workflow to use with this checkpoint",
+      "Civitai url",
+      "Description",
+      "Discord for Business inquiries, Loras and Checkpoints",
+      "Discord for Models and Workflow help",
+      "License",
+      "Patreon url",
+      "Version",
+      "ZImageTurbo prompt crafter",
+      "fp8",
+      "model_type"
+     ]
+    }
+   ],
+   "duplicate_files": []
+  }
+ }
+}
