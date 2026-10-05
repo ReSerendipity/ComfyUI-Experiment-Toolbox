@@ -56,6 +56,12 @@ ENTRIES = {
     "fdiscover": ("★ 家族横评① 发现候选家族（SHA256 去重，只读取证）", "10_模型家族横评/discover_families.py"),
     "fbench":   ("★ 家族横评② 配置驱动跑测（需 ComfyUI 已在 8188）", "10_模型家族横评/bench_family.py"),
     "fanalyze": ("★ 家族横评③ 结果分析：指标+稳定性+拼版+评分表", "10_模型家族横评/analyze_family.py"),
+    "fgate":   ("★ 家族横评④ 模型目录名册门禁（build 基线 / check 漂移，只读取证）", "10_模型家族横评/lib_inventory_gate.py"),
+    "fpqc":    ("★ 家族横评⑤ 提示词提交前质检（否定句/质量后缀/重复/标点）", "10_模型家族横评/lib_prompt_qc.py"),
+    "fverify": ("★ 家族横评⑥ ledger×产物树对账（缺图/孤儿/三件套/重放，只读）", "10_模型家族横评/lib_ledger_verify.py"),
+    "frobust": ("★ 家族横评⑦ 提示词长度鲁棒性探针（full/slim 配对计划，0 提交）", "10_模型家族横评/lib_prompt_robust.py"),
+    "fiqc":    ("★ 家族横评⑧ 增强客观图像指标（曝光/动态范围/色温/构图/噪点，纯像素统计）", "10_模型家族横评/lib_image_qc_enh.py"),
+    "fkit":    ("★ 家族横评⑨ SFW 通用提示词素材包（类目白名单，不含任何限制级词条）", "10_模型家族横评/lib_sfw_prompts_kit.py"),
 }
 
 # pipeline 的顺序（参数轨四步）
