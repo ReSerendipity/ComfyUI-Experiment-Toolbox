@@ -33,3 +33,27 @@ desktop.ini
 # ---------- 仅本地内容（不随公开仓库分发） ----------
 # 本仓为 PUBLIC，下列素材仅本地保留（见 10_模型家族横评/README.md 的 prompt 矩阵）
 10_模型家族横评/prompts/S8_adult_nude_frontal.txt
+
+# --- 敏感信息防泄露（Git 版本控制安全工程与防泄露最佳实践指南 v1.1 第二章/第八章）---
+.env
+.env.*
+!.env.example
+!.env.sample
+!.env.template
+*.p12
+*.pfx
+id_rsa
+id_rsa.*
+id_ed25519
+id_ed25519.*
+credentials.json
+credentials.yaml
+credentials.yml
+secrets.json
+secrets.yaml
+secrets.yml
+*.sqlite
+*.sqlite3
+*.db*.log
+logs/
+!logs/.gitkeep

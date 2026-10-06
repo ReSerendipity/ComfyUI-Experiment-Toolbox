@@ -1,0 +1,9 @@
+# ComfyUI-Experiment-Toolbox gitleaks 配置
+# 基于官方默认规则扩展（useDefault = true 保留全部内置检测规则），
+# 保证本地/CI 扫描口径与家族其他仓库一致。
+#
+# 本仓全量历史扫描（gitleaks 8.30.1，16 提交）当前为 0 命中，故暂无 allowlist 条目。
+# 后续若出现经人工核验的误报，在此文件追加 [allowlist] paths，不要放宽规则本身。
+
+[extend]
+useDefault = true
