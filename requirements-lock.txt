@@ -1,0 +1,23 @@
+# =============================================================================
+# ComfyUI-Experiment-Toolbox · 第三方运行时依赖锁定
+# -----------------------------------------------------------------------------
+# 范围：本仓库脚本直接 import 的第三方 PyPI 包。
+# 不包含：
+#   - comfy.* 系列模块（comfy.model_sampling / comfy.samplers / comfy.model_base …）
+#     它们由 ComfyUI 自带 Python 解释器提供，不是 PyPI 包，
+#     解释器路径见 run.bat 顶部 PY= 变量（本机：%USERPROFILE%\APP\ComfyUI-aki-v3\python\python.exe）。
+#   - Python 标准库（os/sys/json/argparse/http.server/hashlib/tempfile …）。
+#
+# 实测环境（2026-10-06 从 ComfyUI 自带 python 读出）：
+#   Python 3.13.11
+#   numpy  2.3.5
+#   Pillow 12.1.0
+#
+# 用法：
+#   本机跑脚本不需要手动 pip install（ComfyUI 自带环境已含这两个包）；
+#   CI 或新机器复跑时，用 ComfyUI 自带 python 执行：
+#     python -m pip install -r requirements-lock.txt
+# =============================================================================
+
+numpy==2.3.5
+Pillow==12.1.0

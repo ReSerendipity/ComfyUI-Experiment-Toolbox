@@ -1,4 +1,6 @@
-# comfyui-experiment-toolbox: minimal Python CI (syntax integrity)
+# comfyui-experiment-toolbox: minimal Python CI
+# 步骤：语法编译 → 锁文件可解析 → 三个纯标准库门禁 selftest
+# 注意：本 CI 不 import comfy.*（runner 上没有 ComfyUI 环境），只跑纯标准库的门禁自检。
 name: CI
 
 on:
@@ -15,12 +17,36 @@ concurrency:
 
 jobs:
   syntax:
-    name: Python syntax integrity
+    name: Python syntax + gate selftests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+
       - name: Compile all Python sources
         run: python -m compileall -q .
+
+      - name: Resolve locked third-party deps (numpy/Pillow)
+        run: python -m pip install -r requirements-lock.txt
+
+      - name: Gate ① ledger×产物树对账 selftest
+        run: python "10_模型家族横评/lib_ledger_verify.py" --selftest
+
+      - name: Gate ② prompt QC on committed prompts
+        run: python "10_模型家族横评/lib_prompt_qc.py" "10_模型家族横评/prompts"
+
+      - name: Gate ③ inventory-gate synthetic three-state selftest
+        working-directory: "10_模型家族横评"
+        run: |
+          python - <<'PY'
+          import sys
+          sys.path.insert(0, ".")
+          from lib_inventory_gate import _selftest_synthetic
+          steps = _selftest_synthetic()
+          for msg, ok in steps:
+              print(("OK  " if ok else "FAIL") + " " + msg)
+          bad = [m for m, ok in steps if ok is False]
+          sys.exit(1 if bad else 0)
+          PY

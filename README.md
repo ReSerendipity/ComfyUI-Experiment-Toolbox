@@ -85,6 +85,8 @@ ComfyUI-实验与改造工具箱/
 | 显卡 | 本机 RTX 5070 Ti Laptop（11.94GB） | 参数矩阵跑测按此写的，换卡只影响耗时 |
 
 > `run.bat` 已把 ComfyUI 的 python 路径写死在顶部 `PY=` 变量；换机器只改那一行，根目录入口本身不用动。
+>
+> 第三方依赖版本锁定在根目录 `requirements-lock.txt`（实测：numpy 2.3.5 / Pillow 12.1.0；`comfy.*` 由 ComfyUI 自带 Python 提供，不在此文件）。新机器或 CI 复跑时用 `python -m pip install -r requirements-lock.txt` 对齐。
 
 启动 ComfyUI（无人值守）：
 
