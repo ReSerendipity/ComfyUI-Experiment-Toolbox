@@ -1,10 +1,13 @@
 /* 面板前端真实 DOM 验证：加载页面真实 index.html，执行其 JS，检查下拉框选项 */
 const { JSDOM } = require("jsdom");
+const path = require("path");
 const PANEL = "http://127.0.0.1:8189";
 
 async function main() {
+  // index.html 与本脚本同目录；用 __dirname 相对定位，避免硬编码本机绝对路径
+  const indexHtml = path.resolve(__dirname, "index.html");
   const dom = await JSDOM.fromFile(
-    "%USERPROFILE%/Desktop/ComfyUI-实验与改造工具箱/09_Web面板/index.html",
+    indexHtml,
     { url: PANEL + "/", runScripts: "dangerously", pretendToBeVisual: true,
       beforeParse(window) {
         // Node 22 全局 fetch 存在，但需把相对 URL 解析到面板地址
