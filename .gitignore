@@ -54,6 +54,14 @@ secrets.yaml
 secrets.yml
 *.sqlite
 *.sqlite3
-*.db*.log
+*.db
 logs/
 !logs/.gitkeep
+
+# --- 敏感信息防泄露 v1.1 补充（2026-10-07，修 *.db 畸形行 + 指南第二章/第八章）---
+*.env
+service-account.json
+.aws/
+.gcloud/
+*.pem
+*.key
