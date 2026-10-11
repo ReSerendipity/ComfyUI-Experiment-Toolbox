@@ -11,16 +11,29 @@ v2 约定：
   - jsonl 不存在但 json 存在时，migrate_legacy() 把旧记录迁入 jsonl，历史保全。
 字段约定：每条记录除业务字段外，含 ts（本地时间）/ seed / steps / cfg / py / comfy
 （见 run_combos.py、run_models.py 落盘处）。
+
+schema 版本（数据治理 R2 P1，2026-10-11）：
+  - SCHEMA_VERSION = 2：v2 协议标记。append_record 对每条新记录写入 schema_version=2；
+    旧记录（v2 上线前落盘）无该字段，读取方应使用 .get("schema_version") 容错。
+    字段字典见同目录 data-dictionary.md（03 日志 / 07 样例 / 05 manifest 统一登记）。
 """
 import json
 import os
 
+# 日志记录 schema 版本（v2 协议，2026-10-11 起显式打标；与 data-dictionary.md 保持一致）
+SCHEMA_VERSION = 2
+
 
 def append_record(jsonl_path, rec):
-    """追加一条记录到 jsonl（文件不存在则创建，目录自动建）。"""
+    """追加一条记录到 jsonl（文件不存在则创建，目录自动建）。
+
+    每条记录写入前打上 schema_version 标记（setdefault：调用方未显式指定时补 v2），
+    使历史记录可按版本识别；旧记录无此字段，读取方 .get() 容错。
+    """
     d = os.path.dirname(jsonl_path)
     if d:
         os.makedirs(d, exist_ok=True)
+    rec.setdefault("schema_version", SCHEMA_VERSION)
     with open(jsonl_path, "a", encoding="utf-8") as f:
         f.write(json.dumps(rec, ensure_ascii=False) + "\n")
 

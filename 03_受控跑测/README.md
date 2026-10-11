@@ -31,6 +31,7 @@
 
 | 字段 | 含义 |
 |---|---|
+| `schema_version` | 记录 schema 版本（当前 2；旧记录无此字段，读取方 `.get()` 容错，见 `data-dictionary.md`） |
 | `ts` | 本地时间（`%Y-%m-%d %H:%M:%S`） |
 | `seed` | 实际种子：run_combos 取 `build_prompt.SEED`（1111119）；run_models 取扁平化结果 KSampler 的运行时值 |
 | `steps` / `cfg` | 单模型矩阵取固定值（25/1）；跨模型取扁平化 KSampler 运行时值（custom 链路读不到 → `null`） |
@@ -38,6 +39,25 @@
 | `comfy` | ComfyUI 版本（`/system_stats`；服务未启动 → `null`，不阻塞跑测） |
 
 > 目的（评估报告 P1-1/P1-2）：旧实现每次 `json.dump` 全量覆写，单模型补跑会把完整日志冲掉（07 样例中 `model_test_log.json` 曾只剩 3 条失败记录）；v2 保证三个月后可按日志重建当时的参数与环境全貌。
+> 字段权威字典与 schema 版本纪律见同目录 **[`data-dictionary.md`](data-dictionary.md)**（2026-10-11 数据治理 R2 P1 建立）。
+
+---
+
+## 参数集基线（v1，2026-10-11 登记，数据治理 R2 P1）
+
+跑测输入参数集在脚本中以常量登记（未抽为独立文件，先以本表固化当前基线，后续改动按此版本化）：
+
+| 参数集 | 位置 | 内容（2026-10-11 时点） |
+|---|---|---|
+| 固定提示词 | `unify_prompt_seed.py`（写入各工作流） | 818 字符受控提示词；krea2_turbo 输入名 `value` + `seed_1`，且 `value_1`（prompt_enhance）须为 `False` |
+| 固定种子 | `run_models.py` `FIXED_SEED` | `1111119`（run_combos 用 `build_prompt.SEED` 同值） |
+| 跨模型 PLAN | `run_models.py` `PLAN` / `PLAN_CUSTOM` | Z_image_turbo_8step / krea2_turbo_8step / Z_image_25step / Qwen_image_2512_50step（KSampler 轨）+ flux1dev_20step / Flux2Klein_4step（custom 轨）；steps/cfg 取各工作流运行时值 |
+| 单模型矩阵 | `run_combos.py` | euler+simple 等 17 组；steps 25 / cfg 1（Qwen-Image 2.1 基线） |
+| cfg 探针 | `cfg_probe.py` `CASES` | cfg∈{1,2,4} × 负向∈{空,实际} 共 5 组；其余保持工作流原值（euler+simple / 25 步 / 种子 1111119）——**探针刻意偏离基线**，结论仅用于 cfg×负向交互，不并入采样器结论 |
+
+**与 10_模型家族横评 的参数口径**（同名参数必须一致，防止口径打架）：
+- `krea2_turbo` cfg：本表与 `10_模型家族横评/family_config.json`（cfg=1.0）、`06_文档与结论`（官方原值 1）一致；**05 权威值表曾误记 cfg=4，已修正**（见 05 README 采样参数权威值表复核注）。
+- 修改任一参数集：同步更新本表「内容」列并递增「基线版本」（v1→v2…），记录修改日期与理由；跨轨参数（cfg/steps/sampler/scheduler）变更须同时核对 `10_模型家族横评/family_config.json` 与 `06_文档与结论`。
 
 ## 要改的常量
 - `run_models.py`：`COMFY`（服务地址）、`BASE`/`OUT`/`WF`/`CF_OUT`（路径）、`PLAN`（KSampler 路线）与 `PLAN_CUSTOM`（SamplerCustomAdvanced 路线，如 flux.1-dev 的 `KSamplerSelect`+`BasicScheduler`、Flux.2 Klein 的 `KSamplerSelect`+`Flux2Scheduler`）。

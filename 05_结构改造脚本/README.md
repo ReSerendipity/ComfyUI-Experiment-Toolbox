@@ -81,8 +81,10 @@
 | FLUX-2-klein-9b（base） | 20+ | 1 | euler | 官方专用 |
 | FLUX-2-klein-9b（distilled） | 4 | 1 | euler | Flux2Scheduler 官方调度 |
 | Z-image | 25 | 4 | euler | res_multistep |
-| Krea2-turbo | 8 | 4 | euler | simple |
+| Krea2-turbo | 8 | 1 | euler | simple |
 
+> **2026-10-11 复核（数据治理 R2 P0）**：`Krea2-turbo` 的 CFG 曾误记为 4，经官方模板 `image_krea2_turbo_t2i.json` 的 KSampler `widgets_values` 实测为 `[…, 8, 1, 'euler', 'simple', 1]` → **CFG=1**（8 步 / euler / simple），与 `06_文档与结论/采样器和调度器的组合推荐.md`（§第一/二节 cfg=1 官方原值）及 `10_模型家族横评`（`family_config.json` krea2 cfg=1.0、`docs/参数基线与验证流程.md` cfg 1.0）口径一致。此前 05 表 cfg=4 为错误口径，已修正。
+>
 > 详细清单与证据链见 `../06_文档与结论/采样器和调度器的组合推荐.md`。
 
 ---

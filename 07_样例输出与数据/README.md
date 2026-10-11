@@ -33,3 +33,19 @@
 | kl_optimal 只在 ≤8 步模型上明显发糊 | Z_image_turbo 对比度 −44%、krea2_turbo 锐度 −33% |
 | 基线组彼此高度一致（说明固定提示词与种子生效） | `similarity.json` / 拼版图 |
 | Flux.2 Klein 换采样器几乎无差别且都干净 | 拼版图最上方三张 |
+
+## 血缘清单（数据 ↔ 来源 ↔ 引用，2026-10-11 数据治理 R2 P1 建立）
+
+本表是 07 样例数据的可追溯链：每个数据文件 → 生成脚本 → 上游输入 → 下游引用。改动生成脚本或数据文件时同步维护本表（与 `03_受控跑测/data-dictionary.md` 的字段字典互为补充）。
+
+| 数据文件 | 生成脚本（来源） | 上游输入 | 下游引用 |
+|---|---|---|---|
+| `result_log.json` | `03_受控跑测/run_combos.py`（v2 起由 append-only JSONL 重建） | 03 跑测（Qwen-Image 2.1 工作流 + 17 组合） | 04 `focus_sheet.py` 相似度；06 组合推荐文档（实测组） |
+| `model_test_log.json` | `03_受控跑测/run_models.py` | 03 跨模型跑测（多模型 × 组合） | 07 本表「从数据里能直接读到的结论」；06 跨模型 σ 矩阵 |
+| `cfg_probe_log.json` | `03_受控跑测/cfg_probe.py` | cfg×负向探针（cfg∈{1,2,4}） | 06 组合推荐文档 §6.6（CFG 与负向提示词核查） |
+| `metrics.json` | `04_结果分析/metrics.py` | 04 读取外部输出目录（`ss_test/output/`） | 07 单模型指标表；04 README 指标定义 |
+| `model_metrics.json` | `04_结果分析/analyze_models.py` | 04 读取外部输出目录（`output_models/`） | 06/07 跨模型结论 |
+| `similarity.json` | `04_结果分析/focus_sheet.py` | 04 选取关键组大图 | 06「多组合等价」论证；07「基线组高度一致」 |
+| 拼版 PNG（跨模型对比/19 组/聚焦对照） | 04 三个脚本 | 上述 json 同源 | 06 报告头图；07 快速判读 |
+
+> 维护提示：① 03 跑测脚本改输出字段 → 同步 `data-dictionary.md` + 本表；② 04 脚本改指标/文件 → 同步 `04_结果分析/README.md` 指标定义 + 本表；③ 外部输出目录（`%USERPROFILE%\WorkBuddy\...`）为一次性运行产物，本表数据文件是其仓库内审计副本（见上方「图片目录不在本包内」）。
