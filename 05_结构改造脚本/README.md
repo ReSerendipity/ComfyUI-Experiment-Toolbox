@@ -190,3 +190,18 @@ LoadImage → ImageScaleToTotalPixels(缩放图像像素) → VAEEncode(VAE编�
 python gen_workflows_manifest.py --root "%USERPROFILE%\APP\ComfyUI-aki-v3.2\ComfyUI\user\default\workflows" ^
   --templates "%USERPROFILE%\APP\ComfyUI-aki-v3.2\python\Lib\site-packages\comfyui_workflow_templates_json\templates"
 ```
+
+#### 漂移检测与再生成（2026-10-11 数据治理 R2 P2 补充）
+
+清单由脚本**手动生成**（未接入 CI/钩子），外部原件变更后不会自动更新 → 存在快照漂移风险。维护纪律：
+
+1. **触发再生成的时机**：更新/新增外部工作流原件（`ComfyUI\user\default\workflows\`）后；官方模板目录升级后（`source_template`/`source_md5` 可能变化）。
+2. **漂移检测命令**（先备份 → 重跑 → fc 对比，产出为 0 即无漂移）：
+   ```bat
+   copy workflows_manifest.json workflows_manifest.prev.json
+   python gen_workflows_manifest.py --root ... --templates ...
+   fc /B workflows_manifest.prev.json workflows_manifest.json
+   del workflows_manifest.prev.json
+   ```
+3. **审查要点**：`mtime`/`md5` 变化说明原件被改动；`source_md5` 变化说明官方模板升级；`backups` 新增说明出现新备份。确认无异常后覆盖 `workflows_manifest.json` 并提交。
+4. **只读纪律**：本脚本只读外部原件与模板，绝不写入 ComfyUI 目录（见上）。
