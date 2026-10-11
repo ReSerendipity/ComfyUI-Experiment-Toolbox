@@ -3,15 +3,21 @@
 跨模型统一变量跑测：验证第八节的 σ 预测。
 固定：提示词（818 字符，已写入各工作流）+ 种子 1111119 + 各模型自身 steps / cfg / 分辨率。
 变量：只切换采样器与调度器。
+日志（v2，2026-10-11）：append-only JSONL（唯一事实源）+ 合并视图 JSON（由 jsonl 重建），
+每条记录含 seed/steps/cfg/时间戳/解释器与 ComfyUI 版本，见 logutil.py。
 """
-import json, os, sys, time, shutil, urllib.request, urllib.error
+import json, os, platform, sys, time, shutil, urllib.request, urllib.error
 import flatten
+from logutil import append_record, migrate_legacy, rebuild_consolidated
 
 COMFY = "http://127.0.0.1:8188"
-BASE = r"%USERPROFILE%\WorkBuddy\2026-09-22-23-53-24\ss_test"
+BASE = os.path.expandvars(r"%USERPROFILE%\WorkBuddy\2026-09-22-23-53-24\ss_test")
 OUT = os.path.join(BASE, "output_models")
-WF = r"%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image"
-CF_OUT = r"%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\output"
+WF = os.path.expandvars(r"%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image")
+CF_OUT = os.path.expandvars(r"%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\output")
+LOG_JSON = os.path.join(BASE, "model_test_log.json")    # 合并视图（由 jsonl 重建）
+LOG_JSONL = os.path.join(BASE, "model_test_log.jsonl")  # 追加式原始日志（唯一事实源）
+FIXED_SEED = 1111119
 os.makedirs(OUT, exist_ok=True)
 
 PROMPT = None  # 运行时从 2.1 工作流读
@@ -184,14 +190,35 @@ def run_one(label, path, overrides, prefix):
     return api
 
 
+def _env_snapshot():
+    """记录解释器版本与 ComfyUI 版本（服务不可达时 comfy=None，不阻塞跑测）。"""
+    ver = None
+    try:
+        with urllib.request.urlopen(COMFY + "/system_stats", timeout=5) as r:
+            ver = (json.loads(r.read().decode()).get("system") or {}).get("comfyui_version")
+    except Exception:
+        pass
+    return {"py": platform.python_version(), "comfy": ver}
+
+
+def _ksampler_params(api):
+    """从扁平化结果读 KSampler 运行时 steps/cfg/seed；custom 链路读不到 → None。"""
+    for v in api.values():
+        if v.get("class_type") == "KSampler":
+            inp = v.get("inputs", {})
+            return {"steps": inp.get("steps"), "cfg": inp.get("cfg"), "seed": inp.get("seed")}
+    return {"steps": None, "cfg": None, "seed": None}
+
+
 def main():
     global PROMPT
     src = json.load(open(os.path.join(WF, "Qwen_image_2_1_t2i.json"), encoding="utf-8"))
     c = [n for n in src["nodes"] if isinstance(n.get("type"), str) and "-" in n["type"] and len(n["type"]) > 30][0]
     PROMPT = c["widgets_values_named"]["prompt"]
-    print("统一提示词 %d 字符 / 种子 1111119\n" % len(PROMPT))
+    print("统一提示词 %d 字符 / 种子 %s\n" % (len(PROMPT), FIXED_SEED))
 
-    log = []
+    migrate_legacy(LOG_JSON, LOG_JSONL, key=lambda r: (r.get("model"), r.get("combo")))
+    env = _env_snapshot()
     tasks = [(l, f, "ks", combos) for l, f, _, combos in PLAN] + \
             [(l, f, "custom", combos) for l, f, combos in PLAN_CUSTOM]
     only = os.environ.get("ONLY")
@@ -208,14 +235,21 @@ def main():
                 api = run_one(label, os.path.join(WF, fname), ov, prefix)
             except Exception as e:
                 print("   扁平化失败:", e, flush=True)
-                log.append({"model": label, "combo": cname, "ok": False, "error": "flatten: %s" % e})
+                append_record(LOG_JSONL, {"model": label, "combo": cname, "ok": False, "error": "flatten: %s" % e,
+                            "sec": 0, "files": [], "ts": time.strftime("%Y-%m-%d %H:%M:%S"),
+                            "seed": FIXED_SEED, "steps": None, "cfg": None,
+                            "py": env["py"], "comfy": env["comfy"]})
+                rebuild_consolidated(LOG_JSON, LOG_JSONL, key=lambda r: (r.get("model"), r.get("combo")))
                 continue
+            p = _ksampler_params(api)
             res, err = post("/prompt", {"prompt": api})
             if err:
                 print("   提交失败:", err[:400], flush=True)
-                log = [x for x in log if not (x.get("model") == label and x.get("combo") == cname)]
-                log.append({"model": label, "combo": cname, "ok": False, "error": err[:600], "sec": 0})
-                json.dump(log, open(os.path.join(BASE, "model_test_log.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+                append_record(LOG_JSONL, {"model": label, "combo": cname, "ok": False, "error": err[:600],
+                            "sec": 0, "files": [], "ts": time.strftime("%Y-%m-%d %H:%M:%S"),
+                            "seed": p["seed"], "steps": p["steps"], "cfg": p["cfg"],
+                            "py": env["py"], "comfy": env["comfy"]})
+                rebuild_consolidated(LOG_JSON, LOG_JSONL, key=lambda r: (r.get("model"), r.get("combo")))
                 continue
             ok, outs, werr = wait(res["prompt_id"])
             dt = round(time.time() - t0, 1)
@@ -227,12 +261,14 @@ def main():
             print(f"   -> {'OK' if ok else 'FAIL'} {dt}s  {len(dest)} 张", flush=True)
             if not ok:
                 print("   ", str(werr)[:300], flush=True)
-            log = [x for x in log if not (x.get("model") == label and x.get("combo") == cname)]
-            log.append({"model": label, "combo": cname, "ok": bool(ok) and bool(dest),
-                        "sec": dt, "files": dest, "error": None if ok else str(werr)[:600]})
-            json.dump(log, open(os.path.join(BASE, "model_test_log.json"), "w", encoding="utf-8"),
-                      ensure_ascii=False, indent=1)
-    print("\n完成：成功 %d / %d" % (sum(1 for x in log if x["ok"]), len(log)))
+            append_record(LOG_JSONL, {"model": label, "combo": cname, "ok": bool(ok) and bool(dest),
+                        "sec": dt, "files": dest, "error": None if ok else str(werr)[:600],
+                        "ts": time.strftime("%Y-%m-%d %H:%M:%S"),
+                        "seed": p["seed"], "steps": p["steps"], "cfg": p["cfg"],
+                        "py": env["py"], "comfy": env["comfy"]})
+            rebuild_consolidated(LOG_JSON, LOG_JSONL, key=lambda r: (r.get("model"), r.get("combo")))
+    cons = rebuild_consolidated(LOG_JSON, LOG_JSONL, key=lambda r: (r.get("model"), r.get("combo")))
+    print("\n完成：成功 %d / %d" % (sum(1 for x in cons if x["ok"]), len(cons)))
 
 
 if __name__ == "__main__":

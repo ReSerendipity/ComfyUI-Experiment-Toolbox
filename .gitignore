@@ -19,6 +19,9 @@ env/
 *.tmp
 *.swp
 
+# 03 受控跑测 v2：增量日志为 append-only *.jsonl（不覆写历史，见 03_受控跑测/README.md）。
+# *.jsonl 不在忽略列表（白名单）：日志副本如需入库，显式 git add 对应路径即可；*.log 仍忽略。
+
 # Web 面板跑测产物（拼版图 / 单图，可复现，见 09_Web面板/README.md）
 09_Web面板/output/
 

@@ -3,15 +3,21 @@
 Qwen_image_2_1_t2i 采样器 × 调度器组合对比测试
 固定：seed=1111119 / steps=25 / cfg=1 / 1024x1024 / 提示词（全部取自工作流原值，不修改）
 仅切换 KSampler 的 sampler_name 与 scheduler。
+日志（v2，2026-10-11）：append-only JSONL（唯一事实源）+ 合并视图 JSON（由 jsonl 重建），
+每条记录含 seed/steps/cfg/时间戳/解释器与 ComfyUI 版本，见 logutil.py。
 """
-import json, os, time, shutil, sys, urllib.request, urllib.error
+import json, os, platform, time, shutil, sys, urllib.request, urllib.error
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from build_prompt import build, PROMPT, SEED, STEPS, CFG, W, H
+from logutil import append_record, migrate_legacy, rebuild_consolidated
 
 COMFY = "http://127.0.0.1:8188"
-OUT = r"%USERPROFILE%\WorkBuddy\2026-09-22-23-53-24\ss_test\output"
-CF_OUT = r"%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\output"
+BASE = os.path.expandvars(r"%USERPROFILE%\WorkBuddy\2026-09-22-23-53-24\ss_test")
+OUT = os.path.join(BASE, "output")
+CF_OUT = os.path.expandvars(r"%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\output")
+LOG_JSON = os.path.join(BASE, "result_log.json")    # 合并视图（由 jsonl 重建）
+LOG_JSONL = os.path.join(BASE, "result_log.jsonl")  # 追加式原始日志（唯一事实源）
 os.makedirs(OUT, exist_ok=True)
 
 COMBOS = [
@@ -79,13 +85,24 @@ def collect(prefix):
                   if f.startswith(base) and f.lower().endswith(".png"))
 
 
+def _env_snapshot():
+    """记录解释器版本与 ComfyUI 版本（服务不可达时 comfy=None，不阻塞跑测）。"""
+    ver = None
+    try:
+        with urllib.request.urlopen(COMFY + "/system_stats", timeout=5) as r:
+            ver = (json.loads(r.read().decode()).get("system") or {}).get("comfyui_version")
+    except Exception:
+        pass
+    return {"py": platform.python_version(), "comfy": ver}
+
+
 def main():
     combos = COMBOS
     frm = os.environ.get("FROM")
     if frm:
         combos = [c for c in COMBOS if c[0] >= frm]
-    log = json.load(open(r"%USERPROFILE%\WorkBuddy\2026-09-22-23-53-24\ss_test\result_log.json", encoding="utf-8")) \
-        if os.path.exists(r"%USERPROFILE%\WorkBuddy\2026-09-22-23-53-24\ss_test\result_log.json") else []
+    migrate_legacy(LOG_JSON, LOG_JSONL, key=lambda r: r.get("label"))
+    env = _env_snapshot()
     total = len(combos)
     for i, (label, samp, sched, note) in enumerate(combos, 1):
         prefix = f"ss_test/{label}"
@@ -96,8 +113,11 @@ def main():
         res, err = post("/prompt", {"prompt": p})
         if err:
             print("   提交失败:", err[:500], flush=True)
-            log.append({"label": label, "sampler": samp, "scheduler": sched, "note": note,
-                        "ok": False, "error": err[:800], "sec": 0, "files": []})
+            append_record(LOG_JSONL, {"label": label, "sampler": samp, "scheduler": sched, "note": note,
+                        "ok": False, "error": err[:800], "sec": 0, "files": [],
+                        "ts": time.strftime("%Y-%m-%d %H:%M:%S"), "seed": SEED, "steps": STEPS, "cfg": CFG,
+                        "py": env["py"], "comfy": env["comfy"]})
+            rebuild_consolidated(LOG_JSON, LOG_JSONL, key=lambda r: r.get("label"))
             continue
         pid = res["prompt_id"]
         ok, outs, werr = wait(pid)
@@ -115,12 +135,14 @@ def main():
         print(f"   -> {'OK' if ok else 'FAIL'} {dt}s, 图片 {len(dest)} 张", flush=True)
         if not ok:
             print("   错误:", str(werr)[:500], flush=True)
-        log.append({"label": label, "sampler": samp, "scheduler": sched, "note": note,
+        append_record(LOG_JSONL, {"label": label, "sampler": samp, "scheduler": sched, "note": note,
                     "ok": bool(ok) and bool(dest), "sec": dt, "files": [os.path.basename(x) for x in dest],
-                    "error": None if ok else str(werr)[:800]})
-        json.dump(log, open(r"%USERPROFILE%\WorkBuddy\2026-09-22-23-53-24\ss_test\result_log.json", "w", encoding="utf-8"),
-                  ensure_ascii=False, indent=1)
-    print("\n完成：成功 %d / 共 %d" % (sum(1 for x in log if x["ok"]), total))
+                    "error": None if ok else str(werr)[:800],
+                    "ts": time.strftime("%Y-%m-%d %H:%M:%S"), "seed": SEED, "steps": STEPS, "cfg": CFG,
+                    "py": env["py"], "comfy": env["comfy"]})
+        rebuild_consolidated(LOG_JSON, LOG_JSONL, key=lambda r: r.get("label"))
+    cons = rebuild_consolidated(LOG_JSON, LOG_JSONL, key=lambda r: r.get("label"))
+    print("\n完成：成功 %d / 共 %d" % (sum(1 for x in cons if x["ok"]), total))
 
 
 if __name__ == "__main__":

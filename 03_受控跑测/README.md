@@ -15,10 +15,29 @@
 | 文件 | 功能 | 使用方式 | 适用场景 |
 |---|---|---|---|
 | **`unify_prompt_seed.py`** ★ | 把「源工作流」的提示词与种子统一写入其它工作流的容器控件（`widgets_values` 与 `widgets_values_named` **双写**），改前逐个备份为 `.bak-<时间戳>` | `python unify_prompt_seed.py`（dry-run 清单）<br>`python unify_prompt_seed.py --apply`（真正写盘） | 做跨模型/跨工作流对比前，**先把提示词与种子变成常量** |
-| **`run_models.py`** ★ | 跨模型统一变量跑测：按 `PLAN` 表逐组扁平化 → 提交 → 等完成 → 复制输出，写日志 | `python run_models.py`<br>`ONLY=<模型标签> python run_models.py`（只跑一个模型，可断点补跑） | 采样器/调度器等横向对比，多模型 |
-| `run_combos.py` | 单模型的「采样器 × 调度器」矩阵跑测 + 客观指标 | `python run_combos.py`<br>`FROM=<组合名> python run_combos.py`（断点续跑） | 只测一个模型、组合多 |
+| **`run_models.py`** ★ | 跨模型统一变量跑测：按 `PLAN` 表逐组扁平化 → 提交 → 等完成 → 复制输出，写日志（v2：append-only JSONL + 合并视图） | `python run_models.py`<br>`ONLY=<模型标签> python run_models.py`（只跑一个模型，可断点补跑） | 采样器/调度器等横向对比，多模型 |
+| `run_combos.py` | 单模型的「采样器 × 调度器」矩阵跑测 + 客观指标（v2：append-only JSONL + 合并视图） | `python run_combos.py`<br>`FROM=<组合名> python run_combos.py`（断点续跑） | 只测一个模型、组合多 |
 | `probe.py` | **补充验证**：只针对 1~2 个用例，临时改动**另一个维度**（如 steps 25→50）来定位根因 | `python probe.py` | 出现"整组都异常"时，判定是调度器本身的问题还是步数不足 |
 | `cfg_probe.py` | cfg × 负向提示词 探针（cfg∈{1,2,4} × 负向∈{空,有}） | `python cfg_probe.py` | 验证 cfg 与负向提示词的相互作用 |
+
+## 日志格式（v2，2026-10-11）
+
+`run_models.py` / `run_combos.py` 的跑测日志改为**双文件**（见 `logutil.py`）：
+
+- `<BASE>\*.jsonl` —— **追加式原始日志（唯一事实源）**：每条记录 append 一行，**永不覆写**，补跑/续跑只会新增记录，历史不再丢失；
+- `<BASE>\*.json` —— **合并视图**（`result_log.json` / `model_test_log.json`）：由 jsonl 重建，按 `(模型,组合)`（或组合名）取**最新一条**，保持旧读取方兼容；旧版合并视图会自动迁入 jsonl（`migrate_legacy`）。
+
+每条记录除业务字段（`label/model/combo/sampler/scheduler/ok/sec/files/error`）外，新增实验参数与环境快照字段：
+
+| 字段 | 含义 |
+|---|---|
+| `ts` | 本地时间（`%Y-%m-%d %H:%M:%S`） |
+| `seed` | 实际种子：run_combos 取 `build_prompt.SEED`（1111119）；run_models 取扁平化结果 KSampler 的运行时值 |
+| `steps` / `cfg` | 单模型矩阵取固定值（25/1）；跨模型取扁平化 KSampler 运行时值（custom 链路读不到 → `null`） |
+| `py` | 解释器版本（`platform.python_version()`） |
+| `comfy` | ComfyUI 版本（`/system_stats`；服务未启动 → `null`，不阻塞跑测） |
+
+> 目的（评估报告 P1-1/P1-2）：旧实现每次 `json.dump` 全量覆写，单模型补跑会把完整日志冲掉（07 样例中 `model_test_log.json` 曾只剩 3 条失败记录）；v2 保证三个月后可按日志重建当时的参数与环境全貌。
 
 ## 要改的常量
 - `run_models.py`：`COMFY`（服务地址）、`BASE`/`OUT`/`WF`/`CF_OUT`（路径）、`PLAN`（KSampler 路线）与 `PLAN_CUSTOM`（SamplerCustomAdvanced 路线，如 flux.1-dev 的 `KSamplerSelect`+`BasicScheduler`、Flux.2 Klein 的 `KSamplerSelect`+`Flux2Scheduler`）。
@@ -29,6 +48,6 @@
 ## 使用注意
 - **先提交单组校验**：`POST /prompt` 返回的 `node_errors` 为空才继续，别一次性把 20 组都排进去。
 - 连续提交即可，ComfyUI 自带队列，不必等前一组结束。
-- 跑测期间日志会被脚本反复覆写（`json.dump` 全量重写），**补跑单模型时注意别把完整日志冲掉** —— 本包提供的 `04_结果分析/analyze_models.py` 已改成**直接从输出目录重建清单**，不依赖日志。
+- 跑测日志为 **append-only JSONL + 合并视图**（v2，见上方「日志格式」）：`*.jsonl` 永不覆写，`*.json` 由 jsonl 重建，**补跑单模型不会再冲掉历史**。`04_结果分析/analyze_models.py` 依旧直接从输出目录重建清单，不依赖日志。
 - 耗时参考（1024²，RTX 5070 Ti Laptop）：8 步约 15~33s，20 步约 40~50s，25 步约 80~90s，50 步约 130~220s；首个任务含模型加载会多几十秒。
 - **采样器耗时差异可达 2 倍**（二阶及以上每步多次模型评估）。
