@@ -5,9 +5,10 @@
 （即子图 output slot 0，也就是顶层 SaveImageAdvanced 实际接收的那一路），
 以便只测试采样器/调度器组合，不触发工作流里挂着的 SeedVR2 放大分支。
 """
+import os
 import json
 
-WF = r"%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image\Qwen_image_2_1_t2i.json"
+WF = os.path.expandvars(r"%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image\Qwen_image_2_1_t2i.json")
 ID_OFFSET = 1000
 
 w = json.load(open(WF, encoding="utf-8"))

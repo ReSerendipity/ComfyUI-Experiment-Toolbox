@@ -13,7 +13,7 @@ import os
 import shutil
 import copy
 
-D = r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image'
+D = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image')
 SRC = os.path.join(D, 'Qwen_image_2_1_t2i.json')
 
 # 各工作流: 文件名 -> (主节点id, width输入索引, height输入索引)

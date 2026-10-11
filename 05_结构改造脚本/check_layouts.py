@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 """查看 8 个工作流顶层布局（主节点/RS/Save 的 pos/size/type）"""
+
 import json, os
 
-D = r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image'
+D = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image')
 FILES = ['Qwen_image_2_1_t2i.json', 'krea2_turbo.json',
          'Flux.2_Klein-9B-Distilled.json', 'Qwen_image.json', 'Qwen_image_2512.json',
          'Z_image.json', 'Z_image_turbo.json', 'flux.1-dev.json']

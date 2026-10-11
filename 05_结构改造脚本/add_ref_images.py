@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 """Qwen 2.1 加到10张, Qwen 2511 补到3张"""
+
 import json, os
 
-E = r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Edit'
+E = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Edit')
 
 def load(p):
     raw = open(p, encoding='utf-8').read()

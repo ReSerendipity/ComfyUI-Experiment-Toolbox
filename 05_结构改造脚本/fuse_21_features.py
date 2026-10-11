@@ -10,9 +10,10 @@ A. Qwen_image_2_1_t2i.json（2.1 官方模板）融合 6 个自定义工作流�
    - 顶层 SaveImageAdvanced 连主节点输出0（原图）
 B. 6 个自定义工作流：SeedVR2 超分节点全部设为静止(mode=4)，顶层保存节点改连原图输出(输出1)
 """
+
 import json, os, uuid, shutil
 
-D = r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image'
+D = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image')
 
 CUSTOM = ['Flux.2_Klein-9B-Distilled.json', 'Qwen_image.json', 'Qwen_image_2512.json',
           'Z_image.json', 'Z_image_turbo.json', 'flux.1-dev.json']

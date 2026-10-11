@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
+
 import json, os
-T = r'%USERPROFILE%\APP\ComfyUI-aki-v3\python\Lib\site-packages\comfyui_workflow_templates_json\templates'
+T = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\python\Lib\site-packages\comfyui_workflow_templates_json\templates')
 OFFICIAL = {
     'Qwen 2.1 edit': 'image_qwen_image_2_1_image_edit.json',
     'Qwen edit 2511': 'image_qwen_image_edit_2511.json',

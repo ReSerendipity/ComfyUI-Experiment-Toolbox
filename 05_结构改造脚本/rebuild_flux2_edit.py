@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 """Flux.2 edit 重新从官方模板复制，保留2张LoadImage，再清理"""
+
 import json, os, shutil
-T = r'%USERPROFILE%\APP\ComfyUI-aki-v3\python\Lib\site-packages\comfyui_workflow_templates_json\templates'
-E = r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Edit'
+T = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\python\Lib\site-packages\comfyui_workflow_templates_json\templates')
+E = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Edit')
 
 # 重新复制
 shutil.copy2(os.path.join(T,'image_flux2_klein_image_edit_9b_distilled.json'),

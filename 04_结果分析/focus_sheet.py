@@ -4,7 +4,7 @@ import os, glob, json
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 
-BASE = r"%USERPROFILE%\WorkBuddy\2026-09-22-23-53-24\ss_test"
+BASE = os.path.expandvars(r"%USERPROFILE%\WorkBuddy\2026-09-22-23-53-24\ss_test")
 OUT = os.path.join(BASE, "output")
 
 

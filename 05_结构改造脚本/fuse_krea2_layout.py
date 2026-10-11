@@ -6,9 +6,10 @@ A. krea2_turbo.json（K2）融合：5 个 LoRA 插槽(补成 6 个)、BatchPromp
 B. 2.1 删 2 个 MarkdownNote 注释
 C. 8 个工作流顶层布局统一：主节点 (0,0)、RS (-380,310)、Save (330,-10)、尺寸统一
 """
+
 import json, os, uuid, shutil
 
-D = r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image'
+D = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image')
 
 MAIN_POS = [0, 0]
 RS_POS = [-380, 310]

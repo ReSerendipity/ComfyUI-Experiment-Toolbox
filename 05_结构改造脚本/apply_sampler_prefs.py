@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 """按推荐修改 8 个工作流采样参数：全量模式最低标准"""
+
 import json, os, shutil
 
-D = r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image'
+D = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image')
 BAK = os.path.join(D, '新建文件夹')
 
 FILES = ['Qwen_image_2_1_t2i.json', 'krea2_turbo.json',

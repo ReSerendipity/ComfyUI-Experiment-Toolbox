@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 """编辑类工作流基础清理：备份、清空提示词、删 MarkdownNote、模型名对正、布局统一"""
+
 import json, os, shutil
-E = r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Edit'
-BAK = r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image\新建文件夹'
+E = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Edit')
+BAK = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image\新建文件夹')
 os.makedirs(BAK, exist_ok=True)
 
 def load(fn):

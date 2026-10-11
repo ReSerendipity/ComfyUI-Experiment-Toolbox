@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 """Flux.2 子图1 加 6 张参考图 (image_2 ~ image_7), 凑满 8 张"""
+
 import json, os, uuid, copy
 
-E = r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Edit'
+E = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Edit')
 p = os.path.join(E, 'flux2_klein_edit.json')
 raw = open(p, encoding='utf-8').read()
 indent = 2 if '\n  ' in raw else None

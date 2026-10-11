@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 """修正 Z_image.json：从误改的 8步/turbo 改回原生全量最低标准"""
+
 import json, os
-D = r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image'
+D = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image')
 fn = 'Z_image.json'
 raw = open(os.path.join(D, fn), encoding='utf-8').read()
 indent = 2 if '\n  ' in raw else None

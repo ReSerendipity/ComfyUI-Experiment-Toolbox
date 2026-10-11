@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 """编辑类清理：删对比/注释/多余组、SaveImage→Advanced、布局统一"""
+
 import json, os
-E = r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Edit'
+E = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Edit')
 
 def load(fn):
     raw = open(os.path.join(E, fn), encoding='utf-8').read()

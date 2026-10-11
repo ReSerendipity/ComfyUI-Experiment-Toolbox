@@ -13,6 +13,7 @@
   4. mode==4 = bypass：删除该节点，其下游接到其上游
   5. 只保留从 Save*/Preview* 反向可达的节点
 """
+import os
 import json
 
 
@@ -237,7 +238,7 @@ def flatten(path, overrides=None):
 if __name__ == "__main__":
     import sys
     p = sys.argv[1] if len(sys.argv) > 1 else \
-        r"%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image\Z_image_turbo.json"
+        os.path.expandvars(r"%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image\Z_image_turbo.json")
     api, _ = flatten(p)
     print("节点数:", len(api))
     for k, v in api.items():

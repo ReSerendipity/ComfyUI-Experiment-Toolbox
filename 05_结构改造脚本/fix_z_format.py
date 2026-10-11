@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 """修复 Z_image.json 写入格式：恢复带空格分隔、缩进格式（与 step3.bak 原格式一致）"""
+import os
 import json
 
-D = r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image'
+D = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image')
 fn = 'Z_image.json'
 p = D + '\\' + fn
 bak = D + '\\Z_image.step3.bak'

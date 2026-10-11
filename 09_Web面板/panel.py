@@ -15,6 +15,7 @@ ComfyUI 实验与改造工具箱 · Web 面板（参数轨）
   ③ 受控跑测   —— flatten + /prompt 提交，固定提示词与种子
   ④ 结果分析   —— metrics.py 指标 + 拼版 + 相似度
 """
+
 import json, os, re, sys, time, threading, shutil, subprocess, webbrowser, urllib.request, urllib.error
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
@@ -24,7 +25,7 @@ TOOLBOX     = os.path.dirname(PANEL_DIR)
 sys.path.insert(0, os.path.join(TOOLBOX, "01_工作流扁平化"))
 import flatten as flatten_mod          # noqa: E402
 
-COMFY_ROOT = r"%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI"
+COMFY_ROOT = os.path.expandvars(r"%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI")
 COMFY_URL  = "http://127.0.0.1:8188"
 WF_DIR     = os.path.join(COMFY_ROOT, "user", "default", "workflows", "Image")
 CF_OUT     = os.path.join(COMFY_ROOT, "output")

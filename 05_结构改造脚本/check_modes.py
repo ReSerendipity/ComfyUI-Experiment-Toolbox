@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 """检查 6 个自定义工作流子图中 LoRA / SeedVR2 / RVS 节点的 mode"""
+
 import json, os
 
-d = r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image'
+d = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image')
 files = ['Flux.2_Klein-9B-Distilled.json', 'Qwen_image.json', 'Qwen_image_2512.json',
          'Z_image.json', 'Z_image_turbo.json', 'flux.1-dev.json']
 for fn in files:

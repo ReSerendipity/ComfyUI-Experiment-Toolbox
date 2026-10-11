@@ -5,6 +5,7 @@ CFG 探针：验证「没有负向提示词时，把 CFG 调大于 1 有没有�
 （euler+simple / steps 25 / seed 1111119 / 1024²），仅 cfg 与 negative_prompt 变化。
 同时记录耗时，用于验证 cfg>1 会启用 uncond 分支（每步多一次前向）。
 """
+
 import json, os, sys, time, shutil, urllib.request, urllib.error
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from build_prompt import build
@@ -42,7 +43,7 @@ def main():
         print(f"   -> {'OK' if ok else 'FAIL'} {dt}s  {len(files)} 张", flush=True)
         log.append({"label": label, "cfg": cfg, "neg": "有" if neg else "空", "note": note,
                     "ok": ok, "sec": dt, "files": [os.path.basename(x) for x in files]})
-    json.dump(log, open(r"%USERPROFILE%\WorkBuddy\2026-09-22-23-53-24\ss_test\cfg_probe_log.json", "w", encoding="utf-8"),
+    json.dump(log, open(os.path.expandvars(r"%USERPROFILE%\WorkBuddy\2026-09-22-23-53-24\ss_test\cfg_probe_log.json"), "w", encoding="utf-8"),
               ensure_ascii=False, indent=1)
     print("\n完成:", sum(1 for x in log if x["ok"]), "/", len(CASES))
 

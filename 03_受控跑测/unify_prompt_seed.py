@@ -11,9 +11,10 @@
       且默认开启 LLM 提示词增强（`value_1` / prompt_enhance = True）——
       增强会把提示词改写掉，破坏单一变量，因此一并关掉（其余参数不动）。
 """
+
 import json, os, sys, shutil, time
 
-WF = r"%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows"
+WF = os.path.expandvars(r"%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows")
 SRC = os.path.join(WF, "Image", "Qwen_image_2_1_t2i.json")
 
 # rel_path: (prompt_input_name, seed_input_name, extra_overrides{name: value})
