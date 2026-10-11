@@ -6,13 +6,18 @@
   - 新链接 slot 按 iface_order 动态计算（不硬编码）
   - 预处理：修复上一轮 RS 顶层链接 id 与子图内部链接 id 冲突
   - 最后统一 subgraph state.lastLinkId = 顶层 last_link_id
+v3（2026-10-11，评估报告 P2-3）：
+  - 开工前强制备份到 Image 目录的『新建文件夹』（*.upgrade.bak-<时间戳>）
+  - 幂等守卫：子图接口已含 scheduler_1 且顶层已有 SaveImageAdvanced → 判定已应用并跳过
 """
 import json
 import os
 import shutil
+import time
 import uuid
 
-D = r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image'
+D = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image')
+BAK = os.path.join(D, '新建文件夹')
 
 CONFIG = {
     'Flux.2_Klein-9B-Distilled.json': {
@@ -154,11 +159,26 @@ def new_iface(name, ltype, link_ids, pos, label=None):
     return d
 
 
+def is_applied(sg, data):
+    """幂等守卫（v3）：子图接口已含 scheduler_1（v2 补的 scheduler 接口）且顶层已有
+    SaveImageAdvanced（v2 把 SaveImage 替换为 SaveImageAdvanced）→ 视为已应用，跳过。"""
+    names = {i.get('name') for i in sg.get('inputs', [])}
+    has_save_adv = any(n.get('type') == 'SaveImageAdvanced' for n in data.get('nodes', []))
+    return 'scheduler_1' in names and has_save_adv
+
+
 def main():
     for fn, cfg in CONFIG.items():
         path = os.path.join(D, fn)
         data = load(path)
         sg = data['definitions']['subgraphs'][0]
+        if is_applied(sg, data):
+            print('[跳过] %s 已应用（接口 scheduler_1 + SaveImageAdvanced 已存在）；如需强制重跑请先手动移除该标记' % fn)
+            continue
+        os.makedirs(BAK, exist_ok=True)
+        bak_path = os.path.join(BAK, fn.replace('.json', '.upgrade.bak-' + time.strftime('%Y%m%d_%H%M%S')))
+        shutil.copy2(path, bak_path)
+        print('[备份] %s -> %s' % (fn, bak_path))
         main_node = next(n for n in data['nodes'] if n.get('id') == cfg['main_id'])
 
         fixed = fix_rs_link_conflict(data, sg)
