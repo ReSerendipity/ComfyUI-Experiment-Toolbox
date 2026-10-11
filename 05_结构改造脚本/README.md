@@ -15,7 +15,7 @@
 | `apply_sampler_prefs.py` | 应用采样器/调度器偏好 |
 | `fix_zimage_native.py` | Z_image 原生 bf16 参数修正 |
 | `fix_z_format.py` | Z_image JSON 序列化格式修复（separators 坑） |
-| `diff_edit.py` | 当前工作流 vs 官方模板 diff |
+| `diff_edit.py` | 当前工作流 vs 官方模板 diff（v2：Image 8 + Edit 3 全 11 对；`--export-dir` 批量导出快照到 `../08_官方模板对齐/`） |
 
 ### 融合/升级类
 | 脚本 | 作用 |
@@ -155,3 +155,36 @@ LoadImage → ImageScaleToTotalPixels(缩放图像像素) → VAEEncode(VAE编�
 5. 改多图槽位时：Qwen 2.1 用 Autogrow（前端加槽最稳），Flux.2 在前端复制参考图链比改 JSON 安全；
 6. 官方模板变更时，用 `diff_edit.py` 复查对齐状态；
 7. 改完结构后想验证参数是否正确，走 `../02_调度器sigma分析/`（离线）与 `../03_受控跑测/`（实拍）。
+
+---
+
+## 七、幂等与备份四步模板（2026-10-11 起，评估 P2-3）
+
+所有**写工作流文件**的改造脚本统一按四步执行，防止重复改写与误改：
+
+1. **备份**：改动前 `shutil.copy2` 到 `Image\新建文件夹\*.xxx.bak-<时间戳>`（`apply_official.py` 为 `*.official.bak`）；
+2. **检测已应用**：用「脚本自身写入的特征」做幂等守卫（`upgrade_workflows.py` 判子图接口含 `scheduler_1` 且顶层已有 `SaveImageAdvanced`；`apply_official.py` 判 `widgets_values` 已与目标一致）；
+3. **跳过**：已应用则打印 `[跳过]` 并 continue，不重复写入；
+4. **应用 → verify**：应用后必须跑对应 `verify_*` 脚本复核（`verify_upgrade.py` / `verify_workflows.py` 等）。
+
+> 已落地的脚本：`upgrade_workflows.py`（v3：备份 + 守卫）、`apply_official.py`（v2：守卫）。
+> 新写结构轨脚本时请沿用本模板；本目录脚本是「当操作说明书读」的一次性手术脚本，换工作流仍需重写 `CONFIG`。
+
+---
+
+## 八、工作流溯源清单（2026-10-11，评估 P2-4）
+
+`workflows_manifest.json` 是 11 份工作流原件（Image 8 + Edit 3）的仓库内审计记录，由 `gen_workflows_manifest.py` 生成（**只读外部原件，绝不写入 ComfyUI 目录**）：
+
+| 字段 | 含义 |
+|---|---|
+| `md5` / `size` / `mtime` | 当前原件指纹（改造前后可 diff 校验） |
+| `source_template` / `source_md5` | 来源官方模板名及其指纹（模板缺失时为 `null` 并告警） |
+| `backups` | 同名备份清单（类别目录下 `*.bak*` + `Image\新建文件夹\` 下同名条目） |
+
+再生成命令（本机实际根为 aki-v3.2，README 约定为 aki-v3，二者均可）：
+
+```bat
+python gen_workflows_manifest.py --root "%USERPROFILE%\APP\ComfyUI-aki-v3.2\ComfyUI\user\default\workflows" ^
+  --templates "%USERPROFILE%\APP\ComfyUI-aki-v3.2\python\Lib\site-packages\comfyui_workflow_templates_json\templates"
+```
