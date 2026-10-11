@@ -1,0 +1,136 @@
+{
+ "meta": {
+  "generator": "gen_workflows_manifest.py",
+  "generated_at": "2026-10-11 11:39:52",
+  "root": "C:\\Users\\Doro\\APP\\ComfyUI-aki-v3.2\\ComfyUI\\user\\default\\workflows",
+  "templates_dir": "C:\\Users\\Doro\\APP\\ComfyUI-aki-v3.2\\python\\Lib\\site-packages\\comfyui_workflow_templates_json\\templates",
+  "note": "快照型溯源清单：工作流原件在仓库外（只读），本清单为仓库内审计记录"
+ },
+ "workflows": [
+  {
+   "category": "Image",
+   "file": "Qwen_image_2_1_t2i.json",
+   "path": "C:\\Users\\Doro\\APP\\ComfyUI-aki-v3.2\\ComfyUI\\user\\default\\workflows\\Image\\Qwen_image_2_1_t2i.json",
+   "md5": "500a33bb41d4e5777d456ac8cde3a0ce",
+   "size": 39261,
+   "mtime": "2026-10-11 11:35:51",
+   "source_template": "image_qwen_image_2_1_t2i.json",
+   "source_md5": "10c8490621dfb29ea96729715d8281be",
+   "backups": []
+  },
+  {
+   "category": "Image",
+   "file": "krea2_turbo.json",
+   "path": "C:\\Users\\Doro\\APP\\ComfyUI-aki-v3.2\\ComfyUI\\user\\default\\workflows\\Image\\krea2_turbo.json",
+   "md5": "f91781b307c89e429f8758a5c7b4353c",
+   "size": 63210,
+   "mtime": "2026-10-11 11:34:20",
+   "source_template": "image_krea2_turbo_t2i.json",
+   "source_md5": "eadf68a7deede1ddefac84b24f5dea5e",
+   "backups": []
+  },
+  {
+   "category": "Image",
+   "file": "Flux.2_Klein-9B-Distilled.json",
+   "path": "C:\\Users\\Doro\\APP\\ComfyUI-aki-v3.2\\ComfyUI\\user\\default\\workflows\\Image\\Flux.2_Klein-9B-Distilled.json",
+   "md5": "04b73ce24e98be99b42a277c426889ac",
+   "size": 41786,
+   "mtime": "2026-10-11 11:35:30",
+   "source_template": "image_flux2_klein_text_to_image.json",
+   "source_md5": "8758b85cad806b9accbc1bfa913e9f20",
+   "backups": []
+  },
+  {
+   "category": "Image",
+   "file": "Qwen_image_2512.json",
+   "path": "C:\\Users\\Doro\\APP\\ComfyUI-aki-v3.2\\ComfyUI\\user\\default\\workflows\\Image\\Qwen_image_2512.json",
+   "md5": "eef0138c36194782169e51dd207eac29",
+   "size": 45935,
+   "mtime": "2026-10-11 11:17:08",
+   "source_template": "image_qwen_Image_2512.json",
+   "source_md5": "e36b279987cd12dab9666102b73c3a44",
+   "backups": []
+  },
+  {
+   "category": "Image",
+   "file": "Qwen_image.json",
+   "path": "C:\\Users\\Doro\\APP\\ComfyUI-aki-v3.2\\ComfyUI\\user\\default\\workflows\\Image\\Qwen_image.json",
+   "md5": "af35703dca9a0f1a0be7f0fbe1f0003e",
+   "size": 47425,
+   "mtime": "2026-10-11 11:25:56",
+   "source_template": "image_qwen_image.json",
+   "source_md5": "d5b8338cb6f5e7861e70ece91ef570b1",
+   "backups": []
+  },
+  {
+   "category": "Image",
+   "file": "Z_image.json",
+   "path": "C:\\Users\\Doro\\APP\\ComfyUI-aki-v3.2\\ComfyUI\\user\\default\\workflows\\Image\\Z_image.json",
+   "md5": "a58b730f352497d8e9036dd11702046b",
+   "size": 42459,
+   "mtime": "2026-10-11 11:00:46",
+   "source_template": "image_z_image.json",
+   "source_md5": "888c552d3a5e0871768a49add3ca87ea",
+   "backups": []
+  },
+  {
+   "category": "Image",
+   "file": "Z_image_turbo.json",
+   "path": "C:\\Users\\Doro\\APP\\ComfyUI-aki-v3.2\\ComfyUI\\user\\default\\workflows\\Image\\Z_image_turbo.json",
+   "md5": "61a7625e24c5e9810a0f48c1abf6c026",
+   "size": 39548,
+   "mtime": "2026-10-11 11:32:54",
+   "source_template": "image_z_image_turbo.json",
+   "source_md5": "de73262c81009e8cacfc48051c421cf0",
+   "backups": [
+    "Z_image_turbo.json.bak.20261010",
+    "Z_image_turbo.json.bak2.20261011",
+    "Z_image_turbo.json.bak3.20261011"
+   ]
+  },
+  {
+   "category": "Image",
+   "file": "flux.1-dev.json",
+   "path": "C:\\Users\\Doro\\APP\\ComfyUI-aki-v3.2\\ComfyUI\\user\\default\\workflows\\Image\\flux.1-dev.json",
+   "md5": "5645f749ba7fb550cd3e6ac3a9bf7789",
+   "size": 41827,
+   "mtime": "2026-10-11 11:35:09",
+   "source_template": "flux_dev_full_text_to_image.json",
+   "source_md5": "4bff458dbe1bf36b809e7853abb4a4f3",
+   "backups": []
+  },
+  {
+   "category": "Edit",
+   "file": "qwen_2_1_edit.json",
+   "path": "C:\\Users\\Doro\\APP\\ComfyUI-aki-v3.2\\ComfyUI\\user\\default\\workflows\\Edit\\qwen_2_1_edit.json",
+   "md5": "19716333553ba3107839f7ec90e3fcd3",
+   "size": 28947,
+   "mtime": "2026-09-23 22:27:45",
+   "source_template": "image_qwen_image_2_1_image_edit.json",
+   "source_md5": "5645069d9710f7592d8f9c7ab35ad1e0",
+   "backups": []
+  },
+  {
+   "category": "Edit",
+   "file": "qwen_edit_2511.json",
+   "path": "C:\\Users\\Doro\\APP\\ComfyUI-aki-v3.2\\ComfyUI\\user\\default\\workflows\\Edit\\qwen_edit_2511.json",
+   "md5": "9f8b7e71b066a7357c0ad2dd672b8db1",
+   "size": 31408,
+   "mtime": "2026-09-22 08:55:34",
+   "source_template": "image_qwen_image_edit_2511.json",
+   "source_md5": "e937ef1abf71870f82860376f0ea908e",
+   "backups": []
+  },
+  {
+   "category": "Edit",
+   "file": "flux2_klein_edit.json",
+   "path": "C:\\Users\\Doro\\APP\\ComfyUI-aki-v3.2\\ComfyUI\\user\\default\\workflows\\Edit\\flux2_klein_edit.json",
+   "md5": "ccde40e1eb88352ce96b10220496ecfb",
+   "size": 79499,
+   "mtime": "2026-09-22 08:54:16",
+   "source_template": "image_flux2_klein_image_edit_9b_distilled.json",
+   "source_md5": "5a76049ae2e91353e395acb967ffd1c7",
+   "backups": []
+  }
+ ]
+}
