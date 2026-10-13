@@ -74,3 +74,6 @@ service-account.json
 
 # 对内项目说明（docs/README.internal.md）：仅本地维护者，不入库（2026-10-13 README 双版本制度）
 docs/README.internal.md
+
+# AGENTS.md：AI 辅助开发指南，仅本地维护者上下文，不入库（2026-10-13，治理规范 §7）
+AGENTS.md
