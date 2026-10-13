@@ -68,3 +68,6 @@ service-account.json
 .gcloud/
 *.pem
 *.key
+
+# --- 本地评估工具产物（2026-10-13）---
+.qoder/
