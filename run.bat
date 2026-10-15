@@ -20,7 +20,7 @@ rem (A real console already renders CJK correctly; this fixes `run.bat ... > log
 chcp 65001 >nul
 
 rem --- ComfyUI bundled python (change here if your ComfyUI lives elsewhere) ---
-set "PY=%USERPROFILE%\APP\ComfyUI-aki-v3\python\python.exe"
+set "PY=%USERPROFILE%\APP\ComfyUI-aki-v3.2\python\python.exe"
 
 if not exist "%PY%" (
   echo [ERROR] ComfyUI python not found:
