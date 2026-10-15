@@ -1,0 +1,153 @@
+{
+ "ok": true,
+ "snapshots": [
+  {
+   "label": "2026-09-30 ~ 2026-10-01（原始输出：本机 ComfyUI output 下 01_模型基准测试/model_benchmark，原图为一次性产物未随包）",
+   "path": "C:\\Users\\Doro\\APP\\repository\\ComfyUI-Experiment-Toolbox\\07_样例输出与数据\\family_bench_20261006\\ledger_sanitized.json",
+   "records": 216
+  },
+  {
+   "label": "2026-10-15",
+   "path": "C:\\Users\\Doro\\APP\\ComfyUI-aki-v3.2\\ComfyUI\\output\\model_benchmark\\ledger.json",
+   "records": 81
+  }
+ ],
+ "pairs": [
+  {
+   "from": "2026-09-30 ~ 2026-10-01（原始输出：本机 ComfyUI output 下 01_模型基准测试/model_benchmark，原图为一次性产物未随包）",
+   "to": "2026-10-15",
+   "from_path": "C:\\Users\\Doro\\APP\\repository\\ComfyUI-Experiment-Toolbox\\07_样例输出与数据\\family_bench_20261006\\ledger_sanitized.json",
+   "to_path": "C:\\Users\\Doro\\APP\\ComfyUI-aki-v3.2\\ComfyUI\\output\\model_benchmark\\ledger.json",
+   "objects": 8,
+   "hard": 0,
+   "flags": {
+    "ok_rate_down": 0,
+    "slower": 0,
+    "disappeared": 5,
+    "new": 0
+   },
+   "rows": [
+    {
+     "object": "FLUX-1-dev|Flux-Capacity-NSFW-V2-fp8",
+     "prev": {
+      "n": 27,
+      "ok": 27,
+      "ok_rate": 1.0,
+      "mean_elapsed": 48.11
+     },
+     "cur": null,
+     "flags": [
+      "disappeared"
+     ]
+    },
+    {
+     "object": "FLUX-1-dev|fluxNSFWUNLOCKED",
+     "prev": {
+      "n": 27,
+      "ok": 27,
+      "ok_rate": 1.0,
+      "mean_elapsed": 47.38
+     },
+     "cur": {
+      "n": 27,
+      "ok": 27,
+      "ok_rate": 1.0,
+      "mean_elapsed": 39.52
+     },
+     "delta_ok_rate": 0.0,
+     "delta_elapsed_pct": -16.6,
+     "flags": []
+    },
+    {
+     "object": "FLUX-1-dev|pornworks-nude-people-photo-realistic-nsfw-flux-1d-checkpoint",
+     "prev": {
+      "n": 27,
+      "ok": 27,
+      "ok_rate": 1.0,
+      "mean_elapsed": 46.18
+     },
+     "cur": null,
+     "flags": [
+      "disappeared"
+     ]
+    },
+    {
+     "object": "FLUX-2-klein-9b|BigLoveKlein2_fp8",
+     "prev": {
+      "n": 27,
+      "ok": 27,
+      "ok_rate": 1.0,
+      "mean_elapsed": 75.43
+     },
+     "cur": {
+      "n": 27,
+      "ok": 27,
+      "ok_rate": 1.0,
+      "mean_elapsed": 67.8
+     },
+     "delta_ok_rate": 0.0,
+     "delta_elapsed_pct": -10.1,
+     "flags": []
+    },
+    {
+     "object": "FLUX-2-klein-9b|DarkBeast-Klein9b-V2-BFS-FP8",
+     "prev": {
+      "n": 27,
+      "ok": 27,
+      "ok_rate": 1.0,
+      "mean_elapsed": 100.57
+     },
+     "cur": null,
+     "flags": [
+      "disappeared"
+     ]
+    },
+    {
+     "object": "FLUX-2-klein-9b|Flux.2 Klein 9B fp8 darkBeast",
+     "prev": {
+      "n": 27,
+      "ok": 27,
+      "ok_rate": 1.0,
+      "mean_elapsed": 84.79
+     },
+     "cur": null,
+     "flags": [
+      "disappeared"
+     ]
+    },
+    {
+     "object": "Krea2-turbo|krea2TurboNSFWAIO_v10",
+     "prev": {
+      "n": 27,
+      "ok": 27,
+      "ok_rate": 1.0,
+      "mean_elapsed": 22.24
+     },
+     "cur": {
+      "n": 27,
+      "ok": 27,
+      "ok_rate": 1.0,
+      "mean_elapsed": 19.69
+     },
+     "delta_ok_rate": 0.0,
+     "delta_elapsed_pct": -11.5,
+     "flags": []
+    },
+    {
+     "object": "Krea2-turbo|krea2_turbo_fp8_scaled",
+     "prev": {
+      "n": 27,
+      "ok": 27,
+      "ok_rate": 1.0,
+      "mean_elapsed": 20.41
+     },
+     "cur": null,
+     "flags": [
+      "disappeared"
+     ]
+    }
+   ]
+  }
+ ],
+ "hard_total": 0
+}
