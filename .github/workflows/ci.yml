@@ -1,6 +1,7 @@
 # comfyui-experiment-toolbox: minimal Python CI
 # 步骤：语法编译 → 锁文件可解析 → 三个纯标准库门禁 selftest → 结构轨样本验收 → 公开仓路径红线自检
 # 注意：本 CI 不 import comfy.*（runner 上没有 ComfyUI 环境），只跑纯标准库的门禁自检。
+# 2026-10-16 E1~E8：门禁扩至 ⑪（⑧ 视频质检 / ⑨ 趋势回归 / ⑩ 显存档位 / ⑪ 变体闭环）。
 name: CI
 
 on:
@@ -161,3 +162,27 @@ jobs:
       # 不引入 pytest（禁装依赖）：用 unittest 承载，test_*.py 命名保持 pytest 兼容可收集。
       - name: Gate ⑦ stdlib unittest (flatten / logutil / panel API)
         run: python -X utf8 -m unittest discover -s tests -v
+
+      # Gate ⑧ 视频质检 vqc 合成三态自检（2026-10-16，E1）。
+      # runner 上没有 ffmpeg 时脚本自身降级为 SKIP（exit 0），不把环境差异伪装成失败；
+      # 有 ffmpeg 时必须三态全命中（good 干净 / 黑帧命中 / 无音轨命中）。
+      - name: Gate ⑧ video QC selftest (good / black-frame / no-audio)
+        run: python -X utf8 "10_模型家族横评/lib_video_qc.py" --selftest
+
+      # Gate ⑨ 跨快照趋势回归 selftest（2026-10-16，E5）。
+      # 合成双快照覆盖：一致不误报 / ok 率下降命中硬回归 / 耗时翻倍判 slower /
+      # 对象消失判 disappeared / 扩展名差异不算假回归（历史台账全是 .safetensors 后缀差异）。
+      - name: Gate ⑨ trend regression selftest (snapshot pairs)
+        run: python -X utf8 "10_模型家族横评/trend_family.py" --selftest
+
+      # Gate ⑩ 显存自适应 selftest（2026-10-16，E2）。
+      # 纯逻辑自检（不碰 GPU，runner 上无 nvidia-smi 也能全绿）：
+      # 时长→档位单调性、与实测边界表逐档对齐、小卡降底档、预算未知保守降档、OOM 识别不误伤参数错。
+      - name: Gate ⑩ VRAM ladder selftest (tier policy / OOM pattern)
+        run: python -X utf8 "03_受控跑测/lib_vram.py" --selftest
+
+      # Gate ⑪ 提示词变体闭环 selftest（2026-10-16，E8）。
+      # 覆盖：变体词条白名单、文本层 QC 淘汰、属性片段不被 too_short 误杀、
+      # judge 三条淘汰路径（全家族失败 / 低于阈值 / 存活带家族评分）、落盘前递归脱敏（Gate ⑤）。
+      - name: Gate ⑪ prompt closed-loop selftest (variants / QC / judge / sanitize)
+        run: python -X utf8 "10_模型家族横评/lib_prompt_closedloop.py" selftest
