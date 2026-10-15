@@ -73,6 +73,10 @@ def build_env():
     """构造子进程环境：补齐 PYTHONPATH，强制 UTF-8。"""
     env = os.environ.copy()
     extra = [os.path.join(ROOT, d) for d in IMPORT_DIRS]
+    # ComfyUI 根入 PYTHONPATH：sigma 等参数轨脚本需 import comfy.*（2026-10-15）
+    comfy_root = os.path.expandvars(r"%USERPROFILE%\APP\ComfyUI-aki-v3.2\ComfyUI")
+    if os.path.isdir(comfy_root):
+        extra.append(comfy_root)
     old = env.get("PYTHONPATH", "")
     env["PYTHONPATH"] = os.pathsep.join(extra + ([old] if old else []))
     env["PYTHONUTF8"] = "1"
