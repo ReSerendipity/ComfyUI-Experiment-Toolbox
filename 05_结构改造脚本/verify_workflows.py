@@ -3,7 +3,7 @@
 import json
 import os
 
-D = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image')
+D = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3.2\ComfyUI\user\default\workflows\Image')
 FILES = [
     'Flux.2_Klein-9B-Distilled.json',
     'Qwen_image.json',

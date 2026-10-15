@@ -55,11 +55,11 @@
 
 | 用途 | 路径 |
 |---|---|
-| 官方工作流模板 | `%USERPROFILE%\APP\ComfyUI-aki-v3\python\Lib\site-packages\comfyui_workflow_templates_json\templates\` |
-| Image 类工作流 | `%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image\` |
-| Edit 类工作流 | `%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Edit\` |
+| 官方工作流模板 | `%USERPROFILE%\APP\ComfyUI-aki-v3.2\python\Lib\site-packages\comfyui_workflow_templates_json\templates\` |
+| Image 类工作流 | `%USERPROFILE%\APP\ComfyUI-aki-v3.2\ComfyUI\user\default\workflows\Image\` |
+| Edit 类工作流 | `%USERPROFILE%\APP\ComfyUI-aki-v3.2\ComfyUI\user\default\workflows\Edit\` |
 | 节点源码（权威） | `comfy_extras\nodes_qwen.py`、`comfy_extras\nodes_edit_model.py`、`comfy_api_nodes\nodes_bfl.py` |
-| 模型目录 | `%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\models\unet\` |
+| 模型目录 | `%USERPROFILE%\APP\ComfyUI-aki-v3.2\ComfyUI\models\unet\` |
 
 ---
 
@@ -223,7 +223,7 @@ python gen_workflows_manifest.py --root "%USERPROFILE%\APP\ComfyUI-aki-v3.2\Comf
 
 ```bat
 :: 0) 先拷一份样本到临时目录（包含同名工作流文件）
-xcopy "%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image" "%TEMP%\wf_sample\" /I /Y
+xcopy "%USERPROFILE%\APP\ComfyUI-aki-v3.2\ComfyUI\user\default\workflows\Image" "%TEMP%\wf_sample\" /I /Y
 
 :: 1) dry-run 看计划（不写入、不备份）
 python apply_official.py --dry-run --target-dir "%TEMP%\wf_sample"
@@ -241,7 +241,7 @@ python apply_official.py
 
 本目录脚本在改动前都会先拷一份 `*.bak`（`upgrade_workflows.py` 额外附时间戳 `-YYYYMMDD_HHMMSS`）。恢复 = **把备份文件拷回工作流同名路径**，不依赖 Git、不重新手写 JSON。步骤：
 
-1. **定位备份**：`%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image\新建文件夹\` 下按命名取对应一份（同名多个时选时间戳最新）：
+1. **定位备份**：`%USERPROFILE%\APP\ComfyUI-aki-v3.2\ComfyUI\user\default\workflows\Image\新建文件夹\` 下按命名取对应一份（同名多个时选时间戳最新）：
    - `Z_image.official.bak` → `apply_official.py` 创建
    - `Z_image.sampler.bak` → `apply_sampler_prefs.py`
    - `Z_image.upgrade.bak-<时间戳>` → `upgrade_workflows.py`
@@ -252,8 +252,8 @@ python apply_official.py
    - 无时间戳同名备份多次运行会被覆盖——**想保留多个中间态**，手动拷到带时间戳名字即可（与 `upgrade_workflows.py` 命名一致）。
 2. **拷回原位置**（以 `Z_image.json` 为实，PowerShell）：
    ```powershell
-   $wf  = "$env:USERPROFILE\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image\Z_image.json"
-   $bak = "$env:USERPROFILE\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image\新建文件夹\Z_image.upgrade.bak-20261011_153012"
+   $wf  = "$env:USERPROFILE\APP\ComfyUI-aki-v3.2\ComfyUI\user\default\workflows\Image\Z_image.json"
+   $bak = "$env:USERPROFILE\APP\ComfyUI-aki-v3.2\ComfyUI\user\default\workflows\Image\新建文件夹\Z_image.upgrade.bak-20261011_153012"
    Copy-Item -LiteralPath $bak -Destination $wf -Force
    ```
 3. **逐字节验证**（与备份前的原件字节一致）：

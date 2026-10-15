@@ -16,7 +16,7 @@ B. 6 个自定义工作流：SeedVR2 超分节点全部设为静止(mode=4)，�
 import json, os, uuid, shutil
 import dryrun
 
-GLOBAL_D = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image')
+GLOBAL_D = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3.2\ComfyUI\user\default\workflows\Image')
 D = GLOBAL_D
 
 CUSTOM = ['Flux.2_Klein-9B-Distilled.json', 'Qwen_image.json', 'Qwen_image_2512.json',

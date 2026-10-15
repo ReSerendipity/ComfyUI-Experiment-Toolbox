@@ -12,7 +12,7 @@ C. 8 个工作流顶层布局统一：主节点 (0,0)、RS (-380,310)、Save (33
 import json, os, uuid, shutil
 import dryrun
 
-GLOBAL_D = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image')
+GLOBAL_D = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3.2\ComfyUI\user\default\workflows\Image')
 D = GLOBAL_D
 
 MAIN_POS = [0, 0]

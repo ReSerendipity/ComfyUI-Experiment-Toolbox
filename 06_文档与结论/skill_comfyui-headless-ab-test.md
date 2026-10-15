@@ -1,6 +1,6 @@
 ---
 name: comfyui-headless-ab-test
-description: 在无人值守（headless）模式下启动本机 ComfyUI，做**控制变量对照实验**（固定提示词与种子，每轮只变一个维度：采样器 × 调度器、steps、cfg、LoRA 强度等），产出逐组输出图 + 客观指标 + 结论并记录到 Markdown。也支持把工作流当参数矩阵跑。适用于 ComfyUI-aki-v3 的新版 `definitions.subgraphs` 子图格式工作流——这类工作流无法直接喂给 `/prompt`，必须先扁平化为 API prompt。触发词：批量出图、参数对比、控制变量、对照实验、采样器对比、调度器对比、A/B、矩阵测试、headless、API 提交、subgraph 扁平化、ComfyUI 自动化。
+description: 在无人值守（headless）模式下启动本机 ComfyUI，做**控制变量对照实验**（固定提示词与种子，每轮只变一个维度：采样器 × 调度器、steps、cfg、LoRA 强度等），产出逐组输出图 + 客观指标 + 结论并记录到 Markdown。也支持把工作流当参数矩阵跑。适用于 ComfyUI-aki-v3.2 的新版 `definitions.subgraphs` 子图格式工作流——这类工作流无法直接喂给 `/prompt`，必须先扁平化为 API prompt。触发词：批量出图、参数对比、控制变量、对照实验、采样器对比、调度器对比、A/B、矩阵测试、headless、API 提交、subgraph 扁平化、ComfyUI 自动化。
 agent_created: true
 ---
 
@@ -34,7 +34,7 @@ agent_created: true
 ## 1. 启动服务
 
 ```bash
-cd "%USERPROFILE%/APP/ComfyUI-aki-v3"
+cd "%USERPROFILE%/APP/ComfyUI-aki-v3.2"
 python/python.exe -s ComfyUI/main.py --port 8188 --disable-auto-launch --disable-comfy-compiler \
   > "<输出目录>/comfyui_server.log" 2>&1
 ```
@@ -105,7 +105,7 @@ curl -s http://127.0.0.1:8188/object_info/KSampler
 **在花时间跑图之前，先用纯计算筛掉注定要坏的调度器。** 尤其对 flow matching 模型（Qwen-Image / Z-Image / FLUX 系），σ 范围只有 [0,1]，社区里为 DDPM 设计的调度器套上去形状会完全变味。
 
 ```python
-import sys; sys.path.insert(0, r"%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI")
+import sys; sys.path.insert(0, r"%USERPROFILE%\APP\ComfyUI-aki-v3.2\ComfyUI")
 import comfy.model_sampling as msmod, comfy.samplers as S
 
 class Cfg:  # ← 取自 comfy/supported_models.py 里对应模型的 sampling_settings

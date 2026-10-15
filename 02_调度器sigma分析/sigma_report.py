@@ -7,7 +7,7 @@
 import os, sys, json
 import torch
 
-COMFY = os.path.expandvars(r"%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI")
+COMFY = os.path.expandvars(r"%USERPROFILE%\APP\ComfyUI-aki-v3.2\ComfyUI")
 sys.path.insert(0, COMFY)
 
 import comfy.model_sampling as msmod

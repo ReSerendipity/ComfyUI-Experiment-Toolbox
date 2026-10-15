@@ -5,7 +5,7 @@
 import json, os
 import dryrun
 
-GLOBAL_D = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image')
+GLOBAL_D = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3.2\ComfyUI\user\default\workflows\Image')
 dryrun.parse_args()
 D = dryrun.resolve_target(GLOBAL_D)
 fn = 'Z_image.json'

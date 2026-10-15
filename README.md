@@ -73,7 +73,7 @@ ComfyUI-实验与改造工具箱/
 
 | 项 | 要求 | 说明 |
 |---|---|---|
-| Python | **用 ComfyUI 自带的那个** | `%USERPROFILE%\APP\ComfyUI-aki-v3\python\python.exe`。脚本要用 `comfy.model_sampling` / `comfy.samplers`（算 σ）、`numpy`、`Pillow`（算指标），只有它这套环境齐 |
+| Python | **用 ComfyUI 自带的那个** | `%USERPROFILE%\APP\ComfyUI-aki-v3.2\python\python.exe`。脚本要用 `comfy.model_sampling` / `comfy.samplers`（算 σ）、`numpy`、`Pillow`（算指标），只有它这套环境齐 |
 | ComfyUI | 已启动在 `127.0.0.1:8188` | 02 轨离线 σ 分析不需要服务；03 轨跑测需要 |
 | 显卡 | 本机 RTX 5070 Ti Laptop（11.94GB） | 参数矩阵跑测按此写的，换卡只影响耗时 |
 
@@ -84,7 +84,7 @@ ComfyUI-实验与改造工具箱/
 启动 ComfyUI（无人值守）：
 
 ```bash
-cd "%USERPROFILE%/APP/ComfyUI-aki-v3"
+cd "%USERPROFILE%/APP/ComfyUI-aki-v3.2"
 python/python.exe -s ComfyUI/main.py --port 8188 --disable-auto-launch --disable-comfy-compiler
 ```
 
@@ -174,7 +174,7 @@ run.bat pipeline       :: ①→②→③→④ 一次跑完
 
 ```bash
 # 方式三：任意终端（含 Git Bash），自己指定解释器
-PY="%USERPROFILE%/APP/ComfyUI-aki-v3/python/python.exe"
+PY="%USERPROFILE%/APP/ComfyUI-aki-v3.2/python/python.exe"
 "$PY" run.py list      # 同一套子命令：panel/sigma/unify/models/analyze/pipeline/flatten
 ```
 

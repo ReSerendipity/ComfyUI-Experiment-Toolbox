@@ -5,8 +5,8 @@
 import json, os, shutil
 import dryrun
 
-GLOBAL_E = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Edit')
-GLOBAL_BAK = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image\新建文件夹')
+GLOBAL_E = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3.2\ComfyUI\user\default\workflows\Edit')
+GLOBAL_BAK = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3.2\ComfyUI\user\default\workflows\Image\新建文件夹')
 
 dryrun.parse_args()
 E = dryrun.resolve_target(GLOBAL_E)

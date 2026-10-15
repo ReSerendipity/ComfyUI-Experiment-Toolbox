@@ -8,7 +8,7 @@
 import os
 import json
 
-WF = os.path.expandvars(r"%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image\Qwen_image_2_1_t2i.json")
+WF = os.path.expandvars(r"%USERPROFILE%\APP\ComfyUI-aki-v3.2\ComfyUI\user\default\workflows\Image\Qwen_image_2_1_t2i.json")
 ID_OFFSET = 1000
 
 w = json.load(open(WF, encoding="utf-8"))

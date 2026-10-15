@@ -5,8 +5,8 @@
 import json, os, shutil
 import dryrun
 
-GLOBAL_T = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\python\Lib\site-packages\comfyui_workflow_templates_json\templates')
-GLOBAL_E = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Edit')
+GLOBAL_T = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3.2\python\Lib\site-packages\comfyui_workflow_templates_json\templates')
+GLOBAL_E = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3.2\ComfyUI\user\default\workflows\Edit')
 dryrun.parse_args()
 T = GLOBAL_T
 E = dryrun.resolve_target(GLOBAL_E)

@@ -14,7 +14,7 @@ latent / 采样器 / 调度器 / 步数 / cfg / shift 全部钉死，**唯一变
 
 ## 三条命令
 
-必须用 **ComfyUI 自带 python**（`%USERPROFILE%\APP\ComfyUI-aki-v3\python\python.exe`），
+必须用 **ComfyUI 自带 python**（`%USERPROFILE%\APP\ComfyUI-aki-v3.2\python\python.exe`），
 因为要 numpy / Pillow，`--arch-probe comfy` 还要 import `comfy.*`。
 
 ```powershell

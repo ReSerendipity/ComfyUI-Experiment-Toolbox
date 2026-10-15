@@ -5,7 +5,7 @@
 # 不包含：
 #   - comfy.* 系列模块（comfy.model_sampling / comfy.samplers / comfy.model_base …）
 #     它们由 ComfyUI 自带 Python 解释器提供，不是 PyPI 包，
-#     解释器路径见 run.bat 顶部 PY= 变量（本机：%USERPROFILE%\APP\ComfyUI-aki-v3\python\python.exe）。
+#     解释器路径见 run.bat 顶部 PY= 变量（本机：%USERPROFILE%\APP\ComfyUI-aki-v3.2\python\python.exe）。
 #   - Python 标准库（os/sys/json/argparse/http.server/hashlib/tempfile …）。
 #
 # 实测环境（2026-10-06 从 ComfyUI 自带 python 读出）：

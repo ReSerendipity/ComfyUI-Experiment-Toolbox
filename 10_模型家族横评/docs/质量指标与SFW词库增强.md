@@ -42,7 +42,7 @@ METRICS / LEGACY_METRICS / SOURCES / THRESHOLDS   # 自解释常量（文档/表
 ```powershell
 # 必须用 ComfyUI 自带 python（要 numpy + Pillow）
 python -X utf8 lib_image_qc_enh.py
-python -X utf8 lib_image_qc_enh.py --root "%USERPROFILE%/APP/ComfyUI-aki-v3/ComfyUI/output/model_benchmark" --limit 24
+python -X utf8 lib_image_qc_enh.py --root "%USERPROFILE%/APP/ComfyUI-aki-v3.2/ComfyUI/output/model_benchmark" --limit 24
 python -X utf8 lib_image_qc_enh.py --root output/model_benchmark --limit 0 --json _qc.json
 python -X utf8 lib_image_qc_enh.py --file a.png --metrics brightness,noise_snr_db,color_temp_k
 ```

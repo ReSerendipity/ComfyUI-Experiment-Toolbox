@@ -23,7 +23,7 @@ python ..\05_结构改造脚本\diff_edit.py --export-dir . ^
   --image "%USERPROFILE%\APP\ComfyUI-aki-v3.2\ComfyUI\user\default\workflows\Image"
 ```
 
-> 不传 `--edit/--image/--templates` 时按 README 约定路径（ComfyUI-aki-v3）；本机实际为 aki-v3.2。
+> 不传 `--edit/--image/--templates` 时按 README 约定路径（ComfyUI-aki-v3.2）；本机实际为 aki-v3.2。
 > 模板随 ComfyUI 升级会变，快照已带生成时间戳，模板更新后重新生成即可对照。
 
 ## 相关工具

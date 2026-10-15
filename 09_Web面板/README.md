@@ -11,7 +11,7 @@
 cd "%USERPROFILE%/Desktop/ComfyUI-实验与改造工具箱"
 run.bat panel                                    # Windows
 # 或任意终端：
-"%USERPROFILE%/APP/ComfyUI-aki-v3/python/python.exe" run.py panel
+"%USERPROFILE%/APP/ComfyUI-aki-v3.2/python/python.exe" run.py panel
 ```
 
 **启动后会自动打开浏览器**，无需手动输地址 → http://127.0.0.1:8189

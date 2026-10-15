@@ -16,7 +16,7 @@ import shutil
 import copy
 import dryrun
 
-GLOBAL_D = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image')
+GLOBAL_D = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3.2\ComfyUI\user\default\workflows\Image')
 
 # 各工作流: 文件名 -> (主节点id, width输入索引, height输入索引)
 TARGETS = {

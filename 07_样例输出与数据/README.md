@@ -21,7 +21,7 @@
 
 - 单模型矩阵：`%USERPROFILE%\WorkBuddy\2026-09-22-23-53-24\ss_test\output\`
 - 跨模型跑测：`%USERPROFILE%\WorkBuddy\2026-09-22-23-53-24\ss_test\output_models\`
-- ComfyUI 侧原始落盘：`%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\output\`
+- ComfyUI 侧原始落盘：`%USERPROFILE%\APP\ComfyUI-aki-v3.2\ComfyUI\output\`
 - 模型家族横评：本机 ComfyUI `output\01_模型基准测试\`（2026-10-15 已清理；数据审计副本见 `family_bench_20261006/`，逐张原图未随包）
 
 **命名规则**：`<模型标签>__<组合名>__<原始文件名>.png` —— 用 `模型__组合` 就能定位，`analyze_models.py` 也是靠这个规则从目录重建清单的。

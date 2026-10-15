@@ -3,7 +3,7 @@
 
 import json, os
 
-d = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image')
+d = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3.2\ComfyUI\user\default\workflows\Image')
 files = ['Flux.2_Klein-9B-Distilled.json', 'Qwen_image.json', 'Qwen_image_2512.json',
          'Z_image.json', 'Z_image_turbo.json', 'flux.1-dev.json']
 for fn in files:

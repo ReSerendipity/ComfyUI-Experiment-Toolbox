@@ -5,7 +5,7 @@
 import json, os, uuid, copy
 import dryrun
 
-GLOBAL_E = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Edit')
+GLOBAL_E = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3.2\ComfyUI\user\default\workflows\Edit')
 dryrun.parse_args()
 E = dryrun.resolve_target(GLOBAL_E)
 p = os.path.join(E, 'flux2_klein_edit.json')

@@ -19,7 +19,7 @@ import time
 import uuid
 import dryrun
 
-GLOBAL_D = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image')
+GLOBAL_D = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3.2\ComfyUI\user\default\workflows\Image')
 BAK = os.path.join(GLOBAL_D, '新建文件夹')
 
 CONFIG = {

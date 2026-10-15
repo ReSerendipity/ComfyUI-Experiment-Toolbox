@@ -3,7 +3,7 @@
 
 import json, os, glob
 
-D = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image')
+D = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3.2\ComfyUI\user\default\workflows\Image')
 
 print('=== 2.1 融合功能复查 ===')
 d = json.load(open(os.path.join(D, 'Qwen_image_2_1_t2i.json'), encoding='utf-8'))

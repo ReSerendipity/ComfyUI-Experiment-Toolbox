@@ -8,7 +8,7 @@ v3（2026-10-14）：接入共享 dry-run 开关（默认关闭）——--dry-ru
 
 import json, os, shutil
 import dryrun
-GLOBAL_D = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image')
+GLOBAL_D = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3.2\ComfyUI\user\default\workflows\Image')
 BAK = os.path.join(GLOBAL_D, '新建文件夹')
 
 MAIN_ID = {'Qwen_image_2_1_t2i.json': 459, 'Qwen_image.json': 65,

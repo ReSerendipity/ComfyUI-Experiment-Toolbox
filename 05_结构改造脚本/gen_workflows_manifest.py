@@ -6,7 +6,7 @@ MD5 / 大小 / 修改时间 / 备份文件清单 / 来源官方模板（含模�
 输出本目录 workflows_manifest.json，供产物版本溯源与改造前后校验。
 
 用法：
-  python gen_workflows_manifest.py                     # 按 README 约定根目录（ComfyUI-aki-v3）
+  python gen_workflows_manifest.py                     # 按 README 约定根目录（ComfyUI-aki-v3.2）
   python gen_workflows_manifest.py --root <绝对路径>    # 指定实际根目录（本机为 aki-v3.2）
   python gen_workflows_manifest.py --templates <绝对路径>  # 官方模板目录（默认按约定路径）
 
@@ -19,9 +19,9 @@ import json
 import os
 
 DEFAULT_ROOT = os.path.expandvars(
-    r"%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows")
+    r"%USERPROFILE%\APP\ComfyUI-aki-v3.2\ComfyUI\user\default\workflows")
 DEFAULT_TEMPLATES = os.path.expandvars(
-    r"%USERPROFILE%\APP\ComfyUI-aki-v3\python\Lib\site-packages\comfyui_workflow_templates_json\templates")
+    r"%USERPROFILE%\APP\ComfyUI-aki-v3.2\python\Lib\site-packages\comfyui_workflow_templates_json\templates")
 
 # 来源模板映射（官方模板名 -> 工作流名），Image 部分取自 06 文档§一 权威表，Edit 部分取自 05 README 四节
 SOURCE_MAP = [
