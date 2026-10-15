@@ -44,6 +44,7 @@ ComfyUI-实验与改造工具箱/
 │   ├── unify_prompt_seed.py     ★ 统一提示词与种子（dry-run + --apply，自动备份）
 │   ├── run_combos.py              单模型参数矩阵
 │   ├── run_models.py            ★ 跨模型统一变量跑测
+│   ├── run_h3_durations.py      ★ MiniMax H3 t2v 时长档位跑测（--dry-run 0 提交）
 │   └── probe.py / cfg_probe.py    补充验证探针
 ├── 04_结果分析/                   ← 【原实验工具包04】指标 + 拼版
 │   ├── analyze_models.py        ★ 跨模型指标 + 基线相似度
@@ -55,6 +56,7 @@ ComfyUI-实验与改造工具箱/
 │   ├── 采样器和调度器的组合推荐.md ★ 主文档（结论索引→官方原值→17组实测→σ离线→矩阵→跨模型验证）
 │   ├── 采样器名称.md / 调度器名称.md  45 采样器 / 9 调度器速查（含证据等级）
 │   ├── 采样器与调度器组合实测对比报告.md  09-22 报告（⚠️ 根因部分已被主文档第7节推翻，见文首标注）
+│   ├── minimax_h3_api跑测实战笔记.md  H3 t2v API 跑测方法/踩坑/显存边界（2026-10-14 实测）
 │   └── skill_comfyui-headless-ab-test.md 操作方法技能快照
 ├── 07_样例输出与数据/             ← 【原实验工具包06】拼版 PNG ×3 + 指标/相似度/日志 JSON
 ├── 08_官方模板对齐/               ← 【原"工作流改造经验/03_官方模板对齐"】11 份「工作流 vs 官方模板」对照快照（2026-10-11 起由 diff_edit.py 批量生成）
@@ -163,6 +165,7 @@ run.bat sigma          :: 参数轨① 离线 σ 风险矩阵
 run.bat unify --apply  :: 参数轨② 统一提示词与种子（写盘）
 run.bat models         :: 参数轨③ 跨模型跑测
 run.bat analyze        :: 参数轨④ 结果分析
+run.bat h3dur --dry-run :: 参数轨⑤ H3 t2v 时长档位（先看计划；去掉 --dry-run 实跑）
 run.bat pipeline       :: ①→②→③→④ 一次跑完
 ```
 

@@ -62,6 +62,7 @@ ENTRIES = {
     "frobust": ("★ 家族横评⑦ 提示词长度鲁棒性探针（full/slim 配对计划，0 提交）", "10_模型家族横评/lib_prompt_robust.py"),
     "fiqc":    ("★ 家族横评⑧ 增强客观图像指标（曝光/动态范围/色温/构图/噪点，纯像素统计）", "10_模型家族横评/lib_image_qc_enh.py"),
     "fkit":    ("★ 家族横评⑨ SFW 通用提示词素材包（类目白名单，不含任何限制级词条）", "10_模型家族横评/lib_sfw_prompts_kit.py"),
+    "h3dur":   ("参数轨⑤ MiniMax H3 t2v 时长档位受控跑测（需 ComfyUI 已在 8188，--dry-run 0 提交）", "03_受控跑测/run_h3_durations.py"),
 }
 
 # pipeline 的顺序（参数轨四步）
