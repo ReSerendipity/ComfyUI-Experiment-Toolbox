@@ -1,0 +1,156 @@
+{
+ "axes": [
+  "light_direction",
+  "composition",
+  "shot_size"
+ ],
+ "variants": [
+  {
+   "id": "V01",
+   "text": "侧向主光，三分法构图，极特写",
+   "parts": {
+    "light_direction": "侧向主光",
+    "composition": "三分法构图",
+    "shot_size": "极特写"
+   },
+   "axes": [
+    "light_direction",
+    "composition",
+    "shot_size"
+   ],
+   "qc_flags": [
+    "too_short"
+   ],
+   "qc_fatal": []
+  },
+  {
+   "id": "V02",
+   "text": "侧向主光，三分法构图，大远景",
+   "parts": {
+    "light_direction": "侧向主光",
+    "composition": "三分法构图",
+    "shot_size": "大远景"
+   },
+   "axes": [
+    "light_direction",
+    "composition",
+    "shot_size"
+   ],
+   "qc_flags": [
+    "too_short"
+   ],
+   "qc_fatal": []
+  },
+  {
+   "id": "V03",
+   "text": "侧向主光，重复韵律构图，极特写",
+   "parts": {
+    "light_direction": "侧向主光",
+    "composition": "重复韵律构图",
+    "shot_size": "极特写"
+   },
+   "axes": [
+    "light_direction",
+    "composition",
+    "shot_size"
+   ],
+   "qc_flags": [
+    "too_short"
+   ],
+   "qc_fatal": []
+  },
+  {
+   "id": "V04",
+   "text": "侧向主光，重复韵律构图，大远景",
+   "parts": {
+    "light_direction": "侧向主光",
+    "composition": "重复韵律构图",
+    "shot_size": "大远景"
+   },
+   "axes": [
+    "light_direction",
+    "composition",
+    "shot_size"
+   ],
+   "qc_flags": [
+    "too_short"
+   ],
+   "qc_fatal": []
+  },
+  {
+   "id": "V05",
+   "text": "轮廓光描边，三分法构图，极特写",
+   "parts": {
+    "light_direction": "轮廓光描边",
+    "composition": "三分法构图",
+    "shot_size": "极特写"
+   },
+   "axes": [
+    "light_direction",
+    "composition",
+    "shot_size"
+   ],
+   "qc_flags": [
+    "too_short"
+   ],
+   "qc_fatal": []
+  },
+  {
+   "id": "V06",
+   "text": "轮廓光描边，三分法构图，大远景",
+   "parts": {
+    "light_direction": "轮廓光描边",
+    "composition": "三分法构图",
+    "shot_size": "大远景"
+   },
+   "axes": [
+    "light_direction",
+    "composition",
+    "shot_size"
+   ],
+   "qc_flags": [
+    "too_short"
+   ],
+   "qc_fatal": []
+  },
+  {
+   "id": "V07",
+   "text": "轮廓光描边，重复韵律构图，极特写",
+   "parts": {
+    "light_direction": "轮廓光描边",
+    "composition": "重复韵律构图",
+    "shot_size": "极特写"
+   },
+   "axes": [
+    "light_direction",
+    "composition",
+    "shot_size"
+   ],
+   "qc_flags": [
+    "too_short"
+   ],
+   "qc_fatal": []
+  },
+  {
+   "id": "V08",
+   "text": "轮廓光描边，重复韵律构图，大远景",
+   "parts": {
+    "light_direction": "轮廓光描边",
+    "composition": "重复韵律构图",
+    "shot_size": "大远景"
+   },
+   "axes": [
+    "light_direction",
+    "composition",
+    "shot_size"
+   ],
+   "qc_flags": [
+    "too_short"
+   ],
+   "qc_fatal": []
+  }
+ ],
+ "killed": [],
+ "prompt_dir": "10_模型家族横评/prompt_variants",
+ "config": "10_模型家族横评/prompt_variants/bench_config.json"
+}

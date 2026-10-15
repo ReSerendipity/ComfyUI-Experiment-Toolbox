@@ -1,0 +1,217 @@
+{
+ "ledger": "%USERPROFILE%/APP/ComfyUI-aki-v3.2/ComfyUI/output/model_benchmark_variants/ledger.json",
+ "runs": 16,
+ "prompts": 8,
+ "killed": [],
+ "alive": [
+  {
+   "prompt": "V01",
+   "text": "侧向主光，三分法构图，极特写",
+   "families": [
+    "FLUX-1-dev",
+    "FLUX-2-klein-9b"
+   ],
+   "runs": 2,
+   "ok": 2,
+   "ok_rate": 1.0,
+   "mean_elapsed": 54.5,
+   "per_family": {
+    "FLUX-1-dev": {
+     "runs": 1,
+     "ok": 1,
+     "ok_rate": 1.0,
+     "mean_elapsed": 42.3
+    },
+    "FLUX-2-klein-9b": {
+     "runs": 1,
+     "ok": 1,
+     "ok_rate": 1.0,
+     "mean_elapsed": 66.7
+    }
+   }
+  },
+  {
+   "prompt": "V02",
+   "text": "侧向主光，三分法构图，大远景",
+   "families": [
+    "FLUX-1-dev",
+    "FLUX-2-klein-9b"
+   ],
+   "runs": 2,
+   "ok": 2,
+   "ok_rate": 1.0,
+   "mean_elapsed": 55.5,
+   "per_family": {
+    "FLUX-1-dev": {
+     "runs": 1,
+     "ok": 1,
+     "ok_rate": 1.0,
+     "mean_elapsed": 42.6
+    },
+    "FLUX-2-klein-9b": {
+     "runs": 1,
+     "ok": 1,
+     "ok_rate": 1.0,
+     "mean_elapsed": 68.5
+    }
+   }
+  },
+  {
+   "prompt": "V03",
+   "text": "侧向主光，重复韵律构图，极特写",
+   "families": [
+    "FLUX-1-dev",
+    "FLUX-2-klein-9b"
+   ],
+   "runs": 2,
+   "ok": 2,
+   "ok_rate": 1.0,
+   "mean_elapsed": 48.4,
+   "per_family": {
+    "FLUX-1-dev": {
+     "runs": 1,
+     "ok": 1,
+     "ok_rate": 1.0,
+     "mean_elapsed": 34.3
+    },
+    "FLUX-2-klein-9b": {
+     "runs": 1,
+     "ok": 1,
+     "ok_rate": 1.0,
+     "mean_elapsed": 62.5
+    }
+   }
+  },
+  {
+   "prompt": "V04",
+   "text": "侧向主光，重复韵律构图，大远景",
+   "families": [
+    "FLUX-1-dev",
+    "FLUX-2-klein-9b"
+   ],
+   "runs": 2,
+   "ok": 2,
+   "ok_rate": 1.0,
+   "mean_elapsed": 51.4,
+   "per_family": {
+    "FLUX-1-dev": {
+     "runs": 1,
+     "ok": 1,
+     "ok_rate": 1.0,
+     "mean_elapsed": 38.3
+    },
+    "FLUX-2-klein-9b": {
+     "runs": 1,
+     "ok": 1,
+     "ok_rate": 1.0,
+     "mean_elapsed": 64.5
+    }
+   }
+  },
+  {
+   "prompt": "V05",
+   "text": "轮廓光描边，三分法构图，极特写",
+   "families": [
+    "FLUX-1-dev",
+    "FLUX-2-klein-9b"
+   ],
+   "runs": 2,
+   "ok": 2,
+   "ok_rate": 1.0,
+   "mean_elapsed": 48.3,
+   "per_family": {
+    "FLUX-1-dev": {
+     "runs": 1,
+     "ok": 1,
+     "ok_rate": 1.0,
+     "mean_elapsed": 34.3
+    },
+    "FLUX-2-klein-9b": {
+     "runs": 1,
+     "ok": 1,
+     "ok_rate": 1.0,
+     "mean_elapsed": 62.4
+    }
+   }
+  },
+  {
+   "prompt": "V06",
+   "text": "轮廓光描边，三分法构图，大远景",
+   "families": [
+    "FLUX-1-dev",
+    "FLUX-2-klein-9b"
+   ],
+   "runs": 2,
+   "ok": 2,
+   "ok_rate": 1.0,
+   "mean_elapsed": 51.4,
+   "per_family": {
+    "FLUX-1-dev": {
+     "runs": 1,
+     "ok": 1,
+     "ok_rate": 1.0,
+     "mean_elapsed": 38.3
+    },
+    "FLUX-2-klein-9b": {
+     "runs": 1,
+     "ok": 1,
+     "ok_rate": 1.0,
+     "mean_elapsed": 64.5
+    }
+   }
+  },
+  {
+   "prompt": "V07",
+   "text": "轮廓光描边，重复韵律构图，极特写",
+   "families": [
+    "FLUX-1-dev",
+    "FLUX-2-klein-9b"
+   ],
+   "runs": 2,
+   "ok": 2,
+   "ok_rate": 1.0,
+   "mean_elapsed": 48.5,
+   "per_family": {
+    "FLUX-1-dev": {
+     "runs": 1,
+     "ok": 1,
+     "ok_rate": 1.0,
+     "mean_elapsed": 34.4
+    },
+    "FLUX-2-klein-9b": {
+     "runs": 1,
+     "ok": 1,
+     "ok_rate": 1.0,
+     "mean_elapsed": 62.5
+    }
+   }
+  },
+  {
+   "prompt": "V08",
+   "text": "轮廓光描边，重复韵律构图，大远景",
+   "families": [
+    "FLUX-1-dev",
+    "FLUX-2-klein-9b"
+   ],
+   "runs": 2,
+   "ok": 2,
+   "ok_rate": 1.0,
+   "mean_elapsed": 51.4,
+   "per_family": {
+    "FLUX-1-dev": {
+     "runs": 1,
+     "ok": 1,
+     "ok_rate": 1.0,
+     "mean_elapsed": 38.3
+    },
+    "FLUX-2-klein-9b": {
+     "runs": 1,
+     "ok": 1,
+     "ok_rate": 1.0,
+     "mean_elapsed": 64.4
+    }
+   }
+  }
+ ],
+ "min_ok_rate": 0.5
+}
