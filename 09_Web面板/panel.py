@@ -549,6 +549,171 @@ def analyze(subdir):
     return 200, {"rows": out_rows, "montage": montage, "dir": d}
 
 
+# ---------------- E7：视频档位跑测（适配器驱动） ----------------
+# 依赖方向红线（CI Gate ⑥）：09 轨只准 import 01/02，所以这里**不 import** 03 轨的
+# run_durations / lib_vram，一律走子进程调用，并把结果当文本/JSON 消费。
+VIDEO_JOB = {"status": "idle", "adapter": None, "log_path": None, "log": "",
+             "started": None, "finished": None, "done": 0, "total": 0,
+             "base_records": 0, "records": [], "error": None, "cmd": None}
+VIDEO_LOCK = threading.Lock()
+RUN_DURATIONS = os.path.join(TOOLBOX, "03_受控跑测", "run_durations.py")
+LIB_VRAM = os.path.join(TOOLBOX, "03_受控跑测", "lib_vram.py")
+ADAPTERS_JSON = os.path.join(TOOLBOX, "03_受控跑测", "adapters.json")
+
+
+def _track_env():
+    """子进程环境：补 PYTHONPATH（01/03）并强制 UTF-8，与 run.py 的 build_env 同口径。"""
+    env = os.environ.copy()
+    extra = [os.path.join(TOOLBOX, "01_工作流扁平化"), os.path.join(TOOLBOX, "03_受控跑测")]
+    old = env.get("PYTHONPATH", "")
+    env["PYTHONPATH"] = os.pathsep.join(extra + ([old] if old else []))
+    env["PYTHONUTF8"] = "1"
+    env["PYTHONIOENCODING"] = "utf-8"
+    return env
+
+
+def list_adapters():
+    """读 adapters.json（跳过 `_` 说明键），供面板下拉框用。"""
+    if not os.path.isfile(ADAPTERS_JSON):
+        return {}
+    try:
+        with open(ADAPTERS_JSON, encoding="utf-8") as fh:
+            data = json.load(fh)
+    except Exception as e:                                   # noqa: BLE001
+        log("adapters.json 读取失败:", e)
+        return {}
+    return {k: v for k, v in data.items()
+            if not k.startswith("_") and isinstance(v, dict)}
+
+
+def video_log_path(adapter_name):
+    """向 run_durations 问日志路径：路径规则只有一处定义，面板不复制。"""
+    try:
+        out = subprocess.run([sys.executable, RUN_DURATIONS, "--adapter", adapter_name,
+                              "--log-path"],
+                             stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                             timeout=60, env=_track_env())
+        lines = out.stdout.decode("utf-8", "replace").strip().splitlines()
+        return lines[-1] if lines else None
+    except Exception as e:                                   # noqa: BLE001
+        log("取视频日志路径失败:", e)
+        return None
+
+
+def vram_snapshot():
+    """lib_vram --json：显存快照 + 阶梯 + 各时长推荐档。"""
+    try:
+        out = subprocess.run([sys.executable, LIB_VRAM, "--json"],
+                             stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                             timeout=60, env=_track_env())
+        txt = out.stdout.decode("utf-8", "replace").strip()
+        if txt.startswith("{"):
+            return json.loads(txt)
+        return {"ok": False, "error": "bad_output:" + txt[:80]}
+    except Exception as e:                                   # noqa: BLE001
+        return {"ok": False, "error": "%s: %s" % (type(e).__name__, e)}
+
+
+def _video_worker(cmd):
+    """后台跑 run_durations，逐行收日志；结束后按退出码置状态。"""
+    try:
+        proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                                env=_track_env(),
+                                cwd=os.path.dirname(RUN_DURATIONS))
+        for line in iter(proc.stdout.readline, b""):
+            s = line.decode("utf-8", "replace").rstrip()
+            with VIDEO_LOCK:
+                VIDEO_JOB["log"] = (VIDEO_JOB["log"] + s + "\n")[-20000:]
+        proc.stdout.close()
+        rc = proc.wait()
+        with VIDEO_LOCK:
+            VIDEO_JOB["status"] = "done" if rc == 0 else "error"
+            VIDEO_JOB["finished"] = time.strftime("%H:%M:%S")
+            if rc != 0:
+                VIDEO_JOB["error"] = "退出码 %d（看日志末尾）" % rc
+    except Exception as e:                                   # noqa: BLE001
+        with VIDEO_LOCK:
+            VIDEO_JOB["status"] = "error"
+            VIDEO_JOB["error"] = "%s: %s" % (type(e).__name__, e)
+            VIDEO_JOB["finished"] = time.strftime("%H:%M:%S")
+
+
+def start_video_run(body):
+    """POST /api/video_run：启动一次视频档位跑测（dry-run 时 0 提交）。"""
+    if not os.path.isfile(RUN_DURATIONS):
+        return 500, {"error": "找不到 run_durations.py"}
+    name = (body.get("adapter") or "").strip()
+    ads = list_adapters()
+    if name not in ads:
+        return 400, {"error": "未知适配器 %r；可选：%s" % (name, list(ads))}
+    ad = ads[name]
+    tags = [c.get("tag") for c in ad.get("combos", [])]
+    only = (body.get("only") or "").strip()
+    if only and only not in tags:
+        return 400, {"error": "档位 %r 不在适配器里；可选：%s" % (only, tags)}
+
+    cmd = [sys.executable, RUN_DURATIONS, "--adapter", name]
+    if only:
+        cmd += ["--only", only]
+    if (body.get("te") or "").strip():
+        cmd += ["--te", body["te"].strip()]
+    if (body.get("dit") or "").strip():
+        cmd += ["--dit", body["dit"].strip()]
+    tier = body.get("start_tier")
+    if tier not in (None, "", "auto"):
+        try:
+            cmd += ["--start-tier", str(int(tier))]
+        except (TypeError, ValueError):
+            return 400, {"error": "start_tier 必须是整数或 auto"}
+    mode = (body.get("vram_mode") or "calibrated").strip()
+    if mode not in ("calibrated", "live"):
+        return 400, {"error": "vram_mode 只能是 calibrated / live"}
+    cmd += ["--vram-mode", mode]
+    if body.get("no_auto_vram"):
+        cmd += ["--no-auto-vram"]
+    if body.get("dry_run"):
+        cmd += ["--dry-run"]
+
+    lp = video_log_path(name)
+    base = 0
+    if lp and os.path.isfile(lp):
+        try:
+            with open(lp, encoding="utf-8") as fh:
+                base = sum(1 for l in fh if l.strip())
+        except OSError:
+            base = 0
+
+    with VIDEO_LOCK:
+        if VIDEO_JOB["status"] == "running":
+            return 409, {"error": "已有视频跑测在进行中"}
+        VIDEO_JOB.update({"status": "running", "adapter": name, "log": "",
+                          "log_path": lp, "base_records": base, "records": [],
+                          "started": time.strftime("%H:%M:%S"), "finished": None,
+                          "done": 0, "total": 1 if only else max(1, len(tags)),
+                          "error": None, "cmd": cmd})
+    threading.Thread(target=_video_worker, args=(cmd,), daemon=True).start()
+    log("视频跑测启动:", " ".join(cmd[1:]))
+    return 200, {"ok": True, "cmd": cmd}
+
+
+def video_status():
+    """GET /api/video_status：日志 + 本次新增的 JSONL 记录（含降档轨迹）。"""
+    with VIDEO_LOCK:
+        j = dict(VIDEO_JOB)
+    lp = j.get("log_path")
+    recs = []
+    if lp and os.path.isfile(lp):
+        try:
+            with open(lp, encoding="utf-8") as fh:
+                recs = [json.loads(l) for l in fh if l.strip()]
+        except Exception:                                    # noqa: BLE001
+            recs = []
+    fresh = recs[j.get("base_records", 0):]
+    j["records"] = fresh[-50:]
+    j["done"] = sum(1 for r in fresh if r.get("ok"))
+    return j
+
+
 # ---------------- HTTP 服务 ----------------
 class Handler(BaseHTTPRequestHandler):
     def log_message(self, fmt, *args):
@@ -596,6 +761,12 @@ class Handler(BaseHTTPRequestHandler):
                 return self._send(code, data)
             if path == "/api/comfy_lists":
                 return self._send(200, comfy_lists())
+            if path == "/api/adapters":
+                return self._send(200, list_adapters())
+            if path == "/api/vram":
+                return self._send(200, vram_snapshot())
+            if path == "/api/video_status":
+                return self._send(200, video_status())
             if path == "/api/run_status":
                 return self._send(200, {k: JOB[k] for k in ("status", "log", "done", "total", "started", "finished", "out_subdir")})
             if path == "/api/image" and "subdir" in q and "name" in q:
@@ -613,6 +784,9 @@ class Handler(BaseHTTPRequestHandler):
                 return self._send(code, data)
             if self.path == "/api/run":
                 code, data = start_run(body)
+                return self._send(code, data)
+            if self.path == "/api/video_run":
+                code, data = start_video_run(body)
                 return self._send(code, data)
             if self.path == "/api/analyze":
                 code, data = analyze(body.get("subdir") or body.get("out_subdir") or "")

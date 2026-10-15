@@ -4,7 +4,11 @@
 覆盖 Web 面板的 API 契约面（全部离线，不依赖 ComfyUI 服务）：
   build_api —— 扁平化后按组合覆盖 KSampler 参数（类型归一）+ 正向提示词注入；
   start_run —— 缺参 400 / 已在跑 409 两个同步分支；
-  read_workflow_truth —— 运行时真值提取（①页数据源）。
+  read_workflow_truth —— 运行时真值提取（①页数据源）；
+  list_adapters —— adapters.json 过滤 `_` 说明键（2026-10-16 E7 扩展）；
+  vram_snapshot —— 显存快照结构契约（无 GPU 环境也给全阶梯）；
+  start_video_run —— 视频跑测四条同步校验 + 409 冲突（不起线程不跑图）；
+  video_log_path —— 日志路径规则只有一处定义（run_durations --log-path）。
 使用测试内合成的扁平（非子图）工作流，tempfile 承载。
 """
 import json
@@ -146,6 +150,103 @@ class TestReadWorkflowTruth(PanelApiTestBase):
         self.assertEqual(truth["values"]["steps"], 25)
         self.assertEqual(truth["values"]["seed"], 123)
         self.assertEqual(truth["prompt_chars"], len("origin prompt"))
+
+
+class TestListAdapters(unittest.TestCase):
+    """adapters.json 加载：跳过 `_` 说明键、非 dict 值，供面板下拉框。"""
+
+    def test_skips_comment_keys_and_keeps_real_adapters(self):
+        ads = panel.list_adapters()
+        self.assertTrue(ads, "adapters.json 应随仓提交且非空")
+        self.assertNotIn("_comment", ads)
+        for name, ad in ads.items():
+            self.assertIsInstance(ad, dict)
+        self.assertIn("minimax_h3_t2v", ads)
+        h3 = ads["minimax_h3_t2v"]
+        for key in ("workflow", "fps", "frames_rule", "combos"):
+            self.assertIn(key, h3)
+        self.assertEqual(h3["frames_rule"]["type"], "grid")
+        self.assertEqual((h3["frames_rule"]["k"], h3["frames_rule"]["offset"]), (17, 5))
+
+    def test_missing_file_returns_empty(self):
+        old = panel.ADAPTERS_JSON
+        panel.ADAPTERS_JSON = os.path.join(tempfile.gettempdir(), "no_such_adapters.json")
+        try:
+            self.assertEqual(panel.list_adapters(), {})
+        finally:
+            panel.ADAPTERS_JSON = old
+
+
+class TestVramSnapshot(unittest.TestCase):
+    """vram_snapshot：lib_vram --json 的结构契约（无 GPU 的 runner 上也必须给全阶梯）。"""
+
+    def test_snapshot_has_ladder_and_tiers(self):
+        snap = panel.vram_snapshot()
+        self.assertIsInstance(snap, dict)
+        self.assertIn("ladder", snap)
+        self.assertEqual(snap["ladder"], [[1344, 768], [1152, 640], [960, 544]])
+        self.assertEqual(sorted(snap["tiers"]), ["10", "11", "15", "5", "8"])
+        for _d, t in snap["tiers"].items():
+            for key in ("tier", "wh", "chain"):
+                self.assertIn(key, t)
+            self.assertIsInstance(t["chain"], list)
+            self.assertTrue(t["chain"], "降档链不能为空")
+
+
+class TestVideoRunValidation(unittest.TestCase):
+    """start_video_run 同步校验分支：全部在起线程之前返回，不会真跑图。
+
+    只覆盖 400/409 错误路径；成功路径会起线程跑 run_durations（真连 ComfyUI），
+    由 E7 的人工面板联调覆盖，不进单测。
+    """
+
+    def test_empty_body_unknown_adapter_400(self):
+        rc, body = panel.start_video_run({})
+        self.assertEqual(rc, 400)
+        self.assertIn("未知适配器", body["error"])
+
+    def test_unknown_adapter_400(self):
+        rc, body = panel.start_video_run({"adapter": "no_such_adapter"})
+        self.assertEqual(rc, 400)
+        self.assertIn("未知适配器", body["error"])
+        self.assertIn("minimax_h3_t2v", body["error"])  # 错误信息带可选项
+
+    def test_bad_only_400(self):
+        rc, body = panel.start_video_run(
+            {"adapter": "minimax_h3_t2v", "only": "no_such_tier"})
+        self.assertEqual(rc, 400)
+        self.assertIn("不在适配器里", body["error"])
+
+    def test_bad_start_tier_400(self):
+        rc, body = panel.start_video_run(
+            {"adapter": "minimax_h3_t2v", "start_tier": "abc"})
+        self.assertEqual(rc, 400)
+        self.assertIn("start_tier", body["error"])
+
+    def test_bad_vram_mode_400(self):
+        rc, body = panel.start_video_run(
+            {"adapter": "minimax_h3_t2v", "vram_mode": "turbo"})
+        self.assertEqual(rc, 400)
+        self.assertIn("vram_mode", body["error"])
+
+    def test_conflict_409(self):
+        old = panel.VIDEO_JOB["status"]
+        panel.VIDEO_JOB["status"] = "running"
+        try:
+            rc, body = panel.start_video_run({"adapter": "minimax_h3_t2v"})
+            self.assertEqual(rc, 409)
+            self.assertIn("已有视频跑测", body["error"])
+        finally:
+            panel.VIDEO_JOB["status"] = old
+
+
+class TestVideoLogPath(unittest.TestCase):
+    """video_log_path：向 run_durations 问路径（路径规则只有一处定义）。"""
+
+    def test_log_path_points_to_jsonl(self):
+        lp = panel.video_log_path("minimax_h3_t2v")
+        self.assertTrue(lp)
+        self.assertTrue(lp.replace("\\", "/").endswith("result_log.jsonl"))
 
 
 if __name__ == "__main__":

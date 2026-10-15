@@ -55,6 +55,7 @@
   <button data-t="sigma">② σ 风险矩阵</button>
   <button data-t="run">③ 受控跑测</button>
   <button data-t="result">④ 结果分析</button>
+  <button data-t="video">⑤ 视频档位</button>
 </nav>
 <main>
   <section id="t-wf" class="on">
@@ -113,6 +114,37 @@
       <div id="resBody"></div>
     </div>
   </section>
+
+  <section id="t-video">
+    <div class="card">
+      <h2>视频时长档位跑测（E4 适配器驱动 · E2 显存自适应 + OOM 自动降档）</h2>
+      <div class="row">适配器
+        <select id="vAdapter" style="min-width:260px"></select>
+        档位 <select id="vCombo"></select>
+        起始档 <select id="vTier">
+          <option value="auto">自动（按模式推荐）</option>
+          <option value="0">顶档 1344×768</option>
+          <option value="1">中档 1152×640</option>
+          <option value="2">底档 960×544</option>
+        </select>
+        显存模式 <select id="vMode">
+          <option value="calibrated">calibrated（按标定边界表）</option>
+          <option value="live">live（按实时可用显存）</option>
+        </select>
+      </div>
+      <div class="row">TE <input id="vTe" style="width:300px" placeholder="留空用适配器默认值">
+        DiT <input id="vDit" style="width:300px" placeholder="留空用适配器默认值"></div>
+      <div class="row"><span id="vVram" class="hint">显存信息加载中…</span></div>
+      <div class="row"><button class="btn" id="vRunBtn" onclick="startVideo()">开始跑测</button>
+        <button class="btn gray" onclick="pollVideo()">刷新状态</button>
+        <label class="hint"><input type="checkbox" id="vDry"> dry-run（只出计划，0 提交）</label></div>
+      <h2 style="margin-top:14px">进度 <span class="muted" id="vStat"></span></h2>
+      <div class="bar"><i id="vBar"></i></div>
+      <div style="height:8px"></div>
+      <div id="vRecs" class="hint"></div>
+      <div id="vLog"></div>
+    </div>
+  </section>
 </main>
 <script>
 const $ = s => document.querySelector(s);
@@ -124,7 +156,64 @@ document.querySelectorAll('nav button').forEach(b => b.onclick = () => {
   document.querySelectorAll('section').forEach(x=>x.classList.remove('on'));
   b.classList.add('on'); $('#t-'+b.dataset.t).classList.add('on');
   if (b.dataset.t==='sigma') pollSigma();
+  if (b.dataset.t==='video') { if(!Object.keys(VAD).length) loadAdapters(); pollVideo(); }
 });
+
+/* ── ⑤ 视频档位（E7） ── */
+let VAD = {};
+async function loadAdapters(){
+  VAD = await (await jget('/api/adapters')).data || {};
+  const sel = $('#vAdapter'); sel.innerHTML = '';
+  for (const k in VAD){
+    const o = document.createElement('option'); o.value = k;
+    o.textContent = k + ' — ' + (VAD[k].label || ''); sel.appendChild(o);
+  }
+  sel.onchange = fillVideoCombos; fillVideoCombos();
+  const v = await (await jget('/api/vram')).data || {};
+  $('#vVram').textContent = v.ok
+    ? `显存：可用 ${v.free_gib} GiB（已用 ${v.used_mib}MiB / 共 ${v.total_mib}MiB）· 阶梯 ${(v.ladder||[]).map(x=>x.join('×')).join(' → ')}`
+    : `显存探测不可用（${v.error || '未知'}）→ live 模式下起始档保守降一档`;
+}
+function fillVideoCombos(){
+  const ad = VAD[$('#vAdapter').value] || {};
+  const cs = $('#vCombo'); cs.innerHTML = '<option value="">全部档位</option>';
+  (ad.combos || []).forEach(c => {
+    const o = document.createElement('option'); o.value = c.tag;
+    o.textContent = `${c.tag}（${c.duration}s @ ${c.width}×${c.height}）`; cs.appendChild(o);
+  });
+  $('#vTe').value = (ad.defaults || {}).te || '';
+  $('#vDit').value = (ad.defaults || {}).dit || '';
+}
+async function startVideo(){
+  const r = await jpost('/api/video_run', {
+    adapter: $('#vAdapter').value, only: $('#vCombo').value,
+    te: $('#vTe').value, dit: $('#vDit').value,
+    start_tier: $('#vTier').value, vram_mode: $('#vMode').value,
+    dry_run: $('#vDry').checked
+  });
+  if (r.code !== 200){ alert('启动失败：' + (r.data.error || r.code)); return; }
+  pollVideo();
+}
+async function pollVideo(){
+  const {data} = await jget('/api/video_status');
+  const zh = {idle:'空闲', running:'运行中…', done:'完成', error:'出错'};
+  $('#vStat').textContent = (zh[data.status] || data.status)
+    + (data.started ? ` · ${data.started}` : '') + (data.finished ? ` → ${data.finished}` : '')
+    + (data.error ? ` · ${data.error}` : '');
+  $('#vBar').style.width = (data.total ? Math.round(100 * data.done / data.total) : 0) + '%';
+  $('#vLog').innerHTML = '<pre style="white-space:pre-wrap;font-size:12px">'
+    + esc((data.log || '').split('\n').slice(-60).join('\n')) + '</pre>';
+  $('#vRecs').innerHTML = (data.records || []).filter(r => r.tag).map(r => {
+    const dg = (r.vram && r.vram.downgrades) || [];
+    const head = r.ok ? '✓' : '✗';
+    const tail = r.ok ? `${(r.elapsed_sec / 60).toFixed(1)}min ${(r.outputs || []).join(',')}`
+                      : esc(r.error || '');
+    return `<div>${head} ${esc(r.tag)} ${r.width}×${r.height} ${tail}`
+      + (dg.length ? ` <b>[降档] ${dg.map(d => d.from + '→' + d.to).join(', ')}</b>` : '') + '</div>';
+  }).join('') || '<span class="hint">本次尚无记录</span>';
+  $('#vRunBtn').disabled = (data.status === 'running');
+  if (data.status === 'running') setTimeout(pollVideo, 3000);
+}
 
 async function jget(u){ const r = await fetch(u); return {code:r.status, data:await r.json()}; }
 async function jpost(u,b){ const r = await fetch(u,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)}); return {code:r.status, data:await r.json()}; }
@@ -157,6 +246,7 @@ async function refreshComfy(){
   } catch(e){ $('#comfyTxt').textContent = '面板通信失败'; }
 }
 setInterval(refreshComfy, 5000); refreshComfy();
+loadAdapters();   // ⑤ 视频档位：适配器与显存快照预热
 
 /* ComfyUI 自动拉起：跑测前调用；已在运行则秒过 */
 async function ensureComfy(){
