@@ -1,0 +1,52 @@
+{
+  "_comment": "E4 视频时长档位跑测适配器（2026-10-16）。新增模型 = 加一条，跑测器本体零改动。字段口径见 run_durations.py 模块 docstring。路径一律用 %USERPROFILE% 运行时展开（公开仓红线：不写死本机绝对路径）。",
+
+  "minimax_h3_t2v": {
+    "label": "MiniMax H3 t2v（17k+5 网格，24fps）",
+    "workflow": "%USERPROFILE%\\APP\\ComfyUI-aki-v3.2\\ComfyUI\\user\\default\\workflows\\Video\\video_minimax_h3_t2v.json",
+    "fps": 24,
+    "frames_rule": {"type": "grid", "k": 17, "offset": 5, "min": 5},
+    "nodes": {"i2v": 104, "clip": 13, "unet": 6},
+    "_nodes_note": "i2v=MiniMaxH3ImageToVideo（length/width/height）；clip=CLIPLoader；unet=UNETLoader。均为 flatten 用的原始数字 ID。",
+    "defaults": {
+      "te": "MiniMax-H3\\qwen3vl_32b_h3_ultra_uncensored_heretic_int8_convrot.safetensors",
+      "dit": "MiniMax-H3\\10Eros_Max_h3_TURBO-hybrid_beta5_int8.safetensors",
+      "_why": "工作流 JSON 里写死的 FL2VA_pruned / abliterated_nvfp4 两个文件已不在磁盘（2026-10-15 核实），不覆盖会 loader_missing 拒绝提交"
+    },
+    "fill_hidden": [
+      {
+        "class_type": "RTXVideoSuperResolution",
+        "inputs": {"strength": 1.0, "image_encoding": "8-bit RGB"},
+        "_why": "UI 在 resize_type=scale 时条件隐藏这两个参数，工作流未序列化，而 API 视为 required"
+      }
+    ],
+    "prompt_fallback": {
+      "node_type": "MiniMaxH3ImageToVideo",
+      "widget": "prompt",
+      "_why": "顶层容器 prompt='' 时前端不覆盖子图内链路值；flatten 会注入空串，此处按前端语义回退子图原值"
+    },
+    "combos": [
+      {"tag": "5s_1344x768",  "duration": 5.0,  "width": 1344, "height": 768, "note": "基线档：1344×768 全配置可跑"},
+      {"tag": "8s_1344x768",  "duration": 8.0,  "width": 1344, "height": 768, "note": "1344×768 的显存上限档"},
+      {"tag": "10s_1152x640", "duration": 10.0, "width": 1152, "height": 640, "note": "10s 起需降分辨率至 1152×640"},
+      {"tag": "11s_960x544",  "duration": 11.0, "width": 960,  "height": 544, "note": "11s 需再降至 960×544"},
+      {"tag": "15s_960x544",  "duration": 15.0, "width": 960,  "height": 544, "note": "模型标称上限 15s，仍为 960×544"}
+    ],
+    "log_dir": "h3_duration_logs",
+    "_log_dir_why": "沿用 2026-10-14 起的历史日志目录，不破坏既有 JSONL 追加链"
+  },
+
+  "ltxv_demo": {
+    "label": "LTX-Video 示例（8k+1 网格，16fps）——仅用于验证帧数换算式可插拔",
+    "example_only": true,
+    "_example_only_why": "本机无该工作流/权重，只被 tests/test_run_durations.py 用来验证「换模型只需换规则」；不要拿它跑实任务（workflow 为 null 会被拒绝提交）",
+    "workflow": null,
+    "fps": 16,
+    "frames_rule": {"type": "grid", "k": 8, "offset": 1, "min": 9},
+    "nodes": {},
+    "combos": [
+      {"tag": "2s", "duration": 2.0, "width": 768, "height": 512, "note": "示例档位"},
+      {"tag": "5s", "duration": 5.0, "width": 768, "height": 512, "note": "示例档位"}
+    ]
+  }
+}
