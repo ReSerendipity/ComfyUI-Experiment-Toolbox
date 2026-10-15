@@ -1,0 +1,114 @@
+{
+ "ok": true,
+ "root": "%USERPROFILE%\\APP\\ComfyUI-aki-v3.2\\ComfyUI\\output",
+ "scanned": 2,
+ "analyzed": 2,
+ "verdict": {
+  "ok": 2,
+  "warn": 0,
+  "bad": 0,
+  "failed": 0
+ },
+ "flag_count": {
+  "black_frame_sparse": 1,
+  "freeze_frame_sparse": 2
+ },
+ "rows": [
+  {
+   "file": "MiniMax_H3_00001_.mp4",
+   "path": "%USERPROFILE%/APP/ComfyUI-aki-v3.2/ComfyUI/output\\MiniMax_H3_00001_.mp4",
+   "ok": true,
+   "flags": [
+    "black_frame_sparse",
+    "freeze_frame_sparse"
+   ],
+   "meta": {
+    "ok": true,
+    "duration": 5.166688,
+    "size_bytes": 8661974,
+    "bit_rate": 13412033,
+    "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+    "has_video": true,
+    "codec": "h264",
+    "pix_fmt": "yuv420p10le",
+    "width": 2688,
+    "height": 1536,
+    "fps": 24.0,
+    "nb_frames": 124,
+    "has_audio": true,
+    "audio_codec": "aac",
+    "audio_sample_rate": 32000,
+    "audio_channels": 2
+   },
+   "frames": {
+    "ok": true,
+    "frames_sampled": 60,
+    "frame_size": "320x184",
+    "luma_mean": 81.925,
+    "luma_min": 0.004,
+    "luma_max": 134.98,
+    "black_frames": 1,
+    "over_frames": 0,
+    "freeze_frames": 3,
+    "black_ratio": 0.0167,
+    "over_ratio": 0.0,
+    "freeze_ratio": 0.0508,
+    "motion_mean": 18.774,
+    "motion_p95": 109.767,
+    "motion_max": 121.465
+   },
+   "info": [
+    "black_frame_sparse",
+    "freeze_frame_sparse"
+   ],
+   "verdict": "ok"
+  },
+  {
+   "file": "MiniMax_H3_00002_.mp4",
+   "path": "%USERPROFILE%/APP/ComfyUI-aki-v3.2/ComfyUI/output\\MiniMax_H3_00002_.mp4",
+   "ok": true,
+   "flags": [
+    "freeze_frame_sparse"
+   ],
+   "meta": {
+    "ok": true,
+    "duration": 8,
+    "size_bytes": 8005716,
+    "bit_rate": 8005716,
+    "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+    "has_video": true,
+    "codec": "h264",
+    "pix_fmt": "yuv420p10le",
+    "width": 2688,
+    "height": 1536,
+    "fps": 24.0,
+    "nb_frames": 192,
+    "has_audio": true,
+    "audio_codec": "aac",
+    "audio_sample_rate": 32000,
+    "audio_channels": 2
+   },
+   "frames": {
+    "ok": true,
+    "frames_sampled": 60,
+    "frame_size": "320x184",
+    "luma_mean": 45.853,
+    "luma_min": 7.941,
+    "luma_max": 136.148,
+    "black_frames": 0,
+    "over_frames": 0,
+    "freeze_frames": 8,
+    "black_ratio": 0.0,
+    "over_ratio": 0.0,
+    "freeze_ratio": 0.1356,
+    "motion_mean": 21.357,
+    "motion_p95": 119.567,
+    "motion_max": 123.071
+   },
+   "info": [
+    "freeze_frame_sparse"
+   ],
+   "verdict": "ok"
+  }
+ ]
+}
