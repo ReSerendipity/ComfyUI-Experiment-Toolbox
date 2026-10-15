@@ -35,6 +35,7 @@ import fnmatch
 import hashlib
 import json
 import os
+import re
 import sys
 import time
 
@@ -105,9 +106,16 @@ def _roster_digest(files):
 
 # ── API ①：建基线 ──────────────────────────────────────────────────────────
 def depersonalize(p):
-    """输出路径脱敏：本机主目录改写为 %USERPROFILE% 形态（公开仓红线，2026-10-15）。"""
+    """输出路径脱敏：本机主目录改写为 %USERPROFILE% 形态（公开仓红线，2026-10-15）。
+
+    兼容混合分隔符：外部传入路径可能是正斜杠形态（盘符:/用户名/...），而
+    %USERPROFILE% 展开是反斜杠（C:\\Users\\...），直接 startswith 会失配
+    （2026-10-16 judge JSON 实测泄漏一枚，已修；替换不改变长度，切片安全）。
+    """
     home = os.path.expandvars(r"%USERPROFILE%")
-    if home and home != "%USERPROFILE%" and p and p.startswith(home):
+    if not (home and home != "%USERPROFILE%" and p):
+        return p
+    if p.replace("/", "\\").startswith(home.replace("/", "\\")):
         return "%USERPROFILE%" + p[len(home):]
     return p
 
@@ -258,6 +266,166 @@ def check(baseline, root=None, globs=None, ignore=None, ignore_dirs=None,
     return report
 
 
+# ── E6 新维度①：重复量化检测 ────────────────────────────────────────────────
+# 由来：2026-10-15 手工审计 text_encoders / diffusion_models 两个目录，找出
+# 「Z-image TE 的 int8/fp8 双份」「Qwen-Image-2.1 两个 UC DiT」这类真重复。
+# 那是人肉做的、只做了一次；本维度把它固化成可重复跑的门禁。
+QUANT_TOKENS = ("nvfp4", "int8", "int4", "fp8", "fp4", "fp16", "bf16", "gguf",
+                "q8_0", "q6_k", "q5_k_m", "q5_0", "q4_k_m", "q4_0", "q3_k_l", "q2_k",
+                # e4m3fn/e5m2fn 这类「FP8 变体」标记必须能剥：本机 Z-image TE 的
+                # 双量化就是 `qwen3-4b-heretic_int8` 与 `qwen3-4b-heretic_fp8_e4m3fn`，
+                # 少了这两个 token 会把 2026-10-15 手工审计查出来的真重复漏掉。
+                "e4m3fn", "e5m2fn", "e4m3", "e5m2",
+                "convrot", "scaled", "pruned", "q8", "q6", "q5", "q4", "q3", "q2")
+MODEL_EXT = (".safetensors", ".gguf", ".ckpt", ".bin", ".pt", ".pth", ".sft")
+
+
+def norm_quant_stem(name):
+    """剥掉扩展名与尾部量化/变体标记，得到「同一模型的底座名」。
+
+    qwen3vl_32b_h3_ultra_uncensored_heretic_int8_convrot.safetensors
+      → qwen3vl_32b_h3_ultra_uncensored_heretic
+    只剥**尾部**标记：模型名中间的 int8/fp8 不动，避免把不同模型并到一起。
+    """
+    s = str(name or "")
+    low = s.lower()
+    for ext in MODEL_EXT:
+        if low.endswith(ext):
+            s = s[: -len(ext)]
+            low = s.lower()
+            break
+    changed = True
+    while changed and s:
+        changed = False
+        for tok in QUANT_TOKENS:
+            for sep in ("_", "-", "."):
+                suf = sep + tok
+                if s.lower().endswith(suf) and len(s) > len(suf):
+                    s = s[: -len(suf)]
+                    changed = True
+                    break
+            if changed:
+                break
+    return s.strip("_.-")
+
+
+def list_files(root, globs=("*",), ignore=DEFAULT_IGNORE, ignore_dirs=DEFAULT_IGNORE_DIRS,
+               recursive=True):
+    """轻量列目录（只记 size，**不哈希**）：E6 两维度只要文件清单，
+    走 build_baseline 会把几十 GB 权重全哈希一遍，纯属浪费。"""
+    root = os.path.abspath(root)
+    if not os.path.isdir(root):
+        raise GateError("找不到被扫目录：%s" % root)
+    out = {}
+    walker = os.walk(root) if recursive else [(root, [], sorted(os.listdir(root)))]
+    for r, ds, fs in walker:
+        if recursive:
+            ds[:] = sorted(d for d in ds if d not in ignore_dirs)
+        for fn in sorted(fs):
+            p = os.path.join(r, fn)
+            if not os.path.isfile(p):
+                continue
+            rel = _norm_rel(p, root)
+            if _ignored(rel, fn, ignore) or _matched(rel, fn, globs) is False:
+                continue
+            out[rel] = {"size": int(os.stat(p).st_size)}
+    return out
+
+
+def detect_dup_quant(files, allow=()):
+    """同目录同底座名、只有量化标记不同 → 疑似重复量化。
+
+    返回 [{dir, stem, items:[{rel,size_mb}], tag}]；allow 里的 fnmatch 模式豁免
+    （有些双份是刻意保留的：不同量化对应不同显存档位）。
+    """
+    groups = {}
+    for rel in sorted(files):
+        d = os.path.dirname(rel)
+        base = os.path.basename(rel)
+        if not any(base.lower().endswith(e) for e in MODEL_EXT):
+            continue
+        stem = norm_quant_stem(base)
+        if not stem:
+            continue
+        groups.setdefault((d, stem), []).append(
+            {"rel": rel, "size_mb": round(files[rel]["size"] / 2**20, 1)})
+    out = []
+    for (d, stem), items in sorted(groups.items()):
+        if len(items) < 2:
+            continue
+        if any(fnmatch.fnmatchcase(stem, p) or fnmatch.fnmatchcase(d, p) for p in allow):
+            continue
+        out.append({"dir": d, "stem": stem, "items": items,
+                    "tag": "±量化重复（同一底座 %d 份）" % len(items)})
+    return out
+
+
+# ── E6 新维度②：孤儿文件检测 ────────────────────────────────────────────────
+# 扫引用来源时要跳过的目录：这些是**快照/归档/样例**，里面写着旧模型名，
+# 把它们当「现役引用」会让每个模型都被判为已引用 → 孤儿检测形同虚设
+# （实测：不排除时 diffusion_models 的孤儿从 5 个掉到 0 个，全是假阴性）。
+DEFAULT_REF_SKIP_DIRS = ("99_归档", "07_样例输出与数据", "08_官方模板对齐",
+                         "__pycache__", ".git", ".github", "tests")
+
+SCAN_PAT = re.compile(r"[A-Za-z0-9._+\-]+\.(?:safetensors|gguf|ckpt|bin|pt|pth|sft)")
+
+
+def scan_references(roots, extra_files=None, skip_dirs=DEFAULT_REF_SKIP_DIRS):
+    """扫工作流/配置 JSON，收集被引用的模型文件名集合（只读）。
+
+    只看文件名形态（.safetensors/.gguf/...）：ComfyUI 0.39+ 的候选值是带子目录的
+    相对路径，工作流里存的既有扁平名也有相对路径，统一按 basename 比对最稳。
+    """
+    refs = set()
+
+    def eat_text(text):
+        for m in SCAN_PAT.finditer(text):
+            refs.add(os.path.basename(m.group(0).replace("\\", "/")))
+
+    for root in roots or ():
+        if not root or not os.path.isdir(root):
+            continue
+        for r, ds, fs in os.walk(root):
+            ds[:] = [d for d in ds if d not in DEFAULT_IGNORE_DIRS and d not in skip_dirs]
+            for fn in sorted(fs):
+                if not fn.lower().endswith(".json"):
+                    continue
+                try:
+                    with open(os.path.join(r, fn), encoding="utf-8", errors="replace") as fh:
+                        eat_text(fh.read())
+                except OSError:
+                    continue
+    for p in extra_files or ():
+        if p and os.path.isfile(p):
+            try:
+                with open(p, encoding="utf-8", errors="replace") as fh:
+                    eat_text(fh.read())
+            except OSError:
+                pass
+    return refs
+
+
+def default_ref_files():
+    """现役配置里写明的模型（不算归档）：适配器配置 + 家族横评配置。"""
+    root = os.path.dirname(HERE)
+    return [os.path.join(root, "03_受控跑测", "adapters.json"),
+            os.path.join(HERE, "family_config.json")]
+
+
+def detect_orphans(files, ref_roots, allow=(), extra_files=None):
+    """磁盘上有、但没有任何工作流引用的模型文件 → 孤儿（只报告，绝不删）。"""
+    refs = scan_references(ref_roots, extra_files)
+    out = []
+    for rel in sorted(files):
+        base = os.path.basename(rel)
+        if not any(base.lower().endswith(e) for e in MODEL_EXT):
+            continue
+        if base in refs or any(fnmatch.fnmatchcase(base, p) for p in allow):
+            continue
+        out.append({"rel": rel, "size_mb": round(files[rel]["size"] / 2**20, 1)})
+    return out, len(refs)
+
+
 def format_report(report, limit=15):
     """把 report 渲染成给人看的多行文本（纯函数，不打印）。"""
     c = report["counts"]
@@ -351,6 +519,32 @@ def _selftest_synthetic():
         b2 = build_baseline(td)
         r3 = check(b2)
         steps.append(("重建基线后 check 零漂移 exit=%d" % r3["exit_code"], r3["ok"]))
+
+        # ── E6 维度①：重复量化 ──
+        qd = os.path.join(td, "quant")
+        os.makedirs(qd, exist_ok=True)
+        for n in ("model_a_int8.safetensors", "model_a_fp8.safetensors",
+                  "model_b_fp16.safetensors"):
+            with open(os.path.join(qd, n), "w", encoding="utf-8") as fh:
+                fh.write(n)
+        qf = list_files(qd)
+        dups = detect_dup_quant(qf)
+        steps.append(("重复量化检出 %d 组（应为 model_a 的 int8/fp8 双份）" % len(dups),
+                      len(dups) == 1 and dups[0]["stem"] == "model_a"
+                      and len(dups[0]["items"]) == 2))
+        steps.append(("allow-dup 豁免生效后剩 %d 组" % len(detect_dup_quant(qf, ("model_a",))),
+                      len(detect_dup_quant(qf, ("model_a",))) == 0))
+
+        # ── E6 维度②：孤儿文件 ──
+        wd = os.path.join(td, "wf")
+        os.makedirs(wd, exist_ok=True)
+        with open(os.path.join(wd, "wf.json"), "w", encoding="utf-8") as fh:
+            json.dump({"6": {"class_type": "UNETLoader",
+                             "inputs": {"unet_name": "model_b_fp16.safetensors"}}}, fh)
+        orp, nref = detect_orphans(qf, [wd])
+        names = sorted(o["rel"].split("/")[-1] for o in orp)
+        steps.append(("孤儿检出（引用 %d 个模型名，孤儿 %d 个）" % (nref, len(orp)),
+                      names == ["model_a_fp8.safetensors", "model_a_int8.safetensors"]))
     finally:
         shutil.rmtree(td, ignore_errors=True)
     return steps
@@ -391,7 +585,13 @@ def _selftest_real(root, globs, hash_limit_bytes):
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description="名册基线门禁（纯函数库）")
-    ap.add_argument("mode", choices=("build", "check", "selftest"))
+    ap.add_argument("mode", choices=("build", "check", "audit", "selftest"))
+    ap.add_argument("--dup-quant", action="store_true", help="audit：查同底座名不同量化的重复")
+    ap.add_argument("--orphans", action="store_true", help="audit：查无任何工作流引用的孤儿文件")
+    ap.add_argument("--ref-roots", nargs="*", default=None,
+                    help="audit --orphans 的引用来源目录（工作流 JSON 所在处）")
+    ap.add_argument("--allow-dup", nargs="*", default=(), help="豁免的底座名/目录 fnmatch 模式")
+    ap.add_argument("--allow-orphan", nargs="*", default=(), help="豁免的文件名 fnmatch 模式")
     ap.add_argument("--root", default=os.path.join(DEFAULT_COMFY, "models", "unet"))
     ap.add_argument("--baseline", default=None, help="check 模式读哪个基线 json")
     ap.add_argument("--out", default=None, help="build 模式的落盘路径")
@@ -424,6 +624,44 @@ def main(argv=None):
             r = check(load_baseline(path))
             print(format_report(r, a.limit))
             return r["exit_code"]
+
+        if a.mode == "audit":
+            # E6：目录健康巡检（重复量化 / 孤儿文件）。与 check 的三态漂移互补——
+            # check 管「和上次比变没变」，audit 管「现在这份目录本身干不干净」。
+            if not (a.dup_quant or a.orphans):
+                a.dup_quant = a.orphans = True      # 都不给就两个都查
+            files = list_files(a.root, globs=tuple(a.glob),
+                               ignore=tuple(a.ignore) if a.ignore else DEFAULT_IGNORE,
+                               recursive=not a.no_recursive)
+            print("目录健康巡检  root=%s  文件 %d 个（只列清单，不哈希）" % (a.root, len(files)))
+            n = 0
+            if a.dup_quant:
+                dups = detect_dup_quant(files, tuple(a.allow_dup))
+                print("\n[重复量化] %d 组" % len(dups))
+                for d in dups[:a.limit]:
+                    print("  %s/%s  →  %s" % (d["dir"] or ".", d["stem"],
+                                              ", ".join("%s(%.0fMB)" % (i["rel"].split("/")[-1],
+                                                                        i["size_mb"])
+                                                        for i in d["items"])))
+                n += len(dups)
+            orphans, nref = [], 0
+            if a.orphans:
+                # 引用口径 = ① ComfyUI 工作流目录（真实使用）
+                #          + ② 本仓**现役配置**（adapters.json / family_config.json）。
+                # 刻意**不**扫整个本仓：family_candidates.json 这类是 fdiscover 扫盘
+                # 生成的派生快照，里面写着当前所有模型名，拿它当引用会让孤儿检测恒为 0
+                # （实测：全仓扫描时 118 个模型名全中，孤儿 5→0，全是假阴性）。
+                roots = a.ref_roots or [os.path.join(DEFAULT_COMFY, "user", "default", "workflows")]
+                orphans, nref = detect_orphans(files, roots, tuple(a.allow_orphan),
+                                               default_ref_files())
+                print("\n[孤儿文件] %d 个（引用来源扫到 %d 个模型名）" % (len(orphans), nref))
+                for o in orphans[:a.limit]:
+                    print("  %-64s %8.0f MB" % (o["rel"][-64:], o["size_mb"]))
+                if len(orphans) > a.limit:
+                    print("  …共 %d 个" % len(orphans))
+                n += len(orphans)
+            print("\n结论：%s" % ("干净 ✅（exit 0）" if n == 0 else "检出 %d 项 ⚠（exit 1）" % n))
+            return 0 if n == 0 else 1
 
         # selftest
         print("=" * 78)
