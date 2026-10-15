@@ -53,7 +53,7 @@ API
 
 用法（必须用 ComfyUI 自带 python，因为要 numpy + Pillow）：
     python -X utf8 lib_image_qc_enh.py
-    python -X utf8 lib_image_qc_enh.py --root "%USERPROFILE%/APP/ComfyUI-aki-v3/ComfyUI/output/model_benchmark" --limit 24
+    python -X utf8 lib_image_qc_enh.py --root "%USERPROFILE%/APP/ComfyUI-aki-v3.2/ComfyUI/output/model_benchmark" --limit 24
     python -X utf8 lib_image_qc_enh.py --root output/model_benchmark --json _qc.json
     python -X utf8 lib_image_qc_enh.py --file a.png --json
 """
@@ -71,7 +71,7 @@ sys.stdout.reconfigure(encoding="utf-8")
 sys.dont_write_bytecode = True
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-DEFAULT_ROOT = os.path.join(os.environ.get("USERPROFILE", ""), "APP", "ComfyUI-aki-v3",
+DEFAULT_ROOT = os.path.join(os.environ.get("USERPROFILE", ""), "APP", "ComfyUI-aki-v3.2",
                             "ComfyUI", "output", "model_benchmark")
 
 # ── 指标登记表：(key, 中文名, 来源标签, 单位) ───────────────────────────────────

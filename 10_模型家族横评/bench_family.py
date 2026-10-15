@@ -68,6 +68,36 @@ def post(api, path, payload, timeout=120):
         return None, str(e)
 
 
+def normalize_loader_names(api_prompt, api_url):
+    """扁平文件名 -> ComfyUI 0.39 候选路径形式（2026-10-15）。
+
+    旧工作流 JSON 的 loader 值常是扁平名，而 0.39 候选带子目录前缀，
+    不规范化会 400 value_not_in_list。缺失项保留原值，由服务端报错暴露。
+    """
+    flat2full = {}
+    for ct, key in (("UNETLoader", "unet_name"), ("CLIPLoader", "clip_name"),
+                    ("VAELoader", "vae_name"), ("LoraLoaderModelOnly", "lora_name")):
+        try:
+            req = urllib.request.Request(api_url + "/object_info/" + ct)
+            info = json.loads(urllib.request.urlopen(req, timeout=20).read())[ct]
+            for v in info["input"]["required"][key][0]:
+                b = str(v).replace(chr(92), "/").split("/")[-1]
+                flat2full.setdefault(b, v)
+        except Exception:
+            pass
+    n = 0
+    for nd in api_prompt.values():
+        key = {"UNETLoader": "unet_name", "CLIPLoader": "clip_name", "VAELoader": "vae_name",
+               "LoraLoaderModelOnly": "lora_name"}.get(nd.get("class_type"))
+        if not key:
+            continue
+        cur = nd["inputs"].get(key)
+        if isinstance(cur, str) and chr(92) not in cur and "/" not in cur and cur in flat2full:
+            nd["inputs"][key] = flat2full[cur]
+            n += 1
+    return n
+
+
 def wait(api, pid, timeout=1800):
     t0 = time.time()
     while time.time() - t0 < timeout:
@@ -720,6 +750,9 @@ def main():
                   ensure_ascii=False, indent=1)
 
         t0 = time.time()
+        _nfix = normalize_loader_names(g, api_url)
+        if _nfix:
+            print("[%3d/%3d] loader 名规范化 %d 处" % (i, len(tasks), _nfix))
         res, err = post(api_url, "/prompt", {"prompt": g, "client_id": cfg["comfy"].get("client_id", "bench")})
         if err or not res:
             print("[%3d/%3d] SUBMIT_FAIL %s" % (i, len(tasks), str(err)[:200]))

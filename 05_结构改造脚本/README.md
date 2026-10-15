@@ -6,7 +6,7 @@
 
 ---
 
-## 脚本分类速查（24 个随包改造脚本，另有 1 个 `gen_workflows_manifest.py` 只读审计脚本见第八节；2026-10-13 按文件计数核实）
+## 脚本分类速查（24 个随包改造脚本，另有 1 个 `gen_workflows_manifest.py` 只读审计脚本见第八节、与 1 个 dry-run 共享助手 `dryrun.py` 见第九节；2026-10-14 按文件计数核实）
 
 ### 官方模板对齐类
 | 脚本 | 作用 |
@@ -43,7 +43,7 @@
 ### 检查/验证类
 | 脚本 | 作用 |
 |---|---|
-| `verify_workflows.py` / `verify_upgrade.py` / `verify_clear.py` | 各阶段整体验证 |
+| `verify_workflows.py` / `verify_upgrade.py` / `verify_clear.py` | 各阶段整体验证（`verify_upgrade.py` 另支持仓内样本模式，见第九节） |
 | `final_check.py` / `final_confirm.py` | 最终交付检查 |
 | `check_fmts.py` / `check_layouts.py` / `check_modes.py` | 格式/布局/静止模式检查 |
 
@@ -171,6 +171,8 @@ LoadImage → ImageScaleToTotalPixels(缩放图像像素) → VAEEncode(VAE编�
 
 > 已落地的脚本：`upgrade_workflows.py`（v3：备份 + 守卫）、`apply_official.py`（v2：守卫）。
 > 新写结构轨脚本时请沿用本模板；本目录脚本是「当操作说明书读」的一次性手术脚本，换工作流仍需重写 `CONFIG`。
+>
+> 2026-10-14 补充：本节描述的备份仍照常发生，dry-run 只控制写入时机；具体开关与恢复步骤见第九节 / 第十节。
 
 ---
 
@@ -205,3 +207,78 @@ python gen_workflows_manifest.py --root "%USERPROFILE%\APP\ComfyUI-aki-v3.2\Comf
    ```
 3. **审查要点**：`mtime`/`md5` 变化说明原件被改动；`source_md5` 变化说明官方模板升级；`backups` 新增说明出现新备份。确认无异常后覆盖 `workflows_manifest.json` 并提交。
 4. **只读纪律**：本脚本只读外部原件与模板，绝不写入 ComfyUI 目录（见上）。
+
+---
+
+## 九、dry-run 开关与样本演练（2026-10-14）
+
+所有**写工作流文件**的改造脚本（`apply_official.py` / `apply_sampler_prefs.py` / `upgrade_workflows.py` / `fuse_21_features.py` / `fuse_krea2_layout.py` / `apply_resolution_selector.py` / `fix_zimage_native.py` / `fix_z_format.py` / `clean_edit.py` / `clean_edit2.py` / `clear_prompts.py` / `rebuild_flux2_edit.py` / `add_ref_images.py` / `add_flux2_8.py`）统一接入共享助手 [`dryrun.py`](dryrun.py)，默认关闭。**幂等守卫与备份纪律不变**——dry-run 只影响写入。两个开关：
+
+| 开关 | 作用 |
+|---|---|
+| `--dry-run` | 不落盘：跳过备份 `copy2` 与 `makedirs`；只打印将修改的文件 + 将写入的结构 diff（以磁盘当前内容为基线，`indent=2` pretty 后的 unified diff）；读取与 `[跳过]` 幂等判定照常执行。 |
+| `--target-dir DIR` | 把脚本写死的 `Image` / `Edit` 工作流目录重定向到样本目录 `DIR`；备份自动落入 `DIR\新建文件夹\`，不会污染仓库外的真实 ComfyUI 目录。 |
+
+典型用法（先拿样本目录试一遍，确认 diff 后再对真机执行）：
+
+```bat
+:: 0) 先拷一份样本到临时目录（包含同名工作流文件）
+xcopy "%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image" "%TEMP%\wf_sample\" /I /Y
+
+:: 1) dry-run 看计划（不写入、不备份）
+python apply_official.py --dry-run --target-dir "%TEMP%\wf_sample"
+python upgrade_workflows.py --dry-run --target-dir "%TEMP%\wf_sample"
+
+:: 2) 确认无误后，对真机目录正常跑（不带开关 = 老行为）
+python apply_official.py
+```
+
+> 不带任何参数时，以上所有脚本对工作流文件的**写入内容与备份时机/位置**与接入 dry-run 之前逐字节一致；开关只在显式传入时生效。（控制台日志已统一为 `[备份]/[已写入]/[无变化]` 前缀，不影响落盘内容。）
+
+---
+
+## 十、最小恢复说明（按已有备份将工作流回到改动前）
+
+本目录脚本在改动前都会先拷一份 `*.bak`（`upgrade_workflows.py` 额外附时间戳 `-YYYYMMDD_HHMMSS`）。恢复 = **把备份文件拷回工作流同名路径**，不依赖 Git、不重新手写 JSON。步骤：
+
+1. **定位备份**：`%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image\新建文件夹\` 下按命名取对应一份（同名多个时选时间戳最新）：
+   - `Z_image.official.bak` → `apply_official.py` 创建
+   - `Z_image.sampler.bak` → `apply_sampler_prefs.py`
+   - `Z_image.upgrade.bak-<时间戳>` → `upgrade_workflows.py`
+   - `Z_image.pre_fusion.bak` / `Z_image.step3.bak` / `Z_image.layout.bak` → `fuse_*` / `apply_resolution_selector.py`
+   - `Z_image.prompt_clear.bak` → `clear_prompts.py`
+   - `<name>.init.bak` → `clean_edit.py`（Edit 工作流）
+   - `<name>.json.bak` → `apply_resolution_selector.py`（同名旁文件）
+   - 无时间戳同名备份多次运行会被覆盖——**想保留多个中间态**，手动拷到带时间戳名字即可（与 `upgrade_workflows.py` 命名一致）。
+2. **拷回原位置**（以 `Z_image.json` 为实，PowerShell）：
+   ```powershell
+   $wf  = "$env:USERPROFILE\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image\Z_image.json"
+   $bak = "$env:USERPROFILE\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image\新建文件夹\Z_image.upgrade.bak-20261011_153012"
+   Copy-Item -LiteralPath $bak -Destination $wf -Force
+   ```
+3. **逐字节验证**（与备份前的原件字节一致）：
+   ```powershell
+   (Get-FileHash -LiteralPath $wf  -Algorithm SHA256).Hash
+   (Get-FileHash -LiteralPath $bak -Algorithm SHA256).Hash
+   ```
+   两行输出相同 → 恢复完成。若之前跑过 `gen_workflows_manifest.py`，也可对照 `workflows_manifest.json` 中记录的 `md5` / `size` / `mtime`。
+4. **Edit 类同构**：将上面 `Image` 换为 `Edit`；`clean_edit.py` 将备份统一写入 `Image\新建文件夹\`，因此 Edit 工作流的 `.init.bak` 也从同一目录取回。
+
+> 安全垫：恢复前先拷一份当前态作 `.pre-restore.bak-<时间戳>`，防止“恢复错了”后无法回到更新后的状态。dry-run 不产生备份，也不需要恢复。
+
+---
+
+## 九、仓内可复现验收路径（2026-10-14，verify_upgrade 样本模式）
+
+参照 `10_模型家族横评` 三个门禁在 CI 里以 selftest/合成样本运行的做法，`verify_upgrade.py` 新增只作用于**仓内脱敏样本**的验收路径，保持本轨「不在真实原件上盲跑」定位：
+
+- **样本**：`sample_workflow_minimal.json` —— 按升级后布局（主节点 + ResolutionSelector + SaveImageAdvanced + 单子图）手工构造的最小工作流，无任何本机路径/真实模型名/真实 UUID。
+- **不变量标签**：每条违背以 `[INV:名称]` 前缀输出（如 `iface-slot`、`toplink-unique`、`counters`、`layout-rs` 等），失败信息可直接定位不变量。
+- **命令**（纯标准库，CI 可直接跑）：
+  ```bat
+  python verify_upgrade.py --sample      :: 样本全部不变量通过 → exit 0
+  python verify_upgrade.py --selftest    :: 样本通过 + 逐类内存破坏必须 FAIL 且指明不变量
+  python verify_upgrade.py --sample --break iface-slot   :: 演示单类失败（不落盘，不碰样本文件）
+  ```
+- **CI 接入**：`.github/workflows/ci.yml` 的 Gate ④ 以 `--selftest` 运行；破坏样本任一处结构不变量会使该步骤失败并在日志指明具体 `[INV:…]`。
+- **退出码**：0 通过 / 1 存在失败项 / 2 用法或 IO 错；无参数仍为本机原件模式（需本机 ComfyUI 目录，缺目录时明确报环境缺失）。

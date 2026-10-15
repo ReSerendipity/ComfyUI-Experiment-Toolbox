@@ -46,7 +46,7 @@ W, H = cols * (cell_w + pad) + pad, rows_n * (cell_h + pad) + pad
 sheet = Image.new("RGB", (W, H), (255, 255, 255))
 d = ImageDraw.Draw(sheet)
 try:
-    font = ImageFont.truetype("C:/Windows/Fonts/msyh.ttc", 18)
+    font = ImageFont.truetype(os.path.expandvars(r"%WINDIR%\Fonts\msyh.ttc"), 18)
 except Exception:
     font = ImageFont.load_default()
 for i, (name, t) in enumerate(thumbs):

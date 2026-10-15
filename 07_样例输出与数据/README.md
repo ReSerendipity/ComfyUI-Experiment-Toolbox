@@ -13,6 +13,7 @@
 | `result_log.json` | 09-22 十七组的逐组日志（组合、耗时、产物、错误；v2 起由 append-only JSONL 重建，历史不再被覆写，见 `03_受控跑测/README.md`「日志格式」） | 查单组耗时/成败 |
 | `model_test_log.json` | 跨模型跑测的日志（**历史注：09-22 曾因单模型补跑被全量覆写，只剩 3 条失败记录**；该覆写风险已由 03 脚本 v2 的 append-only JSONL 修复） | 失败原因参考用；完整清单请看 `model_metrics.json` 或直接看图片目录 |
 | `cfg_probe_log.json` | cfg × 负向提示词 探针的逐组耗时 | 参考用（该组耗时噪声大，未用于结论） |
+| `family_bench_20261006/` | **模型家族横评**首轮全量跑测（8 模型 × 9 prompt × 3 seed = 216，全部 ok）的审计数据副本：客观指标 / 跨种子稳定性 / 报告骨架 / 脱敏台账 | 三族 8 个 checkpoint 的横向对比底账；详见子目录 README |
 
 ## 图片目录不在本包内
 
@@ -21,6 +22,7 @@
 - 单模型矩阵：`%USERPROFILE%\WorkBuddy\2026-09-22-23-53-24\ss_test\output\`
 - 跨模型跑测：`%USERPROFILE%\WorkBuddy\2026-09-22-23-53-24\ss_test\output_models\`
 - ComfyUI 侧原始落盘：`%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\output\`
+- 模型家族横评：本机 ComfyUI `output\01_模型基准测试\`（2026-10-15 已清理；数据审计副本见 `family_bench_20261006/`，逐张原图未随包）
 
 **命名规则**：`<模型标签>__<组合名>__<原始文件名>.png` —— 用 `模型__组合` 就能定位，`analyze_models.py` 也是靠这个规则从目录重建清单的。
 
@@ -47,6 +49,7 @@
 | `model_metrics.json` | `04_结果分析/analyze_models.py` | 04 读取外部输出目录（`output_models/`） | 06/07 跨模型结论 |
 | `similarity.json` | `04_结果分析/focus_sheet.py` | 04 选取关键组大图 | 06「多组合等价」论证；07「基线组高度一致」 |
 | 拼版 PNG（跨模型对比/19 组/聚焦对照） | 04 三个脚本 | 上述 json 同源 | 06 报告头图；07 快速判读 |
+| `family_bench_20261006/*` | `10_模型家族横评/bench_family.py`（跑测+台账）+ `analyze_family.py`（指标/相似度/骨架） | 2026-09-30~10-01 全量跑测；逐张原图为一次性产物未随包（含限制级内容，不入公开仓） | 子目录 README；后续读图评分的底账 |
 
 > 维护提示：① 03 跑测脚本改输出字段 → 同步 `data-dictionary.md` + 本表；② 04 脚本改指标/文件 → 同步 `04_结果分析/README.md` 指标定义 + 本表；③ 外部输出目录（`%USERPROFILE%\WorkBuddy\...`）为一次性运行产物，本表数据文件是其仓库内审计副本（见上方「图片目录不在本包内」）。
 

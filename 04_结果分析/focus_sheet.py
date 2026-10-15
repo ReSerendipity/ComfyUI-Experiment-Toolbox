@@ -26,7 +26,7 @@ H = ch + pad * 2 + cap
 sheet = Image.new("RGB", (W, H), (255, 255, 255))
 d = ImageDraw.Draw(sheet)
 try:
-    f18 = ImageFont.truetype("C:/Windows/Fonts/msyh.ttc", 20)
+    f18 = ImageFont.truetype(os.path.expandvars(r"%WINDIR%\Fonts\msyh.ttc"), 20)
 except Exception:
     f18 = ImageFont.load_default()
 for i, (name, label) in enumerate(focus):

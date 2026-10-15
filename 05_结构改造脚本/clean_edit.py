@@ -1,10 +1,23 @@
 # -*- coding: utf-8 -*-
-"""编辑类工作流基础清理：备份、清空提示词、删 MarkdownNote、模型名对正、布局统一"""
+"""编辑类工作流基础清理：备份、清空提示词、删 MarkdownNote、模型名对正、布局统一
+   2026-10-14：接入 dry-run 开关（默认关闭）——--dry-run 不落盘不备份，只打印计划。"""
 
 import json, os, shutil
-E = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Edit')
-BAK = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image\新建文件夹')
-os.makedirs(BAK, exist_ok=True)
+import dryrun
+
+GLOBAL_E = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Edit')
+GLOBAL_BAK = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image\新建文件夹')
+
+dryrun.parse_args()
+E = dryrun.resolve_target(GLOBAL_E)
+# 备份目录：若 --target-dir 已重定向，则新备份落至样本目录下的『新建文件夹』，避免写到仓库外。
+_td = dryrun.get_target_dir()
+if _td:
+    BAK = os.path.join(_td, '新建文件夹')
+else:
+    BAK = GLOBAL_BAK
+if not dryrun.is_dry_run():
+    os.makedirs(BAK, exist_ok=True)
 
 def load(fn):
     raw = open(os.path.join(E, fn), encoding='utf-8').read()
@@ -13,12 +26,11 @@ def load(fn):
     return json.loads(raw), indent, sep
 
 def save(fn, data, indent, sep):
-    with open(os.path.join(E, fn), 'w', encoding='utf-8') as f:
-        json.dump(data, f, ensure_ascii=False, indent=indent, separators=sep)
+    dryrun.write_json(os.path.join(E, fn), data, indent, sep)
 
 # 备份
 for fn in ['qwen_2_1_edit.json','qwen_edit_2511.json','flux2_klein_edit.json']:
-    shutil.copy2(os.path.join(E, fn), os.path.join(BAK, fn.replace('.json','.init.bak')))
+    dryrun.guard_backup(os.path.join(E, fn), os.path.join(BAK, fn.replace('.json','.init.bak')))
 
 # === 1. qwen_2_1_edit ===
 fn = 'qwen_2_1_edit.json'

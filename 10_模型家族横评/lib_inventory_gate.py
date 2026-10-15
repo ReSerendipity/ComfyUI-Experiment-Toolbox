@@ -24,7 +24,7 @@
 故 import 本模块无任何副作用。
 
 用法（必须用 ComfyUI 自带 python）：
-    python lib_inventory_gate.py selftest --root "C:/.../ComfyUI/models/unet"
+    python lib_inventory_gate.py selftest --root "%USERPROFILE%/APP/ComfyUI-aki-v3/ComfyUI/models/unet"
     python lib_inventory_gate.py build  --root <unet 根> --glob "*.safetensors" --out gate.json
     python lib_inventory_gate.py check  --baseline gate.json
     python lib_inventory_gate.py build --root <unet 根> --max-hash-mb 512   # 只哈希小文件
@@ -43,7 +43,7 @@ sys.dont_write_bytecode = True
 
 SCHEMA = "inventory-gate/1"
 HERE = os.path.dirname(os.path.abspath(__file__))
-DEFAULT_COMFY = r"C:/Users/Doro/APP/ComfyUI-aki-v3/ComfyUI"
+DEFAULT_COMFY = os.path.expandvars(r"%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI")
 
 # ComfyUI 各 models/ 子目录都有的 0 字节占位文件，不是权重，进名册只会制造噪声。
 # 另有下载中断残片与日志类垃圾。注意：本库只「记账」，删文件是人的事。
@@ -407,9 +407,9 @@ def main(argv=None):
             print("耗时 %.1fs%s" % (b["elapsed_s"],
                                    ("  跳过哈希 %d 个大文件" % len(b["hash_skipped"]))
                                    if b["hash_skipped"] else ""))
-            if a.out:
-                save_baseline(a.out, b)
-                print("已写出：%s" % a.out)
+            out_path = a.out or os.path.join(HERE, "gate_baseline.json")
+            save_baseline(out_path, b)
+            print("已写出：%s" % out_path)
             return 0
 
         if a.mode == "check":

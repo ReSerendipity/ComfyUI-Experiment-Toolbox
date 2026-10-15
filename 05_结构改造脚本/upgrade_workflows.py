@@ -9,15 +9,18 @@
 v3（2026-10-11，评估报告 P2-3）：
   - 开工前强制备份到 Image 目录的『新建文件夹』（*.upgrade.bak-<时间戳>）
   - 幂等守卫：子图接口已含 scheduler_1 且顶层已有 SaveImageAdvanced → 判定已应用并跳过
+v4（2026-10-14）：接入共享 dry-run 开关（默认关闭）——--dry-run 不落盘不备份，
+  只打印将修改的文件与结构 diff；--target-dir 可指向样本目录演练。幂等守卫与备份纪律不变。
 """
 import json
 import os
 import shutil
 import time
 import uuid
+import dryrun
 
-D = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image')
-BAK = os.path.join(D, '新建文件夹')
+GLOBAL_D = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image')
+BAK = os.path.join(GLOBAL_D, '新建文件夹')
 
 CONFIG = {
     'Flux.2_Klein-9B-Distilled.json': {
@@ -111,8 +114,7 @@ def load(path):
 
 def save(path, data, space_sep):
     sep = (', ', ': ') if space_sep else (',', ':')
-    with open(path, 'w', encoding='utf-8') as f:
-        f.write(json.dumps(data, ensure_ascii=False, separators=sep))
+    dryrun.write_json(path, data, indent=None, sep=sep)
 
 
 def fix_rs_link_conflict(data, sg):
@@ -168,6 +170,9 @@ def is_applied(sg, data):
 
 
 def main():
+    dryrun.parse_args()
+    D = dryrun.resolve_target(GLOBAL_D)
+    BAK = os.path.join(D, '新建文件夹')
     for fn, cfg in CONFIG.items():
         path = os.path.join(D, fn)
         data = load(path)
@@ -175,10 +180,10 @@ def main():
         if is_applied(sg, data):
             print('[跳过] %s 已应用（接口 scheduler_1 + SaveImageAdvanced 已存在）；如需强制重跑请先手动移除该标记' % fn)
             continue
-        os.makedirs(BAK, exist_ok=True)
+        if not dryrun.is_dry_run():
+            os.makedirs(BAK, exist_ok=True)
         bak_path = os.path.join(BAK, fn.replace('.json', '.upgrade.bak-' + time.strftime('%Y%m%d_%H%M%S')))
-        shutil.copy2(path, bak_path)
-        print('[备份] %s -> %s' % (fn, bak_path))
+        dryrun.guard_backup(path, bak_path)
         main_node = next(n for n in data['nodes'] if n.get('id') == cfg['main_id'])
 
         fixed = fix_rs_link_conflict(data, sg)

@@ -1,9 +1,13 @@
 # -*- coding: utf-8 -*-
-"""Qwen 2.1 加到10张, Qwen 2511 补到3张"""
+"""Qwen 2.1 加到10张, Qwen 2511 补到3张
+   2026-10-14：接入 dry-run 开关（默认关闭）——--dry-run 不落盘，只打印将修改的文件与结构 diff。"""
 
 import json, os
+import dryrun
 
-E = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Edit')
+GLOBAL_E = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Edit')
+dryrun.parse_args()
+E = dryrun.resolve_target(GLOBAL_E)
 
 def load(p):
     raw = open(p, encoding='utf-8').read()
@@ -12,8 +16,7 @@ def load(p):
     return json.loads(raw), indent, sep
 
 def save(p, d, indent, sep):
-    with open(p, 'w', encoding='utf-8') as f:
-        json.dump(d, f, ensure_ascii=False, indent=indent, separators=sep)
+    dryrun.write_json(p, d, indent, sep)
 
 def new_loadimage(node_id, x, y, links, link_id):
     """构造一个 LoadImage 节点"""
@@ -68,7 +71,10 @@ for i, (name, slot) in enumerate(slot_map.items()):
 
 save(p, d, indent, sep)
 # 验证
-d2, _, _ = load(p)
+if dryrun.is_dry_run():
+    d2 = d
+else:
+    d2, _, _ = load(p)
 lds = [n for n in d2['nodes'] if n['type']=='LoadImage']
 print('Qwen 2.1 LoadImage 数量: %d' % len(lds))
 
@@ -89,7 +95,10 @@ main2 = next(n for n in d2['nodes'] if n['id']==170)
 main2['inputs'][2]['link'] = new_lid2
 print('  加 LoadImage id=%d -> 主节点 slot=2 (image3), link=%d' % (new_nid2, new_lid2))
 save(p2, d2, indent2, sep2)
-d3, _, _ = load(p2)
+if dryrun.is_dry_run():
+    d3 = d2
+else:
+    d3, _, _ = load(p2)
 lds2 = [n for n in d3['nodes'] if n['type']=='LoadImage']
 print('Qwen 2511 LoadImage 数量: %d' % len(lds2))
 print('完成')

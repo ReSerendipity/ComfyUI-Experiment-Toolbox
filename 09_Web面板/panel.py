@@ -6,7 +6,7 @@ ComfyUI 实验与改造工具箱 · Web 面板（参数轨）
 
 启动：
     cd "%USERPROFILE%/Desktop/ComfyUI-实验与改造工具箱/09_Web面板"
-    %USERPROFILE%/APP/ComfyUI-aki-v3/python/python.exe panel.py
+    %USERPROFILE%/APP/ComfyUI-aki-v3.2/python/python.exe panel.py
 浏览器打开 http://127.0.0.1:8189
 
 页面（全部复用工具箱 01~04 的脚本逻辑）：
@@ -25,7 +25,7 @@ TOOLBOX     = os.path.dirname(PANEL_DIR)
 sys.path.insert(0, os.path.join(TOOLBOX, "01_工作流扁平化"))
 import flatten as flatten_mod          # noqa: E402
 
-COMFY_ROOT = os.path.expandvars(r"%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI")
+COMFY_ROOT = os.path.expandvars(r"%USERPROFILE%\APP\ComfyUI-aki-v3.2\ComfyUI")
 COMFY_URL  = "http://127.0.0.1:8188"
 WF_DIR     = os.path.join(COMFY_ROOT, "user", "default", "workflows", "Image")
 CF_OUT     = os.path.join(COMFY_ROOT, "output")
@@ -33,7 +33,7 @@ OUT_ROOT   = os.path.join(PANEL_DIR, "output")
 PORT       = 8189
 
 # ComfyUI 进程管理：面板可代为启动（跑测前自动拉起，或点「启动 ComfyUI」）
-COMFY_BASE = os.path.dirname(COMFY_ROOT)                        # ...\ComfyUI-aki-v3
+COMFY_BASE = os.path.dirname(COMFY_ROOT)                        # ...\ComfyUI-aki-v3.2
 COMFY_PY   = os.path.join(COMFY_BASE, "python", "python.exe")
 COMFY_MAIN = os.path.join(COMFY_ROOT, "main.py")
 COMFY_PORT = int(COMFY_URL.rsplit(":", 1)[1])
@@ -101,7 +101,7 @@ def start_comfy():
     """启动 ComfyUI（幂等）：已在运行/正在启动则直接返回，不重复拉起。
 
     命令与根 README 第三节一致：
-        cd ComfyUI-aki-v3 && python/python.exe -s ComfyUI/main.py --port 8188 ...
+        cd ComfyUI-aki-v3.2 && python/python.exe -s ComfyUI/main.py --port 8188 ...
     用 CREATE_NEW_CONSOLE 拉起独立控制台窗口，便于用户看加载日志、按 Ctrl+C 停止。
     """
     if comfy_status()["running"]:
@@ -534,7 +534,7 @@ def analyze(subdir):
         sheet = Image.new("RGB", (cols * (cw + pad) + pad, max(1, rn) * (ch + pad) + pad), (255, 255, 255))
         dr = ImageDraw.Draw(sheet)
         try:
-            font = ImageFont.truetype("C:/Windows/Fonts/msyh.ttc", 18)
+            font = ImageFont.truetype(os.path.expandvars(r"%WINDIR%\Fonts\msyh.ttc"), 18)
         except Exception:
             font = ImageFont.load_default()
         for i, (name, t) in enumerate(thumbs):

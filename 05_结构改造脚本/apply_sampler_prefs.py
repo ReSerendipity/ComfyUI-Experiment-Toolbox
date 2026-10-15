@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
-"""按推荐修改 8 个工作流采样参数：全量模式最低标准"""
+"""按推荐修改 8 个工作流采样参数：全量模式最低标准
+   2026-10-14：接入 dry-run 开关（默认关闭）——--dry-run 不落盘不备份，只打印计划。"""
 
 import json, os, shutil
+import dryrun
 
-D = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image')
-BAK = os.path.join(D, '新建文件夹')
+GLOBAL_D = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image')
+BAK = os.path.join(GLOBAL_D, '新建文件夹')
 
 FILES = ['Qwen_image_2_1_t2i.json', 'krea2_turbo.json',
          'Flux.2_Klein-9B-Distilled.json', 'Qwen_image.json', 'Qwen_image_2512.json',
@@ -35,9 +37,13 @@ MAIN_EDITS = {
     'flux.1-dev.json': {1: 20, 5: 'euler', 6: 'simple'},
 }
 
+dryrun.parse_args()
+D = dryrun.resolve_target(GLOBAL_D)
+BAK = os.path.join(D, '新建文件夹')
+
 for fn in FILES:
     print('==', fn)
-    shutil.copy2(os.path.join(D, fn), os.path.join(BAK, fn.replace('.json', '.sampler.bak')))
+    dryrun.guard_backup(os.path.join(D, fn), os.path.join(BAK, fn.replace('.json', '.sampler.bak')))
     data, indent, sep = read(fn)
     main = next(n for n in data['nodes'] if n['id'] == MAIN_ID[fn])
     if fn in MAIN_EDITS:
@@ -58,6 +64,5 @@ for fn in FILES:
         fg = next(n for n in sg['nodes'] if n['id'] == 26)  # FluxGuidance
         print('  FluxGuidance: %r -> 3.5' % fg['widgets_values'][0])
         fg['widgets_values'][0] = 3.5
-    write(fn, data, indent, sep)
-    print('  已写入')
+    dryrun.write_json(os.path.join(D, fn), data, indent, sep)
 print('完成')

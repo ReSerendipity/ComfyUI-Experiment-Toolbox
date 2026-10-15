@@ -29,7 +29,7 @@ sys.stdout.reconfigure(encoding="utf-8")
 sys.dont_write_bytecode = True
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-DEFAULT_COMFY = r"C:/Users/Doro/APP/ComfyUI-aki-v3/ComfyUI"
+DEFAULT_COMFY = os.path.expandvars(r"%USERPROFILE%\APP\ComfyUI-aki-v3.2\ComfyUI")
 
 # ComfyUI 的 UNETLoader 前缀兜底表：把头部键前缀映射成友好架构名。
 # 完整的 comfy.model_detection 判定需要能 import comfy（会拉起 torch），

@@ -5,11 +5,15 @@ A. krea2_turbo.json（K2）融合：5 个 LoRA 插槽(补成 6 个)、BatchPromp
    SeedVR2 超分(静止)、ReservedVRAMSetter 显存控制、SaveImage→SaveImageAdvanced、删 3 个注释
 B. 2.1 删 2 个 MarkdownNote 注释
 C. 8 个工作流顶层布局统一：主节点 (0,0)、RS (-380,310)、Save (330,-10)、尺寸统一
+
+2026-10-14：接入 dry-run 开关（默认关闭）——--dry-run 不落盘不备份，只打印将修改的文件与结构 diff。
 """
 
 import json, os, uuid, shutil
+import dryrun
 
-D = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image')
+GLOBAL_D = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image')
+D = GLOBAL_D
 
 MAIN_POS = [0, 0]
 RS_POS = [-380, 310]
@@ -29,14 +33,12 @@ def read(fn):
     return json.loads(raw), indent, sep
 
 def write(fn, data, indent, sep):
-    with open(os.path.join(D, fn), 'w', encoding='utf-8') as f:
-        json.dump(data, f, ensure_ascii=False, indent=indent, separators=sep)
+    dryrun.write_json(os.path.join(D, fn), data, indent, sep)
 
 def backup(fn, suffix):
     src = os.path.join(D, fn)
     dst = os.path.join(D, fn.replace('.json', suffix))
-    shutil.copy2(src, dst)
-    print('  备份:', os.path.basename(dst))
+    dryrun.guard_backup(src, dst)
 
 LORA_PROPS = {"cnr_id": "comfy-core", "ver": "0.18.1",
               "Node name for S&R": "LoraLoaderModelOnly",
@@ -396,6 +398,8 @@ def layout_custom(fn, main_id):
 
 
 if __name__ == '__main__':
+    dryrun.parse_args()
+    D = dryrun.resolve_target(GLOBAL_D)
     fuse_krea2()
     layout_21()
     mains = {'Flux.2_Klein-9B-Distilled.json': 64, 'Qwen_image.json': 65, 'Qwen_image_2512.json': 65,

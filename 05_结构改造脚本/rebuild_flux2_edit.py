@@ -1,15 +1,33 @@
 # -*- coding: utf-8 -*-
-"""Flux.2 edit 重新从官方模板复制，保留2张LoadImage，再清理"""
+"""Flux.2 edit 重新从官方模板复制，保留2张LoadImage，再清理
+   2026-10-14：接入 dry-run 开关（默认关闭）——--dry-run 不落盘不拷贝模板，只打印写入计划。"""
 
 import json, os, shutil
-T = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\python\Lib\site-packages\comfyui_workflow_templates_json\templates')
-E = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Edit')
+import dryrun
+
+GLOBAL_T = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\python\Lib\site-packages\comfyui_workflow_templates_json\templates')
+GLOBAL_E = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Edit')
+dryrun.parse_args()
+T = GLOBAL_T
+E = dryrun.resolve_target(GLOBAL_E)
 
 # 重新复制
-shutil.copy2(os.path.join(T,'image_flux2_klein_image_edit_9b_distilled.json'),
-             os.path.join(E,'flux2_klein_edit.json'))
+if dryrun.is_dry_run():
+    print('[dry-run] 将从模板拷入: %s -> %s' % (
+        os.path.join(T, 'image_flux2_klein_image_edit_9b_distilled.json'),
+        os.path.join(E, 'flux2_klein_edit.json')))
+    # dry-run 不拷贝，直接读现有目标文件（如不存在则提示）
+    _p = os.path.join(E, 'flux2_klein_edit.json')
+    if not os.path.exists(_p):
+        print('[dry-run] 目标不存在，无法展示改写计划：%s' % _p)
+        raise SystemExit(0)
+    src_for_read = _p
+else:
+    shutil.copy2(os.path.join(T,'image_flux2_klein_image_edit_9b_distilled.json'),
+                 os.path.join(E,'flux2_klein_edit.json'))
+    src_for_read = os.path.join(E,'flux2_klein_edit.json')
 
-raw = open(os.path.join(E,'flux2_klein_edit.json'), encoding='utf-8').read()
+raw = open(src_for_read, encoding='utf-8').read()
 indent = 2 if '\n  ' in raw else None
 sep = (', ', ': ') if '", "' in raw else (',', ':')
 d = json.loads(raw)
@@ -40,11 +58,13 @@ for n in d['nodes']:
     if n['id']==121: n['pos']=[-380,850]; n['size']=[290,110]
     if n['id']==122: n['pos']=[330,840]; n['size']=[850,610]
 
-with open(os.path.join(E,'flux2_klein_edit.json'),'w',encoding='utf-8') as f:
-    json.dump(d, f, ensure_ascii=False, indent=indent, separators=sep)
+dryrun.write_json(os.path.join(E, 'flux2_klein_edit.json'), d, indent, sep)
 
-# 验证
-d2 = json.load(open(os.path.join(E,'flux2_klein_edit.json'),encoding='utf-8'))
+# 验证（dry-run 下直接内存检查，不重新读盘）
+if dryrun.is_dry_run():
+    d2 = d
+else:
+    d2 = json.load(open(os.path.join(E,'flux2_klein_edit.json'),encoding='utf-8'))
 lds = [n for n in d2['nodes'] if n['type']=='LoadImage']
 print('Flux.2 edit LoadImage 数量:', len(lds))
 print('顶层节点:')

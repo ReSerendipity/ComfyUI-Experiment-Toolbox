@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
-"""清空所有工作流提示词内容"""
+"""清空所有工作流提示词内容
+   2026-10-14：接入 dry-run 开关（默认关闭）——--dry-run 不落盘不备份，只打印计划。"""
 
 import json, os, shutil
+import dryrun
 
-D = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image')
-BAK_DIR = os.path.join(D, '新建文件夹')
+GLOBAL_D = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image')
 
 FILES = ['Qwen_image_2_1_t2i.json', 'krea2_turbo.json',
          'Flux.2_Klein-9B-Distilled.json', 'Qwen_image.json', 'Qwen_image_2512.json',
@@ -23,14 +24,18 @@ def read(fn):
     return json.loads(raw), indent, sep
 
 def write(fn, data, indent, sep):
-    with open(os.path.join(D, fn), 'w', encoding='utf-8') as f:
-        json.dump(data, f, ensure_ascii=False, indent=indent, separators=sep)
+    dryrun.write_json(os.path.join(D, fn), data, indent, sep)
 
 def backup(fn):
     src = os.path.join(D, fn)
     dst = os.path.join(BAK_DIR, fn.replace('.json', '.prompt_clear.bak'))
-    shutil.copy2(src, dst)
-    print('  备份:', os.path.basename(dst))
+    dryrun.guard_backup(src, dst)
+
+dryrun.parse_args()
+D = dryrun.resolve_target(GLOBAL_D)
+BAK_DIR = os.path.join(D, '新建文件夹')
+if not dryrun.is_dry_run():
+    os.makedirs(BAK_DIR, exist_ok=True)
 
 for fn in FILES:
     print('==', fn)

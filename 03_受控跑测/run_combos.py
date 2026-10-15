@@ -15,7 +15,7 @@ from logutil import append_record, migrate_legacy, rebuild_consolidated
 COMFY = "http://127.0.0.1:8188"
 BASE = os.path.expandvars(r"%USERPROFILE%\WorkBuddy\2026-09-22-23-53-24\ss_test")
 OUT = os.path.join(BASE, "output")
-CF_OUT = os.path.expandvars(r"%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\output")
+CF_OUT = os.path.expandvars(r"%USERPROFILE%\APP\ComfyUI-aki-v3.2\ComfyUI\output")
 LOG_JSON = os.path.join(BASE, "result_log.json")    # 合并视图（由 jsonl 重建）
 LOG_JSONL = os.path.join(BASE, "result_log.jsonl")  # 追加式原始日志（唯一事实源）
 os.makedirs(OUT, exist_ok=True)

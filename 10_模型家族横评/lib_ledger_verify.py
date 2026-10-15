@@ -37,7 +37,7 @@ plan_rerun(report) -> 缺失任务清单：把①③④⑤转成「该重跑哪�
 零依赖（纯标准库）。不 import bench_family / analyze_family，故 import 无副作用。
 
 用法（必须用 ComfyUI 自带 python）：
-    python lib_ledger_verify.py --root "C:/.../ComfyUI/output/model_benchmark"
+    python lib_ledger_verify.py --root "%USERPROFILE%/APP/ComfyUI-aki-v3.2/ComfyUI/output/model_benchmark"
     python lib_ledger_verify.py --root <输出根> --ledger <ledger.json> --json
     python lib_ledger_verify.py --root <输出根> --plan          # 只打续跑清单
     python lib_ledger_verify.py --selftest                      # 合成台账五态演练
@@ -55,7 +55,7 @@ sys.stdout.reconfigure(encoding="utf-8")
 sys.dont_write_bytecode = True
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-DEFAULT_OUT = r"C:/Users/Doro/APP/ComfyUI-aki-v3/ComfyUI/output/model_benchmark"
+DEFAULT_OUT = os.path.expandvars(r"%USERPROFILE%\APP\ComfyUI-aki-v3.2\ComfyUI\output\model_benchmark")
 
 KEY_SEP = "|"
 TRIAD = (".params.json", ".workflow.json", ".result.json")

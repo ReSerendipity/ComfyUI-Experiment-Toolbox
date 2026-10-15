@@ -37,7 +37,7 @@ API
     python -X utf8 lib_sfw_prompts_kit.py                 # 打印纳入/跳过类目与计数
     python -X utf8 lib_sfw_prompts_kit.py --sample 3       # 每类抽 3 条看看
     python -X utf8 lib_sfw_prompts_kit.py --compose light_direction,composition,color_scheme
-    python -X utf8 lib_sfw_prompts_kit.py --audit "D:/some/通用词库.json"   # 外部库审计
+    python -X utf8 lib_sfw_prompts_kit.py --audit <外部词库目录>/通用词库.json   # 外部库审计
 """
 import argparse
 import hashlib

@@ -1,8 +1,13 @@
 # -*- coding: utf-8 -*-
-"""编辑类清理：删对比/注释/多余组、SaveImage→Advanced、布局统一"""
+"""编辑类清理：删对比/注释/多余组、SaveImage→Advanced、布局统一
+   2026-10-14：接入 dry-run 开关（默认关闭）——--dry-run 不落盘，只打印将修改的文件与结构 diff。"""
 
 import json, os
-E = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Edit')
+import dryrun
+
+GLOBAL_E = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Edit')
+dryrun.parse_args()
+E = dryrun.resolve_target(GLOBAL_E)
 
 def load(fn):
     raw = open(os.path.join(E, fn), encoding='utf-8').read()
@@ -10,8 +15,7 @@ def load(fn):
     sep = (', ', ': ') if '", "' in raw else (',', ':')
     return json.loads(raw), indent, sep
 def save(fn, data, indent, sep):
-    with open(os.path.join(E, fn), 'w', encoding='utf-8') as f:
-        json.dump(data, f, ensure_ascii=False, indent=indent, separators=sep)
+    dryrun.write_json(os.path.join(E, fn), data, indent, sep)
 
 def remove_nodes_and_links(data, del_node_ids, del_link_ids):
     # 删节点

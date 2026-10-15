@@ -19,7 +19,7 @@ colorfulness / thumb_gray+1-归一化MSE）。不 import 那两个文件：它�
     本脚本因此不输出任何跨模型相似度数字。
 
 用法（必须用 ComfyUI 自带 python）：
-    python analyze_family.py --out C:/Users/Doro/model_benchmark/toolbox_acceptance/
+    python analyze_family.py --out <输出目录>/model_benchmark/toolbox_acceptance/
     python analyze_family.py --out <dir> --root <跑测输出根> --thumb 300
 """
 import argparse
@@ -36,7 +36,7 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-FONT_PATH = "C:/Windows/Fonts/msyh.ttc"
+FONT_PATH = os.path.expandvars(r"%WINDIR%\Fonts\msyh.ttc")
 
 # ---- 指标算法：抄自 04_结果分析/metrics.py 第 11-20 行 / analyze_models.py 第 29-46 行 ----
 def laplacian_var(g):
@@ -161,7 +161,7 @@ def main():
     os.makedirs(out, exist_ok=True)
     if not a.root:
         # 默认：模块自带 prompts 的同级没有输出时，回退到 ComfyUI 常见位置
-        cands = [r"C:/Users/Doro/APP/ComfyUI-aki-v3/ComfyUI/output/model_benchmark",
+        cands = [os.path.expandvars(r"%USERPROFILE%\APP\ComfyUI-aki-v3.2\ComfyUI\output\model_benchmark"),
                  os.path.join(HERE, "output")]
         a.root = next((c for c in cands if os.path.isdir(c)), cands[0])
     root = a.root

@@ -7,14 +7,16 @@
   2) 新增两条 INT 链接：width -> 主节点.width 输入, height -> 主节点.height 输入；
   3) 更新主节点对应输入的 link 字段、last_node_id、last_link_id；
   4) 保持原紧凑 JSON 格式写回。
+
+2026-10-14：接入 dry-run 开关（默认关闭）——--dry-run 不落盘不备份，只打印将修改的文件与结构 diff。
 """
 import json
 import os
 import shutil
 import copy
+import dryrun
 
-D = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image')
-SRC = os.path.join(D, 'Qwen_image_2_1_t2i.json')
+GLOBAL_D = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image')
 
 # 各工作流: 文件名 -> (主节点id, width输入索引, height输入索引)
 TARGETS = {
@@ -33,9 +35,8 @@ def load(path):
 
 
 def save(path, data):
-    with open(path, 'w', encoding='utf-8') as f:
-        # 与源文件一致：紧凑格式、ensure_ascii=False（ComfyUI 原生导出格式）
-        f.write(json.dumps(data, ensure_ascii=False, separators=(',', ':')))
+    # 与源文件一致：紧凑格式、ensure_ascii=False（ComfyUI 原生导出格式）
+    dryrun.write_json(path, data, indent=None, sep=(',', ':'))
 
 
 def make_selector_node(node_id, main_node, order):
@@ -110,6 +111,9 @@ def make_selector_node(node_id, main_node, order):
 
 
 def main():
+    dryrun.parse_args()
+    D = dryrun.resolve_target(GLOBAL_D)
+    SRC = os.path.join(D, 'Qwen_image_2_1_t2i.json')
     with open(SRC, encoding='utf-8') as f:
         src_data = json.load(f)
     # 从源文件提取 ResolutionSelector 模板（仅用于核对，实际构造用 make_selector_node）
@@ -124,8 +128,7 @@ def main():
         # 备份
         bak = path + '.bak'
         if not os.path.exists(bak):
-            shutil.copy2(path, bak)
-            print('已备份 ->', os.path.basename(bak))
+            dryrun.guard_backup(path, bak)
 
         # 定位主节点
         main_node = None

@@ -9,11 +9,15 @@ A. Qwen_image_2_1_t2i.json（2.1 官方模板）融合 6 个自定义工作流�
    - 子图双输出：输出0=原图(经显存控制)、输出1=超分(静止备用)
    - 顶层 SaveImageAdvanced 连主节点输出0（原图）
 B. 6 个自定义工作流：SeedVR2 超分节点全部设为静止(mode=4)，顶层保存节点改连原图输出(输出1)
+
+2026-10-14：接入 dry-run 开关（默认关闭）——--dry-run 不落盘不备份，只打印将修改的文件与结构 diff。
 """
 
 import json, os, uuid, shutil
+import dryrun
 
-D = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image')
+GLOBAL_D = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image')
+D = GLOBAL_D
 
 CUSTOM = ['Flux.2_Klein-9B-Distilled.json', 'Qwen_image.json', 'Qwen_image_2512.json',
           'Z_image.json', 'Z_image_turbo.json', 'flux.1-dev.json']
@@ -28,14 +32,12 @@ def read(fn):
 
 def write(fn, data, indent, sep):
     p = os.path.join(D, fn)
-    with open(p, 'w', encoding='utf-8') as f:
-        json.dump(data, f, ensure_ascii=False, indent=indent, separators=sep)
+    dryrun.write_json(p, data, indent, sep)
 
 def backup(fn, suffix):
     src = os.path.join(D, fn)
     dst = os.path.join(D, fn.replace('.json', suffix))
-    shutil.copy2(src, dst)
-    print('  备份:', os.path.basename(dst))
+    dryrun.guard_backup(src, dst)
 
 
 # ============ 新链接（682-694） ============
@@ -370,6 +372,8 @@ def mute_custom(fn):
 
 
 if __name__ == '__main__':
+    dryrun.parse_args()
+    D = dryrun.resolve_target(GLOBAL_D)
     fuse_21()
     for f in CUSTOM:
         mute_custom(f)

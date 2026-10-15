@@ -14,7 +14,7 @@
 
 import json, os, sys, shutil, time
 
-WF = os.path.expandvars(r"%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows")
+WF = os.path.expandvars(r"%USERPROFILE%\APP\ComfyUI-aki-v3.2\ComfyUI\user\default\workflows")
 SRC = os.path.join(WF, "Image", "Qwen_image_2_1_t2i.json")
 
 # rel_path: (prompt_input_name, seed_input_name, extra_overrides{name: value})

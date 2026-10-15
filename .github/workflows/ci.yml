@@ -1,5 +1,5 @@
 # comfyui-experiment-toolbox: minimal Python CI
-# 步骤：语法编译 → 锁文件可解析 → 三个纯标准库门禁 selftest
+# 步骤：语法编译 → 锁文件可解析 → 三个纯标准库门禁 selftest → 结构轨样本验收 → 公开仓路径红线自检
 # 注意：本 CI 不 import comfy.*（runner 上没有 ComfyUI 环境），只跑纯标准库的门禁自检。
 name: CI
 
@@ -49,4 +49,52 @@ jobs:
               print(("OK  " if ok else "FAIL") + " " + msg)
           bad = [m for m, ok in steps if ok is False]
           sys.exit(1 if bad else 0)
+          PY
+
+      # 结构轨验收：只作用于仓内脱敏样本（不碰本机 ComfyUI 原件），
+      # ① 样本全部结构不变量通过；② 逐类破坏不变量必须 FAIL 且指明不变量
+      - name: Gate ④ 05 结构改造 verify_upgrade 样本 selftest
+        run: python -X utf8 "05_结构改造脚本/verify_upgrade.py" --selftest
+
+      # AGENTS.md 公开仓红线自检：只读扫描纳入版本管理的 .py，命中字面本机绝对路径即失败。
+      - name: Gate ⑤ no literal machine absolute paths in tracked .py
+        run: |
+          python - <<'PY'
+          import re, subprocess, sys
+
+          # 违规口径（AGENTS.md 铁律「公开仓红线：不含本机绝对路径」）：
+          #   1) 盘符开头的字面路径        C:\... / c:/...
+          #   2) 用户主目录形态的字面路径  /home/<u>/... / /Users/<u>/... / ~/...
+          DRIVE = re.compile(r"(?<![A-Za-z0-9])[A-Za-z]:[\\/]{1,2}\S")
+          HOME = re.compile(r"(?<![A-Za-z0-9])(?:/(?:home|Users)/[A-Za-z0-9._-]+/\S|~/\S)")
+          # 不算违规：运行时才展开的写法。%USERPROFILE% / $HOME 本身不命中上面两个式子；
+          # "~/..." 交给 os.path.expanduser() 展开，同样属于运行时形式 → 按前缀豁免。
+          # 负向后顾断言排除 http:// 等 URL scheme（字母前还有字母/数字时不匹配）。
+          RUNTIME = re.compile(r"(?:expandvars|expanduser)\(\s*(?:[rb]{1,2}|u)?['\"]$")
+
+          raw = subprocess.run(
+              ["git", "-c", "core.quotepath=false", "ls-files", "-z", "--", "*.py"],
+              stdout=subprocess.PIPE, check=True,
+          ).stdout
+          files = [f.decode("utf-8", "surrogateescape") for f in raw.split(b"\0") if f]
+
+          hits = []
+          for rel in files:
+              with open(rel, encoding="utf-8", errors="replace") as fh:
+                  for lineno, line in enumerate(fh, 1):
+                      text = line.rstrip("\n")
+                      for regex in (DRIVE, HOME):
+                          m = regex.search(text)
+                          if m and not RUNTIME.search(text[: m.start()]):
+                              hits.append((rel, lineno, m.group(0), text.strip()))
+                              break
+
+          print("no-literal-machine-path gate: scanned %d tracked .py file(s)" % len(files))
+          if hits:
+              print("::error::AGENTS.md 公开仓红线：tracked .py 含字面本机绝对路径，命中 %d 行" % len(hits))
+              for rel, lineno, token, text in hits:
+                  print("  %s:%d  %s" % (rel, lineno, token))
+                  print("      | %s" % text[:160])
+              sys.exit(1)
+          print("OK: no literal machine absolute paths in tracked .py sources")
           PY

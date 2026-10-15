@@ -1,9 +1,13 @@
 # -*- coding: utf-8 -*-
-"""Flux.2 子图1 加 6 张参考图 (image_2 ~ image_7), 凑满 8 张"""
+"""Flux.2 子图1 加 6 张参考图 (image_2 ~ image_7), 凑满 8 张
+   2026-10-14：接入 dry-run 开关（默认关闭）——--dry-run 不落盘，只打印将修改的文件与结构 diff。"""
 
 import json, os, uuid, copy
+import dryrun
 
-E = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Edit')
+GLOBAL_E = os.path.expandvars(r'%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Edit')
+dryrun.parse_args()
+E = dryrun.resolve_target(GLOBAL_E)
 p = os.path.join(E, 'flux2_klein_edit.json')
 raw = open(p, encoding='utf-8').read()
 indent = 2 if '\n  ' in raw else None
@@ -206,11 +210,13 @@ for k in range(NEW_IMGS):
     d['links'].append([lid, nid, 0, 92, new_slot_top, 'IMAGE'])
     print('  顶层 LoadImage id=%d -> 主节点 92 slot=%d, link=%d' % (nid, new_slot_top, lid))
 
-with open(p, 'w', encoding='utf-8') as f:
-    json.dump(d, f, ensure_ascii=False, indent=indent, separators=sep)
+dryrun.write_json(p, d, indent, sep)
 
 # 验证
-d2 = json.load(open(p, encoding='utf-8'))
+if dryrun.is_dry_run():
+    d2 = d
+else:
+    d2 = json.load(open(p, encoding='utf-8'))
 lds = [n for n in d2['nodes'] if n['type']=='LoadImage']
 print()
 print('Flux.2 顶层 LoadImage 数量: %d' % len(lds))

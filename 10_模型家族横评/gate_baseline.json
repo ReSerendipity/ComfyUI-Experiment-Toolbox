@@ -1,0 +1,1379 @@
+{
+ "count": 191,
+ "digest": "1230a43f1e8e6e26ddda142a9b704f31b3c0b2f2c83e597640cc82a53030c021",
+ "elapsed_s": 292.3,
+ "files": {
+  "Rother/README.txt": {
+   "hash_mode": "full",
+   "mtime": 1786169251.421,
+   "mtime_iso": "2026-08-08 14:07:31",
+   "sha256": "cb61bcfde89131db1221ecd7a0f6963b59b78654b52d71d55f149354df5146a5",
+   "size": 315
+  },
+  "Rother/audio_encoders/put_audio_encoder_models_here": {
+   "hash_mode": "full",
+   "mtime": 1768740688.637,
+   "mtime_iso": "2026-01-18 20:51:28",
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "size": 0
+  },
+  "Rother/background_removal/put_background_removal_models_here": {
+   "hash_mode": "full",
+   "mtime": 1782009016.034,
+   "mtime_iso": "2026-06-21 10:30:16",
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "size": 0
+  },
+  "Rother/clip_vision/put_clip_vision_models_here": {
+   "hash_mode": "full",
+   "mtime": 1768740688.639,
+   "mtime_iso": "2026-01-18 20:51:28",
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "size": 0
+  },
+  "Rother/controlnet/put_controlnets_and_t2i_here": {
+   "hash_mode": "full",
+   "mtime": 1768740688.644,
+   "mtime_iso": "2026-01-18 20:51:28",
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "size": 0
+  },
+  "Rother/detection/put_detection_models_here": {
+   "hash_mode": "full",
+   "mtime": 1782009016.034,
+   "mtime_iso": "2026-06-21 10:30:16",
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "size": 0
+  },
+  "Rother/diffusers/put_diffusers_models_here": {
+   "hash_mode": "full",
+   "mtime": 1768740688.644,
+   "mtime_iso": "2026-01-18 20:51:28",
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "size": 0
+  },
+  "Rother/diffusion_models/put_diffusion_model_files_here": {
+   "hash_mode": "full",
+   "mtime": 1768740688.644,
+   "mtime_iso": "2026-01-18 20:51:28",
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "size": 0
+  },
+  "Rother/embeddings/put_embeddings_or_textual_inversion_concepts_here": {
+   "hash_mode": "full",
+   "mtime": 1768740688.645,
+   "mtime_iso": "2026-01-18 20:51:28",
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "size": 0
+  },
+  "Rother/frame_interpolation/put_frame_interpolation_models_here": {
+   "hash_mode": "full",
+   "mtime": 1782009016.035,
+   "mtime_iso": "2026-06-21 10:30:16",
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "size": 0
+  },
+  "Rother/geometry_estimation/put_geometry_estimation_models_here": {
+   "hash_mode": "full",
+   "mtime": 1782009016.035,
+   "mtime_iso": "2026-06-21 10:30:16",
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "size": 0
+  },
+  "Rother/gligen/put_gligen_models_here": {
+   "hash_mode": "full",
+   "mtime": 1768740688.645,
+   "mtime_iso": "2026-01-18 20:51:28",
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "size": 0
+  },
+  "Rother/hypernetworks/put_hypernetworks_here": {
+   "hash_mode": "full",
+   "mtime": 1768740688.646,
+   "mtime_iso": "2026-01-18 20:51:28",
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "size": 0
+  },
+  "Rother/latent_upscale_models/put_latent_upscale_models_here": {
+   "hash_mode": "full",
+   "mtime": 1768740688.646,
+   "mtime_iso": "2026-01-18 20:51:28",
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "size": 0
+  },
+  "Rother/model_patches/put_model_patches_here": {
+   "hash_mode": "full",
+   "mtime": 1768740688.647,
+   "mtime_iso": "2026-01-18 20:51:28",
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "size": 0
+  },
+  "Rother/optical_flow/put_optical_flow_models_here": {
+   "hash_mode": "full",
+   "mtime": 1782009016.035,
+   "mtime_iso": "2026-06-21 10:30:16",
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "size": 0
+  },
+  "Rother/photomaker/put_photomaker_models_here": {
+   "hash_mode": "full",
+   "mtime": 1768740688.647,
+   "mtime_iso": "2026-01-18 20:51:28",
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "size": 0
+  },
+  "Rother/style_models/put_t2i_style_model_here": {
+   "hash_mode": "full",
+   "mtime": 1768740688.648,
+   "mtime_iso": "2026-01-18 20:51:28",
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "size": 0
+  },
+  "Rother/upscale_models/put_esrgan_and_other_upscale_models_here": {
+   "hash_mode": "full",
+   "mtime": 1768740688.649,
+   "mtime_iso": "2026-01-18 20:51:28",
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "size": 0
+  },
+  "Rother/vae_approx/put_taesd_encoder_pth_and_taesd_decoder_pth_here": {
+   "hash_mode": "full",
+   "mtime": 1768740688.65,
+   "mtime_iso": "2026-01-18 20:51:28",
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "size": 0
+  },
+  "SEEDVR2/.validation_cache.json": {
+   "hash_mode": "full",
+   "mtime": 1775832577.153,
+   "mtime_iso": "2026-04-10 22:49:37",
+   "sha256": "640235aef4f8f7044902a8f280741a47971cf496535a3ee72e15ae83d890fd83",
+   "size": 1286
+  },
+  "SEEDVR2/ema_vae_fp16.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1775727433.758,
+   "mtime_iso": "2026-04-09 17:37:13",
+   "sha256": "20678548f420d98d26f11442d3528f8b8c94e57ee046ef93dbb7633da8612ca1",
+   "size": 501324814
+  },
+  "SEEDVR2/seedvr2_ema_3b_fp16.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1775728047.745,
+   "mtime_iso": "2026-04-09 17:47:27",
+   "sha256": "2fd0e03a3dad24e07086750360727ca437de4ecd456f769856e960ae93e2b304",
+   "size": 6783018808
+  },
+  "audio_encoders/put_audio_encoder_models_here": {
+   "hash_mode": "full",
+   "mtime": 1768740688.637,
+   "mtime_iso": "2026-01-18 20:51:28",
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "size": 0
+  },
+  "background_removal/put_background_removal_models_here": {
+   "hash_mode": "full",
+   "mtime": 1786010500.686,
+   "mtime_iso": "2026-08-06 18:01:40",
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "size": 0
+  },
+  "checkpoints/iIllustrious/WAI_realistic_2.5D_NSFW-illustrious-SDXL_v16_v2.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1776173427.23,
+   "mtime_iso": "2026-04-14 21:30:27",
+   "sha256": "9af4fa4e93a089c49fbd66de8fa50052c3890a3419f09ed44b4881da6e69640b",
+   "size": 6938041850
+  },
+  "checkpoints/iIllustrious/waiIllustriousSDXL_v160.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1776147418.761,
+   "mtime_iso": "2026-04-14 14:16:58",
+   "sha256": "a5f58eb1c33616c4f06bca55af39876a7b817913cd829caa8acb111b770c85cc",
+   "size": 6938040682
+  },
+  "checkpoints/pony/pornworksRealPornPhoto_ponyV04.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1776162260.0,
+   "mtime_iso": "2026-04-14 18:24:20",
+   "sha256": "4142bfecb12c9183f7bfa48ffb244409c7292e7cb08b5565d5656047a4bae307",
+   "size": 6938041176
+  },
+  "checkpoints/pony/pornworksRealPornPhoto_v04.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1776162354.0,
+   "mtime_iso": "2026-04-14 18:25:54",
+   "sha256": "fb1d2047596d4d350092a37294426ab46ea834c7f38e3308f4a0c92703a71e64",
+   "size": 6938042528
+  },
+  "checkpoints/put_checkpoints_here": {
+   "hash_mode": "full",
+   "mtime": 1768740688.638,
+   "mtime_iso": "2026-01-18 20:51:28",
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "size": 0
+  },
+  "clip/put_clip_or_text_encoder_models_here": {
+   "hash_mode": "full",
+   "mtime": 1768740688.638,
+   "mtime_iso": "2026-01-18 20:51:28",
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "size": 0
+  },
+  "clip_vision/put_clip_vision_models_here": {
+   "hash_mode": "full",
+   "mtime": 1768740688.639,
+   "mtime_iso": "2026-01-18 20:51:28",
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "size": 0
+  },
+  "configs/anything_v3.yaml": {
+   "hash_mode": "full",
+   "mtime": 1768740688.639,
+   "mtime_iso": "2026-01-18 20:51:28",
+   "sha256": "9ceb1178472945273cfe1750b145505b184caa619ce1622f4276af416b43c9bd",
+   "size": 2006
+  },
+  "configs/v1-inference.yaml": {
+   "hash_mode": "full",
+   "mtime": 1768740688.64,
+   "mtime_iso": "2026-01-18 20:51:28",
+   "sha256": "20d5cacce812609112d416743168ad6f7d50be148ac264f84b525c763444ae39",
+   "size": 1943
+  },
+  "configs/v1-inference_clip_skip_2.yaml": {
+   "hash_mode": "full",
+   "mtime": 1768740688.64,
+   "mtime_iso": "2026-01-18 20:51:28",
+   "sha256": "9ceb1178472945273cfe1750b145505b184caa619ce1622f4276af416b43c9bd",
+   "size": 2006
+  },
+  "configs/v1-inference_clip_skip_2_fp16.yaml": {
+   "hash_mode": "full",
+   "mtime": 1768740688.641,
+   "mtime_iso": "2026-01-18 20:51:28",
+   "sha256": "5715c16a6b468bdb56608b640315c14158a5c4738273566a8282f31bac07d6bc",
+   "size": 2030
+  },
+  "configs/v1-inference_fp16.yaml": {
+   "hash_mode": "full",
+   "mtime": 1768740688.641,
+   "mtime_iso": "2026-01-18 20:51:28",
+   "sha256": "7810fd779a7ddc4d9676bcfe65162f4bfd7c527153527c1b1f103186d5e1d7ec",
+   "size": 1967
+  },
+  "configs/v1-inpainting-inference.yaml": {
+   "hash_mode": "full",
+   "mtime": 1768740688.642,
+   "mtime_iso": "2026-01-18 20:51:28",
+   "sha256": "e174a0c212462e9f96bf5ce9327b5ee166d071ec62d6869b8199454347c8406d",
+   "size": 2063
+  },
+  "configs/v2-inference-v.yaml": {
+   "hash_mode": "full",
+   "mtime": 1768740688.642,
+   "mtime_iso": "2026-01-18 20:51:28",
+   "sha256": "0e3db941233ede7ddfb365f5f6d29fb05f767eb8e5e602cd83bb17d905da1f8e",
+   "size": 1883
+  },
+  "configs/v2-inference-v_fp32.yaml": {
+   "hash_mode": "full",
+   "mtime": 1768740688.642,
+   "mtime_iso": "2026-01-18 20:51:28",
+   "sha256": "91733e58dd236c56e5b12ecdf5e9e65a429da742e9e960c752bc1e87dba24f7f",
+   "size": 1884
+  },
+  "configs/v2-inference.yaml": {
+   "hash_mode": "full",
+   "mtime": 1768740688.643,
+   "mtime_iso": "2026-01-18 20:51:28",
+   "sha256": "b2379501101f1dd2c7eb1e50d24dedace0378048ab3aef4c78a434944785b044",
+   "size": 1856
+  },
+  "configs/v2-inference_fp32.yaml": {
+   "hash_mode": "full",
+   "mtime": 1768740688.643,
+   "mtime_iso": "2026-01-18 20:51:28",
+   "sha256": "6fbaddd67592412df331982abf208b02dfec89f97d642a604d4953c52d32bc25",
+   "size": 1857
+  },
+  "configs/v2-inpainting-inference.yaml": {
+   "hash_mode": "full",
+   "mtime": 1768740688.643,
+   "mtime_iso": "2026-01-18 20:51:28",
+   "sha256": "8dc746eaf2747d983cd0dc4ce18172659f05b74dcfbbb33b33f53c045351ea47",
+   "size": 4608
+  },
+  "controlnet/put_controlnets_and_t2i_here": {
+   "hash_mode": "full",
+   "mtime": 1768740688.644,
+   "mtime_iso": "2026-01-18 20:51:28",
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "size": 0
+  },
+  "detection/put_detection_models_here": {
+   "hash_mode": "full",
+   "mtime": 1786010500.686,
+   "mtime_iso": "2026-08-06 18:01:40",
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "size": 0
+  },
+  "diffusers/put_diffusers_models_here": {
+   "hash_mode": "full",
+   "mtime": 1768740688.644,
+   "mtime_iso": "2026-01-18 20:51:28",
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "size": 0
+  },
+  "diffusion_models/FLUX-1-dev/fluxNSFWUNLOCKED.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1775311466.0,
+   "mtime_iso": "2026-04-04 22:04:26",
+   "sha256": "3b9e388080e8641767f575bb6bf95bd519751030cc140b41d61c673c4a1e4ab4",
+   "size": 11901513960
+  },
+  "diffusion_models/FLUX-2-klein-9b/BigLoveKlein2_fp8.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1776824230.0,
+   "mtime_iso": "2026-04-22 10:17:10",
+   "sha256": "02b68dec8f5b8e6dfa06d0b48973aae9fa5007b438dfdbbd76a574b3b2caae85",
+   "size": 9078604336
+  },
+  "diffusion_models/Krea2-turbo/krea2TurboNSFWAIO_v10.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1787230930.0,
+   "mtime_iso": "2026-08-20 21:02:10",
+   "sha256": "c40a22059317f968b9cc99f7c55a93e0077161d423c1014bcd2d55fcd39ede68",
+   "size": 17833778294
+  },
+  "diffusion_models/Krea2-turbo/moodyKrea2Mix_v3-Global-FP8.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1791965732.995,
+   "mtime_iso": "2026-10-14 16:15:32",
+   "sha256": "49591a46ef95d21635156408c91f5281befeb090284fc243d44bc4b74d783a9e",
+   "size": 13485164976
+  },
+  "diffusion_models/MiniMax-H3/10Eros_Max_h3_TURBO-hybrid_beta5_int8.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1791965272.261,
+   "mtime_iso": "2026-10-14 16:07:52",
+   "sha256": "4dd965496e5b1b83cd13c65cbe7a535b8a4d94ae768a7646b4e336d52c4781cf",
+   "size": 20970414464
+  },
+  "diffusion_models/MiniMax-H3/minimax_h3_ref2va_XUELUO_int8_convrot.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1787229100.263,
+   "mtime_iso": "2026-08-20 20:31:40",
+   "sha256": "1209bb3daff5c38c3c35524d17a96149de3703555a8491dca01d9b3bdc1778c0",
+   "size": 34038894694
+  },
+  "diffusion_models/Qwen-Image-2.1-turbo/qwen-image-2.1-turbo-int8-convrot.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1791708179.424,
+   "mtime_iso": "2026-10-11 16:42:59",
+   "sha256": "bc77cb2f0220311a158a10e77677f0912fac72d53a66faf78a67d7946b81f5c1",
+   "size": 7256828688
+  },
+  "diffusion_models/Qwen-Image-2.1/NoctQ_V4_int8_convrot.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1791958033.222,
+   "mtime_iso": "2026-10-14 14:07:13",
+   "sha256": "4d92d5538253ab36e6a73b056cce5f697950f4303cb9e6686a3198d0ea13f9e8",
+   "size": 7256784368
+  },
+  "diffusion_models/Qwen-Image-2.1/qwen-image-2.1-UC-int8_convrot.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1791956276.737,
+   "mtime_iso": "2026-10-14 13:37:56",
+   "sha256": "5bc5a6c007eff1e0d4004344a24c4af966b9d2c83d142e613b0d456ccceb19ae",
+   "size": 7256796840
+  },
+  "diffusion_models/Qwen-Image-Edit-2511/qwen_image_edit_2511_nvfp4.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1785498624.495,
+   "mtime_iso": "2026-07-31 19:50:24",
+   "sha256": "a1145911a0f9ea598f21f40b50b0ac5c38589e2abc154fb89ec77f44eb280ab4",
+   "size": 11640471562
+  },
+  "diffusion_models/Qwen-image-2512/NVFP4.txt": {
+   "hash_mode": "full",
+   "mtime": 1785727846.217,
+   "mtime_iso": "2026-08-03 11:30:46",
+   "sha256": "c2c9caa95af2aea07ebeb3b2baf159ff312710652ff08f76ca109d7d2f3525a2",
+   "size": 121
+  },
+  "diffusion_models/Qwen-image-2512/qwen-image-2512-nvfp4-Ultra.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1785402249.951,
+   "mtime_iso": "2026-07-30 17:04:09",
+   "sha256": "a50bd810200bc397b4cf0109020b73cea77574bfb6e94157a76bfb2ab8b315df",
+   "size": 14896156794
+  },
+  "diffusion_models/Z-image-turbo/zimageTurboNSFWByStable_2602NSFWFP8.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1776756762.604,
+   "mtime_iso": "2026-04-21 15:32:42",
+   "sha256": "8dff149fbc5763e483d2a6fb375a5dffebb0ac54573ae2c0781cef7fb651b488",
+   "size": 6154969704
+  },
+  "diffusion_models/put_diffusion_model_files_here": {
+   "hash_mode": "full",
+   "mtime": 1768740688.644,
+   "mtime_iso": "2026-01-18 20:51:28",
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "size": 0
+  },
+  "embeddings/put_embeddings_or_textual_inversion_concepts_here": {
+   "hash_mode": "full",
+   "mtime": 1768740688.645,
+   "mtime_iso": "2026-01-18 20:51:28",
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "size": 0
+  },
+  "frame_interpolation/put_frame_interpolation_models_here": {
+   "hash_mode": "full",
+   "mtime": 1786010500.687,
+   "mtime_iso": "2026-08-06 18:01:40",
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "size": 0
+  },
+  "geometry_estimation/put_geometry_estimation_models_here": {
+   "hash_mode": "full",
+   "mtime": 1786010500.687,
+   "mtime_iso": "2026-08-06 18:01:40",
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "size": 0
+  },
+  "gligen/put_gligen_models_here": {
+   "hash_mode": "full",
+   "mtime": 1768740688.645,
+   "mtime_iso": "2026-01-18 20:51:28",
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "size": 0
+  },
+  "hypernetworks/put_hypernetworks_here": {
+   "hash_mode": "full",
+   "mtime": 1768740688.646,
+   "mtime_iso": "2026-01-18 20:51:28",
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "size": 0
+  },
+  "latent_upscale_models/put_latent_upscale_models_here": {
+   "hash_mode": "full",
+   "mtime": 1768740688.646,
+   "mtime_iso": "2026-01-18 20:51:28",
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "size": 0
+  },
+  "loras/FLUX.1-dev/F.1 皮肤纹理质感增强-去油_v1/F.1 皮肤纹理质感增强-去油_v1.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1774329619.356,
+   "mtime_iso": "2026-03-24 13:20:19",
+   "sha256": "4cf9702d2fce134eb7fd2d32dda7423e7afc633d912c155f224700fc5fae7d54",
+   "size": 306429184
+  },
+  "loras/FLUX.1-dev/Flux_Lustly.ai_Uncensored_nsfw_v1-lustlyai/.gitattributes": {
+   "hash_mode": "full",
+   "mtime": 1775097922.173,
+   "mtime_iso": "2026-04-02 10:45:22",
+   "sha256": "80db1b8f45531698efb4823512c1080bb5d8f9d49805c887dbfa1c1b1ce81a86",
+   "size": 1597
+  },
+  "loras/FLUX.1-dev/Flux_Lustly.ai_Uncensored_nsfw_v1-lustlyai/README.md": {
+   "hash_mode": "full",
+   "mtime": 1775097922.174,
+   "mtime_iso": "2026-04-02 10:45:22",
+   "sha256": "31be34d702cef3c1c5c94c6e5f9236737f44009423b0ae85bac28cd8d114b556",
+   "size": 8292
+  },
+  "loras/FLUX.1-dev/Flux_Lustly.ai_Uncensored_nsfw_v1-lustlyai/flux_lustly-ai_v1.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1775284268.0,
+   "mtime_iso": "2026-04-04 14:31:08",
+   "sha256": "b1470828b182a72ac2c1b75eed8f20b21a096555bf3a6cdac29f5ed530ca5ebe",
+   "size": 343805152
+  },
+  "loras/FLUX.1-dev/Flux_Lustly.ai_Uncensored_nsfw_v1-lustlyai/lustly_dev.png": {
+   "hash_mode": "full",
+   "mtime": 1775097922.806,
+   "mtime_iso": "2026-04-02 10:45:22",
+   "sha256": "72e5935b27a6dbfefba423602ea0e221d849867a0f067d3d3a8a5ae4a6e531f4",
+   "size": 734033
+  },
+  "loras/FLUX.1-dev/Flux_Lustly.ai_Uncensored_nsfw_v1-lustlyai/lustly_schnell.png": {
+   "hash_mode": "full",
+   "mtime": 1775097922.811,
+   "mtime_iso": "2026-04-02 10:45:22",
+   "sha256": "e4f2ef0ced2a1b384d0ca64ce09ed76a92da88b65555f665fc704053165eb894",
+   "size": 834624
+  },
+  "loras/FLUX.1-dev/Flux_Lustly.ai_Uncensored_nsfw_v1-lustlyai/samples/0.png": {
+   "hash_mode": "full",
+   "mtime": 1775097922.816,
+   "mtime_iso": "2026-04-02 10:45:22",
+   "sha256": "72e5935b27a6dbfefba423602ea0e221d849867a0f067d3d3a8a5ae4a6e531f4",
+   "size": 734033
+  },
+  "loras/FLUX.1-dev/Flux_Lustly.ai_Uncensored_nsfw_v1-lustlyai/samples/1.png": {
+   "hash_mode": "full",
+   "mtime": 1775097922.82,
+   "mtime_iso": "2026-04-02 10:45:22",
+   "sha256": "c4292e60665679da5edc08861a81146141b5efb6bc8fdc339cde79a3d94aac86",
+   "size": 785580
+  },
+  "loras/FLUX.1-dev/Flux_Lustly.ai_Uncensored_nsfw_v1-lustlyai/samples/10.png": {
+   "hash_mode": "full",
+   "mtime": 1775097922.825,
+   "mtime_iso": "2026-04-02 10:45:22",
+   "sha256": "c03b5f57a59b65e2c7df485fc97ef2afcf7e39e5250f22c40ed18d15186dca21",
+   "size": 804500
+  },
+  "loras/FLUX.1-dev/Flux_Lustly.ai_Uncensored_nsfw_v1-lustlyai/samples/11.png": {
+   "hash_mode": "full",
+   "mtime": 1775097922.829,
+   "mtime_iso": "2026-04-02 10:45:22",
+   "sha256": "88da6cc2616e0632355af7d1bba47329ab0e82783c0eff52eccadea6799b2a84",
+   "size": 699533
+  },
+  "loras/FLUX.1-dev/Flux_Lustly.ai_Uncensored_nsfw_v1-lustlyai/samples/12.jpeg": {
+   "hash_mode": "full",
+   "mtime": 1775097922.832,
+   "mtime_iso": "2026-04-02 10:45:22",
+   "sha256": "60742955bdf4030987e53fa945b09335928d381519d18dac86d0dd4c0bf6f703",
+   "size": 150959
+  },
+  "loras/FLUX.1-dev/Flux_Lustly.ai_Uncensored_nsfw_v1-lustlyai/samples/2.png": {
+   "hash_mode": "full",
+   "mtime": 1775097922.838,
+   "mtime_iso": "2026-04-02 10:45:22",
+   "sha256": "b7d99d9a7bc40f7b989ada454d984e7b2167aee32a7a63e7e1a57a3a6a8a5017",
+   "size": 840810
+  },
+  "loras/FLUX.1-dev/Flux_Lustly.ai_Uncensored_nsfw_v1-lustlyai/samples/3.png": {
+   "hash_mode": "full",
+   "mtime": 1775097922.843,
+   "mtime_iso": "2026-04-02 10:45:22",
+   "sha256": "c4d13ffafc5f557b8e5d1e6668c1ea70b17c84957d9a8e23b2a280a0b357b278",
+   "size": 756625
+  },
+  "loras/FLUX.1-dev/Flux_Lustly.ai_Uncensored_nsfw_v1-lustlyai/samples/4.png": {
+   "hash_mode": "full",
+   "mtime": 1775097922.847,
+   "mtime_iso": "2026-04-02 10:45:22",
+   "sha256": "9ff9ac217bd9ea84b3439b75352df75ede67d2c788674c2b7def960a908f1f85",
+   "size": 807106
+  },
+  "loras/FLUX.1-dev/Flux_Lustly.ai_Uncensored_nsfw_v1-lustlyai/samples/5.png": {
+   "hash_mode": "full",
+   "mtime": 1775097922.852,
+   "mtime_iso": "2026-04-02 10:45:22",
+   "sha256": "1cca4f4bebb6bc2367699d47ee55cca8db346526f6aabcb0484587892e22da74",
+   "size": 759551
+  },
+  "loras/FLUX.1-dev/Flux_Lustly.ai_Uncensored_nsfw_v1-lustlyai/samples/6.png": {
+   "hash_mode": "full",
+   "mtime": 1775097922.857,
+   "mtime_iso": "2026-04-02 10:45:22",
+   "sha256": "a04dc5c2e4e82625249eea913f2bdf94d44d4ab0e5610546570d61399e42e607",
+   "size": 776894
+  },
+  "loras/FLUX.1-dev/Flux_Lustly.ai_Uncensored_nsfw_v1-lustlyai/samples/7.png": {
+   "hash_mode": "full",
+   "mtime": 1775097922.861,
+   "mtime_iso": "2026-04-02 10:45:22",
+   "sha256": "1853dfdcc7edef142201105495e390fb71cfab268c31836fdc73581b54f1222c",
+   "size": 882919
+  },
+  "loras/FLUX.1-dev/Flux_Lustly.ai_Uncensored_nsfw_v1-lustlyai/samples/70s_1.jpeg": {
+   "hash_mode": "full",
+   "mtime": 1775097922.862,
+   "mtime_iso": "2026-04-02 10:45:22",
+   "sha256": "51e808e5e29cbf4d950d13cfc4b7f247e3634ea65cbf78cc4c8f9d529589fffe",
+   "size": 159939
+  },
+  "loras/FLUX.1-dev/Flux_Lustly.ai_Uncensored_nsfw_v1-lustlyai/samples/70s_2.jpeg": {
+   "hash_mode": "full",
+   "mtime": 1775097922.865,
+   "mtime_iso": "2026-04-02 10:45:22",
+   "sha256": "d942d9ad3c271c2109d0dda88db7e9596263afa1fe5d1cb56c722bf3af4683be",
+   "size": 186761
+  },
+  "loras/FLUX.1-dev/Flux_Lustly.ai_Uncensored_nsfw_v1-lustlyai/samples/8.png": {
+   "hash_mode": "full",
+   "mtime": 1775097924.314,
+   "mtime_iso": "2026-04-02 10:45:24",
+   "sha256": "110339a5b111740320498329ff7712ecd770dc6cfb4bc26856248389806ffa2b",
+   "size": 1006868
+  },
+  "loras/FLUX.1-dev/Flux_Lustly.ai_Uncensored_nsfw_v1-lustlyai/samples/9.png": {
+   "hash_mode": "full",
+   "mtime": 1775097922.871,
+   "mtime_iso": "2026-04-02 10:45:22",
+   "sha256": "554e10aa8ef7bab4168c5c6729ab9d8beab60d08f0e9123373ea40b7db64ce6d",
+   "size": 665685
+  },
+  "loras/FLUX.1-dev/Flux_Lustly.ai_Uncensored_nsfw_v1-lustlyai/samples/a1.png": {
+   "hash_mode": "full",
+   "mtime": 1775097922.876,
+   "mtime_iso": "2026-04-02 10:45:22",
+   "sha256": "6792e191f716c5a6aac9114b07d48b8827288a175edbb20e9c13e7cb60db75da",
+   "size": 854068
+  },
+  "loras/FLUX.1-dev/Flux_Lustly.ai_Uncensored_nsfw_v1-lustlyai/samples/garage_band1.jpeg": {
+   "hash_mode": "full",
+   "mtime": 1775097922.878,
+   "mtime_iso": "2026-04-02 10:45:22",
+   "sha256": "031c66d5c958d43ba302178be41687f8ceea1340abcf624535ce20b00a5e2da3",
+   "size": 200319
+  },
+  "loras/FLUX.1-dev/Flux_Lustly.ai_Uncensored_nsfw_v1-lustlyai/samples/garage_band3.jpeg": {
+   "hash_mode": "full",
+   "mtime": 1775097922.88,
+   "mtime_iso": "2026-04-02 10:45:22",
+   "sha256": "0db2de1fad18a31b709048a9773d7897ae0fc00247a1fd84968f5d8253c997bd",
+   "size": 220036
+  },
+  "loras/FLUX.1-dev/Flux_Lustly.ai_Uncensored_nsfw_v1-lustlyai/samples/got2.jpeg": {
+   "hash_mode": "full",
+   "mtime": 1775097922.882,
+   "mtime_iso": "2026-04-02 10:45:22",
+   "sha256": "e5efee551920b4e2c7a95a9bfd823aeac6ea2c13b9104c1166a5c29dffd0cc68",
+   "size": 232706
+  },
+  "loras/FLUX.1-dev/Flux_Lustly.ai_Uncensored_nsfw_v1-lustlyai/samples/lustly_screenshot.png": {
+   "hash_mode": "full",
+   "mtime": 1775097922.886,
+   "mtime_iso": "2026-04-02 10:45:22",
+   "sha256": "0c3a6a9d60337ac09f9d79f55d22654dd755bde765df4e615845e2a29096e410",
+   "size": 327844
+  },
+  "loras/FLUX.1-dev/Flux_Lustly.ai_Uncensored_nsfw_v1-lustlyai/samples/lustly_screenshot_got.png": {
+   "hash_mode": "full",
+   "mtime": 1775097922.889,
+   "mtime_iso": "2026-04-02 10:45:22",
+   "sha256": "055217c28eb8523d1b302fb1c59348641462d76d764c406f39d0e01ad70a1dc4",
+   "size": 338561
+  },
+  "loras/FLUX.1-dev/Flux_Lustly.ai_Uncensored_nsfw_v1-lustlyai/samples/sauna1.jpeg": {
+   "hash_mode": "full",
+   "mtime": 1775097922.89,
+   "mtime_iso": "2026-04-02 10:45:22",
+   "sha256": "16ebd7cd0f574be8e979e631f1bc1bca68e1ce2a8d79376f7d6d1fb3d6a5b112",
+   "size": 135968
+  },
+  "loras/FLUX.1-dev/Flux_Lustly.ai_Uncensored_nsfw_v1-lustlyai/samples/sky2.jpeg": {
+   "hash_mode": "full",
+   "mtime": 1775097922.892,
+   "mtime_iso": "2026-04-02 10:45:22",
+   "sha256": "7429bf761639a2b4d274e6f09d419d012e449368db2b50d774f91e811775e79c",
+   "size": 142324
+  },
+  "loras/FLUX.1-dev/LOCOmuchen《麦橘复古少女Irene》Majicflus/12.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1774191334.17,
+   "mtime_iso": "2026-03-22 22:55:34",
+   "sha256": "b0d9227c18515dae1a1873c266b33c01b3e65e5445c9d14719afa3c3d6bcc9d6",
+   "size": 306423080
+  },
+  "loras/FLUX.1-dev/LOCOmuchen《麦橘青衣》Majicflus/10.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1774224152.468,
+   "mtime_iso": "2026-03-23 08:02:32",
+   "sha256": "adbdb71a2710dcba48bfe6462207f7bdf5e16ef11d7c91c4c013ee6f2b8a24ac",
+   "size": 306423080
+  },
+  "loras/FLUX.1-dev/MAJICFLUS-麦橘光影约拍/al.24.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1774224112.904,
+   "mtime_iso": "2026-03-23 08:01:52",
+   "sha256": "158a204aee175ad9203d908d1ccff209b12790ef31a8a589e88505c191631e6c",
+   "size": 153264992
+  },
+  "loras/FLUX.1-dev/MAJICFLUS_麦橘丁达尔/麦橘丁达尔.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1774261562.234,
+   "mtime_iso": "2026-03-23 18:26:02",
+   "sha256": "44de9439b9c9fcd35dc90fc8dc86d1c7f0de96485bd2283d78a0f5d61a0221f8",
+   "size": 153264992
+  },
+  "loras/FLUX.1-dev/MAJICFLUS_麦橘超国风旗袍/麦橘超国风旗袍.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1774191591.167,
+   "mtime_iso": "2026-03-22 22:59:51",
+   "sha256": "c4c4fc86ab87a89bf01aae741ca9ae2781a8cf66d14ead882ab7a2c87d775eb5",
+   "size": 153264992
+  },
+  "loras/FLUX.1-dev/R18 真人姿态 LoRA/r18_pose_real_sdxl_20.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1773799869.761,
+   "mtime_iso": "2026-03-18 10:11:09",
+   "sha256": "248f51675d0400b6ac9d168ef131b3e7b940485761351b87682b62d960a52c3c",
+   "size": 153265776
+  },
+  "loras/FLUX.1-dev/flux_lustly-ai_v1.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1775284268.0,
+   "mtime_iso": "2026-04-04 14:31:08",
+   "sha256": "b1470828b182a72ac2c1b75eed8f20b21a096555bf3a6cdac29f5ed530ca5ebe",
+   "size": 343805152
+  },
+  "loras/FLUX.1-dev/majifluxheihong/majifluxheihong_3.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1774314505.831,
+   "mtime_iso": "2026-03-24 09:08:25",
+   "sha256": "ae939385e008b611a315bc6d6db054c1db31126ca0194d4292175e8ed5cb50aa",
+   "size": 306423264
+  },
+  "loras/FLUX.1-dev/东方美学/AWPortraitCN_2.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1774315477.746,
+   "mtime_iso": "2026-03-24 09:24:37",
+   "sha256": "2a2ae0af820e264dc3b57a2dc7038a980e7de0bac41d3685378b219de0dfad12",
+   "size": 612742496
+  },
+  "loras/FLUX.1-dev/古风小依/20.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1774261704.51,
+   "mtime_iso": "2026-03-23 18:28:24",
+   "sha256": "93034750ddc93ad6a9ce24188671442c1ecfdbfc52455a2402c6a593a6a36478",
+   "size": 153265160
+  },
+  "loras/FLUX.1-dev/沐辰人像皮肤质感提升/flux-loco-v1-000008.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1774261584.915,
+   "mtime_iso": "2026-03-23 18:26:24",
+   "sha256": "36efbc72686f5faba97bd697900c1287f9610c19c7237ece64af76f29b8dc9db",
+   "size": 321759320
+  },
+  "loras/FLUX.1-dev/胸部调整/身材调节_蜂腰大雷_极致细腰_胸部调节_腰部调节_1.0.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1774329638.425,
+   "mtime_iso": "2026-03-24 13:20:38",
+   "sha256": "b1543c1ab0ea1eef0b9826a86dc35049c3852b10c05708c6604bed2d7e8cec19",
+   "size": 19256120
+  },
+  "loras/FLUX.1-dev/自然写实人像/40.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1774261517.893,
+   "mtime_iso": "2026-03-23 18:25:17",
+   "sha256": "56137bd43fae9c503dce604a2f1d60cdeb135fd3c432da6cf4c3b126ce350a96",
+   "size": 153265768
+  },
+  "loras/FLUX.1-dev/苏-FLUX抖音小红书极致真实_苏-FLUX小红书极致真实V2/苏-FLUX抖音小红书极致真实_苏-FLUX小红书极致真实V2.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1773759301.828,
+   "mtime_iso": "2026-03-17 22:55:01",
+   "sha256": "b4cbf43ab3ceb62e1caf46067002a8f0470dfcc6798f91e484eb3d1a6ef83da1",
+   "size": 306426864
+  },
+  "loras/FLUX.1-dev/长腿美女写实/20.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1774261480.375,
+   "mtime_iso": "2026-03-23 18:24:40",
+   "sha256": "4ffbe37e8386b85a0df4894b609c2940481d2525bb2322d3d0934ac1588439ae",
+   "size": 306423872
+  },
+  "loras/FLUX.1-dev/高质量美女写实/20.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1774261428.08,
+   "mtime_iso": "2026-03-23 18:23:48",
+   "sha256": "94f0ab7e56eba6899448f405b037050fcc312978142b3f99ded1eb85496bd86c",
+   "size": 287279144
+  },
+  "loras/FLUX.2-klein/ExcellentFullNude_F2K9B_1.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1776223413.101,
+   "mtime_iso": "2026-04-15 11:23:33",
+   "sha256": "7bd5677d7813bb4f4969f0c99d4a9852e458f71ceeaefa10e48119b37f47d1f1",
+   "size": 165704408
+  },
+  "loras/FLUX.2-klein/FLux_Klein_9B_NSFW/.gitattributes": {
+   "hash_mode": "full",
+   "mtime": 1775097945.007,
+   "mtime_iso": "2026-04-02 10:45:45",
+   "sha256": "ec570c0c247b78d3fbdc67d463eb74e593a1def723c8b97ff4e3bc519f33c209",
+   "size": 2362
+  },
+  "loras/FLUX.2-klein/FLux_Klein_9B_NSFW/Flux Klein - NSFW v2.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1776223526.113,
+   "mtime_iso": "2026-04-15 11:25:26",
+   "sha256": "0209eddba9755ba209145ab800fd028164f74cfdc1739f96f288d22e851de5f7",
+   "size": 165704392
+  },
+  "loras/FLUX.2-klein/FLux_Klein_9B_NSFW/README.md": {
+   "hash_mode": "full",
+   "mtime": 1775097945.596,
+   "mtime_iso": "2026-04-02 10:45:45",
+   "sha256": "d52e32e1d6f222288ccb62b2f56110344ffe99abff2da4918f8223f7c19e99bf",
+   "size": 874
+  },
+  "loras/FLUX.2-klein/FLux_Klein_9B_NSFW/images/ComfyUI_20138_.webp": {
+   "hash_mode": "full",
+   "mtime": 1775097946.841,
+   "mtime_iso": "2026-04-02 10:45:46",
+   "sha256": "73ab42dee61d1ff0ecac13aadf90771c21fe273f91c6e4af5457b32bbee7a912",
+   "size": 22234
+  },
+  "loras/FLUX.2-klein/Flux Klein - NSFW v2.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1776223526.113,
+   "mtime_iso": "2026-04-15 11:25:26",
+   "sha256": "0209eddba9755ba209145ab800fd028164f74cfdc1739f96f288d22e851de5f7",
+   "size": 165704392
+  },
+  "loras/FLUX.2-klein/KLEIN-Unchained-V2.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1776223425.699,
+   "mtime_iso": "2026-04-15 11:23:45",
+   "sha256": "bcf84b6b72ccef01f6e36565bd8b69ce8513907e80204476cb3e42098b453341",
+   "size": 331378480
+  },
+  "loras/FLUX.2-klein/Kook_Flux_klein_亚洲人像/Kook_Flux_klein_亚洲人像.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1774241764.451,
+   "mtime_iso": "2026-03-23 12:56:04",
+   "sha256": "896ff5bffc34157f538de677a4fa15766a7192d8bb368d246289ed66e52f091e",
+   "size": 87070312
+  },
+  "loras/FLUX.2-klein/PornMaster_innie_pussy_flux-2-klein-9b_V1.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1776223433.254,
+   "mtime_iso": "2026-04-15 11:23:53",
+   "sha256": "b10f547849e75ae122433385b3b9a81a896e671b160ccc24b738ce8148141764",
+   "size": 331379664
+  },
+  "loras/FLUX.2-klein/SEXGOD_ImprovedNudity_Klein9b_v3.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1776223481.299,
+   "mtime_iso": "2026-04-15 11:24:41",
+   "sha256": "fb13137d085869c8fbfe9b447487ef5b0af6b8fd61744c6d503a7c3cb304bdec",
+   "size": 662729912
+  },
+  "loras/FLUX.2-klein/klein-deepthroat-15epoc-k3nk.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1776223465.572,
+   "mtime_iso": "2026-04-15 11:24:25",
+   "sha256": "f8eef65baed0624d21a3ca4748e4090744003eb139e143085f5826549d57e09b",
+   "size": 165703992
+  },
+  "loras/FLUX.2-klein/klein-missionary-pov-13epoc-k3nk.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1776223455.107,
+   "mtime_iso": "2026-04-15 11:24:15",
+   "sha256": "4b542b717e45eb5ab7569f1d36a6fe97a68a995975bd9d3cfabadbf20a85c6a4",
+   "size": 165703992
+  },
+  "loras/FLUX.2-klein/klein_9B_Turbo_r128.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1776223525.182,
+   "mtime_iso": "2026-04-15 11:25:25",
+   "sha256": "69d54afd97c016b5a773be7e45a83083932a8e4f47e1b99eb7e6f7aa5a3c056c",
+   "size": 1388608880
+  },
+  "loras/FLUX.2-klein/klein_snofs_v1_2.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1776223511.148,
+   "mtime_iso": "2026-04-15 11:25:11",
+   "sha256": "ae6b2f510212741a25c946500e349aca47063199f107413b80ead017af5b7d84",
+   "size": 1090563760
+  },
+  "loras/FLUX.2-klein/pov_squatting_sex_f2k9b_000002500.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1776223476.341,
+   "mtime_iso": "2026-04-15 11:24:36",
+   "sha256": "14b9a4de7716e405083db5a4d14ef1fb1e357fdcf0efd5749f89ccc50a55a5d5",
+   "size": 165704408
+  },
+  "loras/MiniMax-H3/h3-realism-people-t2v-i2v-r2v.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1787186875.86,
+   "mtime_iso": "2026-08-20 08:47:55",
+   "sha256": "acc529601d2da117fb81179e76c56e488a3beab1171659d305f04fa3655b787e",
+   "size": 131229656
+  },
+  "loras/MiniMax-H3/minimax_h3_fl2v_turbo_4step_v1.1_768p_comfyui_bf16.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1787302732.025,
+   "mtime_iso": "2026-08-21 16:58:52",
+   "sha256": "449d80f301ac571622c72e28b8fd72a4b3681b7a8df8a92f17c8f6ec43f56558",
+   "size": 1956192992
+  },
+  "loras/MiniMax-H3/minimax_h3_latent_upscaler_3d_bf16.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1787187440.033,
+   "mtime_iso": "2026-08-20 08:57:20",
+   "sha256": "4f57821f5837f32f7142b67d815606dbd7550f194e5c769f7d6c3f83b146a5e6",
+   "size": 690592992
+  },
+  "loras/MiniMax-H3/minimax_h3_ref2v_turbo_4step_v0.1_comfyui_bf16.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1786971337.914,
+   "mtime_iso": "2026-08-17 20:55:37",
+   "sha256": "5b9ab5ade15d0775676d01a907268a69a1468dc6033b3b0d3ded5502f3ebb84c",
+   "size": 1956193000
+  },
+  "loras/Qwen-Image-2512/Kook_Qwen_2512_极致真实_V3/Kook_Qwen_V3极致真实.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1774242106.518,
+   "mtime_iso": "2026-03-23 13:01:46",
+   "sha256": "6375dc735efd27fe647b32fc42ffee191009c56f52ad4b15eb7a17335383814a",
+   "size": 236117032
+  },
+  "loras/Qwen-Image/CockQwen-v3.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1776229708.878,
+   "mtime_iso": "2026-04-15 13:08:28",
+   "sha256": "36331c796042b3022a98dd8490ef53057bd9c93c665c45f8d3429f84dbd45226",
+   "size": 590154480
+  },
+  "loras/Qwen-Image/Eva_Qwen_V3.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1776223355.544,
+   "mtime_iso": "2026-04-15 11:22:35",
+   "sha256": "dea22916f340d57629f9c225c524a3d4e3eb5be6f87447511cc7e506900fd512",
+   "size": 590152728
+  },
+  "loras/Qwen-Image/Facial_Cumshots_For_Qwen_Image_V1.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1776223201.467,
+   "mtime_iso": "2026-04-15 11:20:01",
+   "sha256": "eabea25b2781e21a262930d0c2d2b39543da67b630afc4441eb6caf7d128d25c",
+   "size": 295239888
+  },
+  "loras/Qwen-Image/Kook_千问写实_Kook_Qwen_V2美人版/Kook_千问写实_Kook_Qwen_V2美人版.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1774242568.762,
+   "mtime_iso": "2026-03-23 13:09:28",
+   "sha256": "d0728a60e71f02746b600d259f6ae83ac740ec63f01da921b5d52dd036459f76",
+   "size": 236117040
+  },
+  "loras/Qwen-Image/Put it here_Qwen edit_V2.0.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1776223164.576,
+   "mtime_iso": "2026-04-15 11:19:24",
+   "sha256": "a05ea6e47525aecf213fd6d01be2e896acdc4487010ae840d0debba55e0f161e",
+   "size": 472053904
+  },
+  "loras/Qwen-Image/Qwen-Image-Helm_v0.1.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1776222186.659,
+   "mtime_iso": "2026-04-15 11:03:06",
+   "sha256": "0989fa5cd12a02b77a46dd749f5b0f5b3afebcc57b63bf46be6845ad81be6f5f",
+   "size": 590154464
+  },
+  "loras/Qwen-Image/Qwen-Image-NSFW(生效要增加rsq)/qwen_image_nsfw.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1775039805.868,
+   "mtime_iso": "2026-04-01 18:36:45",
+   "sha256": "af10a4787691e56cd72803eeaed7f249c1b689583938147cd4ddb31e7d2e1350",
+   "size": 188807872
+  },
+  "loras/Qwen-Image/Qwen-Image-SynthSat-v1.0-warmup-stage2.5-nsfw-step00001000.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1776149781.941,
+   "mtime_iso": "2026-04-14 14:56:21",
+   "sha256": "3a70735700be3900e05ac83926ed056401cd933592937c7e8ed8acdabc3ea9b8",
+   "size": 295242160
+  },
+  "loras/Qwen-Image/Qwen-MysticXXX-v1.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1776223318.248,
+   "mtime_iso": "2026-04-15 11:21:58",
+   "sha256": "e812731c86410482b40a439d7e3e8950dee93a6a694f3fcfdafae8ec0d8688fb",
+   "size": 295146184
+  },
+  "loras/Qwen-Image/Qwen-NSFW-Beta5.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1776222482.851,
+   "mtime_iso": "2026-04-15 11:08:02",
+   "sha256": "e269f22403ffe2127397fc4f791df245e22e58c4ca6be5ab11a59667ab009265",
+   "size": 590154464
+  },
+  "loras/Qwen-Image/Qwen-NSFW.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1776229789.694,
+   "mtime_iso": "2026-04-15 13:09:49",
+   "sha256": "e4335872e6dc72982a4f5d3cf850adecfe24cebadac2b672a2beea4b709c3df1",
+   "size": 590154464
+  },
+  "loras/Qwen-Image/Qwen-Real PS_v1_83K.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1776223093.607,
+   "mtime_iso": "2026-04-15 11:18:13",
+   "sha256": "c182fbb7b25cad7f1629d0a6095652f8ac1ce0befafc445e0e3505eb82221641",
+   "size": 590058816
+  },
+  "loras/Qwen-Image/Qwen-真实人像小红书风格/Qwen-真实人像小红书风格_Qwen小红书真实风格.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1774869626.819,
+   "mtime_iso": "2026-03-30 19:20:26",
+   "sha256": "415a8d5aa12459bfca0e4626cf22e87adeba5738da23addeb96d341145d4f039",
+   "size": 590058432
+  },
+  "loras/Qwen-Image/Qwen4Play_v2.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1776222944.179,
+   "mtime_iso": "2026-04-15 11:15:44",
+   "sha256": "a2946ee05de12814815efc3ba496b1929aef79d58616ffcb415edcea332f9464",
+   "size": 590058432
+  },
+  "loras/Qwen-Image/QwenImageHentaiPIV_v3.1.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1776223306.322,
+   "mtime_iso": "2026-04-15 11:21:46",
+   "sha256": "f14dfa64da251a43a180f9ea8f1cf33b3390355028f53ca0394bea54718ebb01",
+   "size": 147686808
+  },
+  "loras/Qwen-Image/QwenSnofs1_1.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1776222833.571,
+   "mtime_iso": "2026-04-15 11:13:53",
+   "sha256": "03994ed55cf9aaa219e27015c4ef867d7a9df765a3d8a633f42996d8fe27a941",
+   "size": 613842136
+  },
+  "loras/Qwen-Image/Qwen_Real_Nud3s.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1776223236.247,
+   "mtime_iso": "2026-04-15 11:20:36",
+   "sha256": "35b309150b17f2ea75e73072eea763c0ef2b257a91db078a4465c03175830387",
+   "size": 295146232
+  },
+  "loras/Qwen-Image/Qwen_majic_beauty/QWEN_麦橘千问美人.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1774869697.826,
+   "mtime_iso": "2026-03-30 19:21:37",
+   "sha256": "d44d9a3e04e7c43938ed7c6d3f1940e4abd9c69c62cd33640b5474e08b7c1d44",
+   "size": 236117032
+  },
+  "loras/Qwen-Image/SendNudesLite (Qwen).safetensors": {
+   "hash_mode": "full",
+   "mtime": 1776229476.248,
+   "mtime_iso": "2026-04-15 13:04:36",
+   "sha256": "69704550fadafe9968f5c167297edf40411c522c1b7df5f2c0fb452dcd7aa6d3",
+   "size": 1179881928
+  },
+  "loras/Qwen-Image/WANGMOON光影v1/20.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1774314779.056,
+   "mtime_iso": "2026-03-24 09:12:59",
+   "sha256": "f9a96b0c357a3d2dfd4ddc956da02b7acf7f0ee6a87c1e746b12802177c75a57",
+   "size": 236117040
+  },
+  "loras/Qwen-Image/qwen-image_d!ck_P3N1S_LoRA_V1.1.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1776229557.173,
+   "mtime_iso": "2026-04-15 13:05:57",
+   "sha256": "1f617d0b025fa6186373e489ffb0d67386bbac6e9ba2b9441bf56711b5739366",
+   "size": 1179978088
+  },
+  "loras/Qwen-Image/qwen-image_nsfw_adv_v1.0.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1776229851.678,
+   "mtime_iso": "2026-04-15 13:10:51",
+   "sha256": "210e840d99f8152d503665c7ad43724edddd4ce3fdf11fa15839e8146c96f018",
+   "size": 881117472
+  },
+  "loras/Qwen-Image/qwen_snofs.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1776229590.791,
+   "mtime_iso": "2026-04-15 13:06:30",
+   "sha256": "209c366827cf432f691eea95abdd339aa631ad7037aacb9203237541197b4deb",
+   "size": 613843024
+  },
+  "loras/Qwen-Image/qwen_uncensor_000014928.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1776229509.695,
+   "mtime_iso": "2026-04-15 13:05:09",
+   "sha256": "5dae8d8505f624433275acc1f673fd819e520f78960498ec98caae77f1beb900",
+   "size": 2359534936
+  },
+  "loras/Qwen-Image/千问高质感皮肤真实质感/20.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1774879265.979,
+   "mtime_iso": "2026-03-30 22:01:05",
+   "sha256": "4d370248f5ad18ec306651e55961683acfdc3abb5d8cfcdf81253e935ed36732",
+   "size": 236117032
+  },
+  "loras/Qwen-Image/麦橘千问美人/14.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1774869963.657,
+   "mtime_iso": "2026-03-30 19:26:03",
+   "sha256": "d44d9a3e04e7c43938ed7c6d3f1940e4abd9c69c62cd33640b5474e08b7c1d44",
+   "size": 236117032
+  },
+  "loras/Qwen-Image/麦橘王沐美人.v5/20.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1774879265.979,
+   "mtime_iso": "2026-03-30 22:01:05",
+   "sha256": "4d370248f5ad18ec306651e55961683acfdc3abb5d8cfcdf81253e935ed36732",
+   "size": 236117032
+  },
+  "loras/Z-image-turbo/Kook_Zimage_真实幻想_Turbo/Kook_Zimage_真实幻想_Turbo.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1774242107.986,
+   "mtime_iso": "2026-03-23 13:01:47",
+   "sha256": "6b51cf2456fbb7cb3ce74be27f61f0ec01e3098184bcb684e9299a38a2294fa7",
+   "size": 170128264
+  },
+  "loras/Z-image-turbo/NSFW-MASTER-Z-IMAGE-TURBO/NSFW_master_ZIT_000008766.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1775041936.196,
+   "mtime_iso": "2026-04-01 19:12:16",
+   "sha256": "c9040d1f3e5fa9c4fba88747f2a62ed9596f3ad866fe3c02ea5b60594fdfaf20",
+   "size": 1242628336
+  },
+  "loras/Z-image-turbo/图图的嗨丝造相-Z-Image-Turbo（8D黑色极光油亮黑丝长筒袜过膝袜丝袜）/Tutu's half-leg aurora black stockings_Zimg_V1.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1774191027.835,
+   "mtime_iso": "2026-03-22 22:50:27",
+   "sha256": "1951bd138fe98e6bd4defb97415a38b5e8868a94abe84f8bc96db6b1637411cc",
+   "size": 170128232
+  },
+  "loras/Z-image-turbo/图图的嗨丝造相-Z-Image-Turbo（大网渔网袜）/Tutu's HiSilk Fishnet Stockings - Z-Image-Turbo.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1774243109.483,
+   "mtime_iso": "2026-03-23 13:18:29",
+   "sha256": "17a5f4a4ce20872ccbfba36f704ce0501c30ceee26252d95aacad68776b49e2c",
+   "size": 170128208
+  },
+  "loras/Z-image/Kook_Zimage_Base_极致真实/Kook_Zimage_Base_极致真实.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1774972554.899,
+   "mtime_iso": "2026-03-31 23:55:54",
+   "sha256": "eafdf8fc73c87d69edf87a0cb1c27e483bf1f16ab12d093b719008249d33dda9",
+   "size": 317580192
+  },
+  "loras/Z-image/Z-Image-LoraSet-NSFW/Z-Image-LoraSet-NSFW/.gitattributes": {
+   "hash_mode": "full",
+   "mtime": 1775044480.0,
+   "mtime_iso": "2026-04-01 19:54:40",
+   "sha256": "88023d0a029a0c409b30c03b689c68605b559f5cefe06376e4a26b38ed795269",
+   "size": 1554
+  },
+  "loras/Z-image/Z-Image-LoraSet-NSFW/Z-Image-LoraSet-NSFW/README.md": {
+   "hash_mode": "full",
+   "mtime": 1775044480.0,
+   "mtime_iso": "2026-04-01 19:54:40",
+   "sha256": "85636eb8229395b95fac63873f57a539c209208dc24cfc4fb1867ab571397095",
+   "size": 96
+  },
+  "loras/Z-image/Z-Image-LoraSet-NSFW/Z-Image-LoraSet-NSFW/contrast_v1_000005500.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1775044532.0,
+   "mtime_iso": "2026-04-01 19:55:32",
+   "sha256": "13cef19ff2c0d1df1566d5f3a68a4051bee8757f5c07c092905a134a2704136f",
+   "size": 170128304
+  },
+  "loras/put_loras_here": {
+   "hash_mode": "full",
+   "mtime": 1768740688.647,
+   "mtime_iso": "2026-01-18 20:51:28",
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "size": 0
+  },
+  "model_patches/put_model_patches_here": {
+   "hash_mode": "full",
+   "mtime": 1768740688.647,
+   "mtime_iso": "2026-01-18 20:51:28",
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "size": 0
+  },
+  "optical_flow/put_optical_flow_models_here": {
+   "hash_mode": "full",
+   "mtime": 1786010500.688,
+   "mtime_iso": "2026-08-06 18:01:40",
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "size": 0
+  },
+  "photomaker/put_photomaker_models_here": {
+   "hash_mode": "full",
+   "mtime": 1768740688.647,
+   "mtime_iso": "2026-01-18 20:51:28",
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "size": 0
+  },
+  "style_models/put_t2i_style_model_here": {
+   "hash_mode": "full",
+   "mtime": 1768740688.648,
+   "mtime_iso": "2026-01-18 20:51:28",
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "size": 0
+  },
+  "text_encoders/FLUX-1-dev/clip_l.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1791875524.753,
+   "mtime_iso": "2026-10-13 15:12:04",
+   "sha256": "660c6f5b1abae9dc498ac2d21e1347d2abdb0cf6c0c0c8576cd796491d9a6cdd",
+   "size": 246144152
+  },
+  "text_encoders/FLUX-1-dev/t5xxl_fp8_e4m3fn.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1774933340.339,
+   "mtime_iso": "2026-03-31 13:02:20",
+   "sha256": "7d330da4816157540d6bb7838bf63a0f02f573fc48ca4d8de34bb0cbfd514f09",
+   "size": 4893934904
+  },
+  "text_encoders/FLUX-2-klein-9b/qwen3-8b-heretic-v1.4_klein9b_int8_convrot.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1789957937.443,
+   "mtime_iso": "2026-09-21 10:32:17",
+   "sha256": "0f7097a0c71ecc7739cdcc1955d5a9f158d5331dce5159743e46f26b4c6003b6",
+   "size": 10212578912
+  },
+  "text_encoders/Krea2/qwen3-vl-4b-heretic_fp8_e4m3fn.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1789956345.585,
+   "mtime_iso": "2026-09-21 10:05:45",
+   "sha256": "7443c2b8df026a3271b3095d5d1dc07800dc5cf460b6e3586692253c7a7bc17c",
+   "size": 4831492476
+  },
+  "text_encoders/MiniMax-H3/qwen3vl_32b_h3_ultra_uncensored_heretic_int8_convrot.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1791966713.086,
+   "mtime_iso": "2026-10-14 16:31:53",
+   "sha256": "d84547412144b7c50a6ec77437a889b869d3ace88da77ef1775d3d2a4901c192",
+   "size": 26363476151
+  },
+  "text_encoders/Qwen-Image-2.1/qwen3-vl-8b-heretic-1.3.0_fp8_e4m3fn.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1791946373.724,
+   "mtime_iso": "2026-10-14 10:52:53",
+   "sha256": "7f8ec20de729e2d99f3a04852d4c4499c1677cda167f5ea63d21b0882a5c32b5",
+   "size": 10017064632
+  },
+  "text_encoders/Qwen-image-2512-edit/qwen_2.5_vl_7b_Abliteratedte.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1785500447.578,
+   "mtime_iso": "2026-07-31 20:20:47",
+   "sha256": "3f8c3c9688bb90664c276dd917aa6f6d5445feeae497b0744993204722ef6b43",
+   "size": 16584415574
+  },
+  "text_encoders/Qwen-image-2512-edit/qwen_2.5_vl_7b_huihui_abliterated_int8_convrot.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1791888133.703,
+   "mtime_iso": "2026-10-13 18:42:13",
+   "sha256": "3dc4aae7dc34000c95de546cb220f1b67e51c86d7095fb9e3d19cec7032f5df7",
+   "size": 10064106602
+  },
+  "text_encoders/Z-image/qwen3-4b-heretic_fp8_e4m3fn.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1791951784.299,
+   "mtime_iso": "2026-10-14 12:23:04",
+   "sha256": "f4ce8b26dcb710a73d3e81fd4bdb10daf8d063496b23655de4aa2e435b5f2d18",
+   "size": 4411666704
+  },
+  "text_encoders/Z-image/qwen3-4b-heretic_int8.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1791946474.325,
+   "mtime_iso": "2026-10-14 10:54:34",
+   "sha256": "2aac7216371c8586ff9679c3293bdfc74e6222fb1c25bed9bd7241ed7bacd635",
+   "size": 4416215240
+  },
+  "text_encoders/put_text_encoder_files_here": {
+   "hash_mode": "full",
+   "mtime": 1768740688.648,
+   "mtime_iso": "2026-01-18 20:51:28",
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "size": 0
+  },
+  "upscale_models/put_esrgan_and_other_upscale_models_here": {
+   "hash_mode": "full",
+   "mtime": 1768740688.649,
+   "mtime_iso": "2026-01-18 20:51:28",
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "size": 0
+  },
+  "vae/FLUX-1-dev + Z-image/ae.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1774100534.014,
+   "mtime_iso": "2026-03-21 21:42:14",
+   "sha256": "afc8e28272cd15db3919bacdb6918ce9c1ed22e96cb12c4d5ed0fba823529e38",
+   "size": 335304388
+  },
+  "vae/FLUX.2-klein-9b/flux2-vae.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1774188240.0,
+   "mtime_iso": "2026-03-22 22:04:00",
+   "sha256": "868fe7b343cc8f3a19dbcfcafbc3d5f888802be3f89bd81b65b3621a066ce8f3",
+   "size": 336211292
+  },
+  "vae/MiniMax-H3/minimax_h3_audio_vae_fp32.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1786782558.332,
+   "mtime_iso": "2026-08-15 16:29:18",
+   "sha256": "8e505d95dd1561d47abd43d4238fd40d9bb1ae9e147ed0a4cba778d76ae4db48",
+   "size": 605254808
+  },
+  "vae/MiniMax-H3/minimax_h3_video_vae_fp16.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1786788203.329,
+   "mtime_iso": "2026-08-15 18:03:23",
+   "sha256": "7c1f131492e7eddacaac9069a61b81bdd39de5cc96561e677c5eab1cdce5e522",
+   "size": 5207808496
+  },
+  "vae/Qwen-Image-2.1/qwen_image_2.1_vae_bf16.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1789910646.27,
+   "mtime_iso": "2026-09-20 21:24:06",
+   "sha256": "bb21f7473051e1ac368515dd3f2e15cd44d7a11748ee8823e1ddca3e4876b7c9",
+   "size": 675509688
+  },
+  "vae/Qwen-image+ Krea2/qwen_image_vae.safetensors": {
+   "hash_mode": "full",
+   "mtime": 1774770286.0,
+   "mtime_iso": "2026-03-29 15:44:46",
+   "sha256": "a70580f0213e67967ee9c95f05bb400e8fb08307e017a924bf3441223e023d1f",
+   "size": 253806246
+  },
+  "vae/put_vae_here": {
+   "hash_mode": "full",
+   "mtime": 1768740688.65,
+   "mtime_iso": "2026-01-18 20:51:28",
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "size": 0
+  },
+  "vae_approx/put_taesd_encoder_pth_and_taesd_decoder_pth_here": {
+   "hash_mode": "full",
+   "mtime": 1768740688.65,
+   "mtime_iso": "2026-01-18 20:51:28",
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "size": 0
+  }
+ },
+ "generated": "2026-10-15 15:34:44",
+ "globs": [
+  "*"
+ ],
+ "hash_limit_bytes": 0,
+ "hash_skipped": [],
+ "hashed_bytes": 328014941211,
+ "ignore": [
+  "put_unet_files_here",
+  "*.tmp",
+  "*.temp",
+  "*.part",
+  "*.partial",
+  "*.crdownload",
+  "*.download",
+  "*.log",
+  "*.bak",
+  "*~",
+  "thumbs.db",
+  "desktop.ini",
+  ".DS_Store",
+  "__pycache__",
+  "*.pyc",
+  "*.pyo"
+ ],
+ "ignore_dirs": [
+  "__pycache__",
+  ".git",
+  ".svn",
+  ".cache"
+ ],
+ "recursive": true,
+ "root": "C:\\Users\\Doro\\APP\\ComfyUI-aki-v3.2\\ComfyUI\\models",
+ "schema": "inventory-gate/1",
+ "total_bytes": 328014941211
+}

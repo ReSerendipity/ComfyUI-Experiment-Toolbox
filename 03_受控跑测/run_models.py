@@ -13,8 +13,8 @@ from logutil import append_record, migrate_legacy, rebuild_consolidated
 COMFY = "http://127.0.0.1:8188"
 BASE = os.path.expandvars(r"%USERPROFILE%\WorkBuddy\2026-09-22-23-53-24\ss_test")
 OUT = os.path.join(BASE, "output_models")
-WF = os.path.expandvars(r"%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image")
-CF_OUT = os.path.expandvars(r"%USERPROFILE%\APP\ComfyUI-aki-v3\ComfyUI\output")
+WF = os.path.expandvars(r"%USERPROFILE%\APP\ComfyUI-aki-v3.2\ComfyUI\user\default\workflows\Image")
+CF_OUT = os.path.expandvars(r"%USERPROFILE%\APP\ComfyUI-aki-v3.2\ComfyUI\output")
 LOG_JSON = os.path.join(BASE, "model_test_log.json")    # 合并视图（由 jsonl 重建）
 LOG_JSONL = os.path.join(BASE, "model_test_log.jsonl")  # 追加式原始日志（唯一事实源）
 FIXED_SEED = 1111119
@@ -242,6 +242,10 @@ def main():
                 rebuild_consolidated(LOG_JSON, LOG_JSONL, key=lambda r: (r.get("model"), r.get("combo")))
                 continue
             p = _ksampler_params(api)
+            # ModelSamplingAuraFlow 的 shift 在部分工作流未序列化（UI 条件隐藏），API required——补默认 1.73（2026-10-15）
+            for _nd in api.values():
+                if _nd.get("class_type") == "ModelSamplingAuraFlow" and "shift" not in _nd.get("inputs", {}):
+                    _nd["inputs"]["shift"] = 1.73
             res, err = post("/prompt", {"prompt": api})
             if err:
                 print("   提交失败:", err[:400], flush=True)

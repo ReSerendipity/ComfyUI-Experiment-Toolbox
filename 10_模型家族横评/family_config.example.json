@@ -4,7 +4,7 @@
 
   "comfy": {
     "_comment": "comfy_root 为 ComfyUI 目录（含 user/ 与 models/）。可用 --comfy 覆盖。",
-    "comfy_root": "C:/Users/Doro/APP/ComfyUI-aki-v3/ComfyUI",
+    "comfy_root": "C:/Users/Doro/APP/ComfyUI-aki-v3.2/ComfyUI",
     "api": "http://127.0.0.1:8188",
     "out_subdir": "model_benchmark",
     "raw_out_subdir": "model_benchmark_raw",
