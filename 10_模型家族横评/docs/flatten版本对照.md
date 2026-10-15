@@ -58,7 +58,7 @@ PICT 多一个 `pathlib` import（仅 `__main__` 用到，核心算法不依赖�
 
 ```python
 p = sys.argv[1] if len(sys.argv) > 1 else \
-    r"C:\Users\Doro\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image\Z_image_turbo.json"
+    r"<盘符>:\Users\<用户名>\APP\ComfyUI-aki-v3\ComfyUI\user\default\workflows\Image\Z_image_turbo.json"
 ```
 
 **PICT（246 行附近）**：
@@ -141,9 +141,9 @@ func_name_set_equal = True
 | 副本 | SHA256 前 16 | 说明 |
 |---|---|---|
 | `TBOX/01_工作流扁平化/flatten.py` | `A654D4D020DCC003` | 与源项目 2026-09-24 备份仅差 1 行路径写法 |
-| `Picture/_archive/Picture_backup_20260924_batch1/tools/flatten.py` | `76BA94499DF821C6` | 差 `r"%USERPROFILE%\…"` vs `r"C:\Users\Doro\…"` |
+| `Picture/_archive/Picture_backup_20260924_batch1/tools/flatten.py` | `76BA94499DF821C6` | 差 `r"%USERPROFILE%\…"` vs `r"<盘符>:\Users\<用户名>\…"`（旧副本为字面绝对路径） |
 | `Picture/tools/flatten.py` | `CC50F1B6A57FE302` | 换成 pathlib 相对定位 |
-| `C:/Users/Doro/model_benchmark/scripts/wf_flatten.py` | `CC50F1B6A57FE302` | **与 PICT 逐字节相同**（横评自己的副本） |
+| `%USERPROFILE%/model_benchmark/scripts/wf_flatten.py` | `CC50F1B6A57FE302` | **与 PICT 逐字节相同**（横评自己的副本） |
 
 **结论：工具箱 `01` 是祖先，源项目是下游拷贝。** 源项目 SOP 文档里也写着
 "`flatten.py` 源自采样器实验工具包"，与此一致。

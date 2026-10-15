@@ -136,6 +136,13 @@ def dtypes_of(h):
     return dict(Counter(v.get("dtype") for v in h.values()))
 
 
+def depersonalize(p):
+    """输出路径脱敏：本机主目录改写为 %USERPROFILE% 形态（公开仓红线，2026-10-15）。"""
+    home = os.path.expandvars(r"%USERPROFILE%")
+    if home and home != "%USERPROFILE%" and p and p.startswith(home):
+        return "%USERPROFILE%" + p[len(home):]
+    return p
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--comfy", default=DEFAULT_COMFY)
@@ -220,7 +227,7 @@ def main():
     n_w = sum(v["n_unique"] for v in fams.values() if v["status"] == "eligible")
     report = OrderedDict([
         ("generated", time.strftime("%Y-%m-%d %H:%M:%S")),
-        ("unet_root", unet_root),
+        ("unet_root", depersonalize(unet_root)),
         ("min_unique_weights", a.min_unique),
         ("arch_probe", a.arch_probe),
         ("sha256_elapsed_s", round(time.time() - t0, 1)),

@@ -29,7 +29,7 @@ python run.py fbench --families FLUX-1-dev
 python run.py fbench --all
 
 # ③ 结果分析：指标 + 跨种子稳定性 + 家族拼版 + 评分表 + 报告骨架
-python run.py fanalyze --out C:/Users/Doro/model_benchmark/toolbox_acceptance/
+python run.py fanalyze --out "%USERPROFILE%/model_benchmark/toolbox_acceptance/"
 ```
 
 也可以直接跑本目录的脚本（`run.py` 只是转发 + 补 PYTHONPATH）：
@@ -143,4 +143,4 @@ but got input of size[1, 512, 12288]
 ## 依赖
 
 `numpy` + `Pillow`（ComfyUI 自带 python 已含）+ 标准库。
-拼版标签用 `C:/Windows/Fonts/msyh.ttc`，缺失时自动退回 PIL 默认字体。
+拼版标签用 `%WINDIR%\Fonts\msyh.ttc`（与 04 各脚本 `os.path.expandvars` 写法一致），缺失时自动退回 PIL 默认字体。

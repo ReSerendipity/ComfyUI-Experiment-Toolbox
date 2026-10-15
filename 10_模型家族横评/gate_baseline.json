@@ -1373,7 +1373,7 @@
   ".cache"
  ],
  "recursive": true,
- "root": "C:\\Users\\Doro\\APP\\ComfyUI-aki-v3.2\\ComfyUI\\models",
+ "root": "%USERPROFILE%\\APP\\ComfyUI-aki-v3.2\\ComfyUI\\models",
  "schema": "inventory-gate/1",
  "total_bytes": 328014941211
 }

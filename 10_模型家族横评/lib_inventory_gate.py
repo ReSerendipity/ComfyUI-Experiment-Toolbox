@@ -104,6 +104,13 @@ def _roster_digest(files):
 
 
 # ── API ①：建基线 ──────────────────────────────────────────────────────────
+def depersonalize(p):
+    """输出路径脱敏：本机主目录改写为 %USERPROFILE% 形态（公开仓红线，2026-10-15）。"""
+    home = os.path.expandvars(r"%USERPROFILE%")
+    if home and home != "%USERPROFILE%" and p and p.startswith(home):
+        return "%USERPROFILE%" + p[len(home):]
+    return p
+
 def build_baseline(root, globs=("*",), ignore=DEFAULT_IGNORE,
                    ignore_dirs=DEFAULT_IGNORE_DIRS, recursive=True,
                    hash_limit_bytes=0, now=None):
@@ -157,7 +164,7 @@ def build_baseline(root, globs=("*",), ignore=DEFAULT_IGNORE,
     hashed_bytes = sum(e["size"] for e in files.values() if e["sha256"])
     base = {
         "schema": SCHEMA,
-        "root": root,
+        "root": depersonalize(root),
         "globs": list(globs),
         "ignore": list(ignore),
         "ignore_dirs": list(ignore_dirs),
@@ -196,7 +203,7 @@ def check(baseline, root=None, globs=None, ignore=None, ignore_dirs=None,
                            SCHEMA))
     bfiles = baseline.get("files") or {}
     cur = build_baseline(
-        root or baseline["root"],
+        root or os.path.expandvars(baseline["root"]),
         globs if globs is not None else baseline.get("globs") or ("*",),
         ignore if ignore is not None else baseline.get("ignore", DEFAULT_IGNORE),
         ignore_dirs if ignore_dirs is not None else baseline.get("ignore_dirs", DEFAULT_IGNORE_DIRS),

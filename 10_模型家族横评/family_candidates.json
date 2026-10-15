@@ -1,6 +1,6 @@
 {
  "generated": "2026-10-15 16:58:14",
- "unet_root": "C:\\Users\\Doro\\APP\\ComfyUI-aki-v3.2\\ComfyUI\\models\\unet",
+ "unet_root": "%USERPROFILE%\\APP\\ComfyUI-aki-v3.2\\ComfyUI\\models\\unet",
  "min_unique_weights": 2,
  "arch_probe": "fingerprint",
  "sha256_elapsed_s": 0.0,

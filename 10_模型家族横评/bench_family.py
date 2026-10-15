@@ -495,7 +495,7 @@ def main():
     a = ap.parse_args()
 
     cfg = json.load(open(a.config, encoding="utf-8"))
-    cfg["_comfy_root"] = (a.comfy or cfg["comfy"]["comfy_root"]).replace("\\", "/").rstrip("/")
+    cfg["_comfy_root"] = os.path.expandvars(a.comfy or cfg["comfy"]["comfy_root"]).replace("\\", "/").rstrip("/")
     api_url = a.api or cfg["comfy"]["api"]
     cfg["_width"] = cfg["bench"]["width"]
     cfg["_height"] = cfg["bench"]["height"]

@@ -214,7 +214,7 @@ EXTERNAL_ALLOW / SKIP_TABLE / SUBBUCKET_KEEP / PARTIAL_SKIP / ROUTE_TABLE / AUDI
 python -X utf8 lib_sfw_prompts_kit.py                        # 纳入/跳过台账
 python -X utf8 lib_sfw_prompts_kit.py --sample 2              # 每类抽 2 条示例
 python -X utf8 lib_sfw_prompts_kit.py --compose light_quality,composition,camera_angle --n-each 2 --seed FLUX-1-dev
-python -X utf8 lib_sfw_prompts_kit.py --audit "D:/some/通用词库.json"
+python -X utf8 lib_sfw_prompts_kit.py --audit "<盘符>:/some/通用词库.json"
 ```
 
 `get()` 的确定性来自 `md5(seed)` 命名空间（对齐 Picture 词库的「seed=md5(文件名)」
@@ -338,7 +338,7 @@ python -X utf8 lib_sfw_prompts_kit.py --audit "D:/some/通用词库.json"
 
 | 项 | 结果 |
 |---|---|
-| 改前哈希基线 | `C:/Users/Doro/model_benchmark/p3_parallel/baseline_C_before.json`（30 文件 / 其中非 `__pycache__` 26） |
+| 改前哈希基线 | `%USERPROFILE%/model_benchmark/p3_parallel/baseline_C_before.json`（30 文件 / 其中非 `__pycache__` 26） |
 | 改后复核 | 见 §5.3，**除本轨 3 个新文件外零变化**（`__pycache__` 无新增/改动） |
 | `py_compile` | `lib_image_qc_enh.py`、`lib_sfw_prompts_kit.py` 均通过（`-B`，`cfile` 落临时目录，不污染 `__pycache__`） |
 | 图像库实算 | `output/model_benchmark` 216/216 张全量统计成功，`failed=0`（§1.5） |

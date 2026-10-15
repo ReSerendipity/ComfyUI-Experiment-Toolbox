@@ -65,6 +65,14 @@ def list_backups(cat_dir, bak_dir, name):
     return sorted(out)
 
 
+def depersonalize(p):
+    """输出路径脱敏：本机主目录改写为 %USERPROFILE% 形态（公开仓红线，2026-10-15）。"""
+    home = os.path.expandvars(r"%USERPROFILE%")
+    if home and home != "%USERPROFILE%" and p and p.startswith(home):
+        return "%USERPROFILE%" + p[len(home):]
+    return p
+
+
 def main():
     ap = argparse.ArgumentParser(description="生成 11 份工作流溯源清单（只读外部原件）")
     ap.add_argument("--root", default=DEFAULT_ROOT, help="ComfyUI user/default/workflows 绝对路径")
@@ -91,7 +99,7 @@ def main():
         entries.append({
             "category": cat,
             "file": wf,
-            "path": path,
+            "path": depersonalize(path),
             "md5": md5_of(path),
             "size": st.st_size,
             "mtime": datetime.datetime.fromtimestamp(st.st_mtime).strftime("%Y-%m-%d %H:%M:%S"),
@@ -105,8 +113,8 @@ def main():
         "meta": {
             "generator": "gen_workflows_manifest.py",
             "generated_at": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            "root": root,
-            "templates_dir": args.templates,
+            "root": depersonalize(root),
+            "templates_dir": depersonalize(args.templates),
             "note": "快照型溯源清单：工作流原件在仓库外（只读），本清单为仓库内审计记录",
         },
         "workflows": entries,
