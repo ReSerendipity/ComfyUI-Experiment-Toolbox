@@ -100,3 +100,60 @@ jobs:
               sys.exit(1)
           print("OK: no literal machine absolute paths in tracked .py/.json/.md sources")
           PY
+
+      # Gate ⑥ 模块依赖方向门禁：目录结构即架构边界（对应根 README 第四节依赖矩阵）。
+      # 纯标准库内联实现（import-linter 的最小等价子集，2026-10-15，架构技术债 P1-1；
+      # 不引入新工具，沿用 Gate ⑤ 的内联脚本模式）。已知限制：import a, b 多名导入
+      # 仅解析首名（本仓无此形态）。
+      # 规则：01/02/04/05/根入口 不得跨轨 import；03 只准 import 01；09 只准 import 01,02；
+      #       10 只准 import 01；同轨互 import 放行；tests/ 目录豁免（测试是纯消费者）。
+      - name: Gate ⑥ module dependency direction (track-level)
+        run: |
+          python - <<'PY'
+          import re, subprocess, sys
+
+          TRACKS = {"01_工作流扁平化": "01", "02_调度器sigma分析": "02", "03_受控跑测": "03",
+                    "04_结果分析": "04", "05_结构改造脚本": "05", "09_Web面板": "09",
+                    "10_模型家族横评": "10"}
+          ALLOWED = {"01": set(), "02": set(), "03": {"01"}, "04": set(),
+                     "05": set(), "09": {"01", "02"}, "10": {"01"}, "root": set()}
+
+          raw = subprocess.run(
+              ["git", "-c", "core.quotepath=false", "ls-files", "-z", "--", "*.py"],
+              stdout=subprocess.PIPE, check=True,
+          ).stdout
+          files = [f.decode("utf-8", "surrogateescape") for f in raw.split(b"\0") if f]
+
+          owner_of_file, module_owner = {}, {}
+          for rel in files:
+              if rel.startswith("tests/"):
+                  owner_of_file[rel] = "tests"
+                  continue
+              track = next((TRACKS[t] for t in TRACKS if rel.startswith(t + "/")), "root")
+              owner_of_file[rel] = track
+              module_owner.setdefault(rel.rsplit("/", 1)[-1][:-3], track)
+
+          IMPORT = re.compile(r"^\s*(?:import|from)\s+([A-Za-z_][A-Za-z0-9_]*)")
+          violations = []
+          for rel in files:
+              src = owner_of_file[rel]
+              if src == "tests":
+                  continue
+              with open(rel, encoding="utf-8", errors="replace") as fh:
+                  for lineno, line in enumerate(fh, 1):
+                      m = IMPORT.match(line)
+                      if not m:
+                          continue
+                      dst = module_owner.get(m.group(1))
+                      if dst is None or dst == src or dst in ALLOWED[src]:
+                          continue
+                      violations.append((rel, lineno, m.group(1), src, dst))
+
+          print("dependency-direction gate: scanned %d tracked .py file(s)" % len(files))
+          if violations:
+              print("::error::跨轨 import 违反依赖方向矩阵，命中 %d 处" % len(violations))
+              for rel, lineno, mod, src, dst in violations:
+                  print("  %s:%d  import %s  (%s -> %s)" % (rel, lineno, mod, src, dst))
+              sys.exit(1)
+          print("OK: track-level dependency direction holds")
+          PY
