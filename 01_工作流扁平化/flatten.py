@@ -6,7 +6,8 @@
   1. 容器 = 顶层 type 为 UUID（对应 definitions.subgraphs[].id）的节点
   2. 容器输入（-10）：sg.inputs[i].linkIds → origin_id==-10 & origin_slot==i 的 link，
      其 (target_id, target_slot) 指明注入「内部节点第 target_slot 个输入」；
-     容器 positional widgets_values[i] 即该输入的值。
+     容器 positional widgets_values 的第 k 个值 = sg.inputs 中第 k 个**带 widget 标记**的输入
+     （无 widget 的输入如 IMAGE 口不占位，2026-10-15 修复：漏过滤会对 T2V 图整体错位）。
      ⚠️ 必须按 target_slot 对齐，不能用名字匹配（容器 input 名与内部语义会错位）
   3. 容器输出（-20）：sg.outputs[j].linkIds → target_id==-20 & target_slot==j 的 link，
      其 (origin_id, origin_slot) 即容器第 j 个输出的来源
@@ -107,26 +108,37 @@ def flatten(path, overrides=None):
         pos = list(c.get("widgets_values") or [])
         sg_links = [x for x in (_link(y) for y in sg.get("links", [])) if x]
         by_id = {n["id"]: n for n in sg.get("nodes", [])}
+        # positional 数组只装「有 widget 标记的输入」的值（与 add_node 的 wi 逻辑一致）。
+        # 无 widget 的输入（如 T2V 的 first_frame/last_frame IMAGE 口）不占位——
+        # 直接 enumerate 全部 inputs 会对 IMAGE 口的工作流整体错位（2026-10-15 修复，
+        # 症状：MiniMax H3 t2v 的 DiT 名被注入 VAE 输入、TE 名被注入 audio VAE 输入）。
+        widget_names = {i["name"] for i in c.get("inputs", []) if "widget" in i}
+        wi = 0
         for i, sinp in enumerate(sg.get("inputs", [])):
+            if sinp.get("name") in widget_names:
+                pval = pos[wi] if wi < len(pos) else None
+                wi += 1
+            else:
+                pval = None
             for l in sg_links:
                 if l["origin_id"] == -10 and l["origin_slot"] == i:
                     tid = nid(c["type"], l["target_id"])
                     src = by_id.get(l["target_id"])
                     if tid in nodes and src:
                         ins = src.get("inputs", [])
-                        if l["target_slot"] < len(ins) and i < len(pos):
+                        if l["target_slot"] < len(ins) and pval is not None:
                             pname = ins[l["target_slot"]]["name"]
                             # 类型守卫：工作流的 positional 数组可能损坏（如 height 位置被塞了模型文件名）。
                             # 若目标输入原本是数值、而容器给的是非数值字符串，则不注入、保留节点自身值。
                             cur = nodes[tid]["inputs"].get(pname)
                             bad = (isinstance(cur, (int, float)) and not isinstance(cur, bool)
-                                   and not isinstance(pos[i], (int, float))
+                                   and not isinstance(pval, (int, float))
                                    and cur is not None)
                             if bad:
                                 warnings.append("%s: 容器 %s 的 %s 值 %r 类型不符（目标输入本为数值），"
-                                                "已保留节点原值 %r" % (path, c["id"], pname, str(pos[i])[:40], cur))
+                                                "已保留节点原值 %r" % (path, c["id"], pname, str(pval)[:40], cur))
                             else:
-                                nodes[tid]["inputs"][pname] = pos[i]
+                                nodes[tid]["inputs"][pname] = pval
                     break
         for j, sout in enumerate(sg.get("outputs", [])):
             for lid in (sout.get("linkIds") or []):
@@ -194,7 +206,8 @@ def flatten(path, overrides=None):
 
     # 可达性裁剪
     sinks = [k for k, v in nodes.items()
-             if v["class_type"] in ("SaveImage", "SaveImageAdvanced", "SaveImagetoPath", "PreviewImage")]
+             if v["class_type"] in ("SaveImage", "SaveImageAdvanced", "SaveImagetoPath", "PreviewImage",
+                                    "SaveVideo", "SaveAnimatedWEBP", "VHS_VideoCombine")]
     keep, stack = set(), list(sinks)
     while stack:
         k = stack.pop()
