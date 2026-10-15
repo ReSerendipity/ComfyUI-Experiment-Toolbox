@@ -44,7 +44,10 @@ ComfyUI-实验与改造工具箱/
 │   ├── unify_prompt_seed.py     ★ 统一提示词与种子（dry-run + --apply，自动备份）
 │   ├── run_combos.py              单模型参数矩阵
 │   ├── run_models.py            ★ 跨模型统一变量跑测
-│   ├── run_h3_durations.py      ★ MiniMax H3 t2v 时长档位跑测（--dry-run 0 提交）
+│   ├── run_h3_durations.py      ★ MiniMax H3 t2v 时长档位跑测（E4 后为薄壳，转发引擎）
+│   ├── run_durations.py         ★ E4 通用时长档位跑测器（适配器驱动，新模型只加配置）
+│   ├── adapters.json            ★ E4 适配器配置（帧数换算式/档位矩阵/节点 ID/隐藏参数）
+│   ├── lib_vram.py              ★ E2 显存预算探测 + 档位推荐 + OOM 识别（纯 stdlib）
 │   └── probe.py / cfg_probe.py    补充验证探针
 ├── 04_结果分析/                   ← 【原实验工具包04】指标 + 拼版
 │   ├── analyze_models.py        ★ 跨模型指标 + 基线相似度
@@ -62,6 +65,10 @@ ComfyUI-实验与改造工具箱/
 ├── 08_官方模板对齐/               ← 【原"工作流改造经验/03_官方模板对齐"】11 份「工作流 vs 官方模板」对照快照（2026-10-11 起由 diff_edit.py 批量生成）
 ├── 09_Web面板/                    ← ★ 人类用户入口：浏览器四页操作参数轨（8189 端口，零依赖）
 ├── 10_模型家族横评/               ← 【2026-10-05 新增】家族内换主模型权重单变量横评（SHA256 去重＋prompt 台账＋断点续跑，接入 CI 三闸门）
+│   ├── lib_video_qc.py          ★ E1 视频质检（容器层+抽帧层+时序层，只读）
+│   ├── trend_family.py          ★ E5 历史趋势回归（跨快照比 ok 率/耗时，标红回归）
+│   ├── lib_prompt_closedloop.py ★ E8 提示词变体闭环（变体矩阵→跑测→QC 淘汰）
+│   └── lib_inventory_gate.py    ★ E6 新增 audit 模式：重复量化 / 孤儿文件检测
 └── 99_归档/                       ← 合并前的两份旧 README + 去重移除的重复文档副本
 ```
 
@@ -167,6 +174,12 @@ run.bat models         :: 参数轨③ 跨模型跑测
 run.bat analyze        :: 参数轨④ 结果分析
 run.bat h3dur --dry-run :: 参数轨⑤ H3 t2v 时长档位（先看计划；去掉 --dry-run 实跑）
 run.bat pipeline       :: ①→②→③→④ 一次跑完
+
+:: 2026-10-16 扩展（E1~E8）
+run.bat full           :: ★ E3 一键全链（默认全只读 0 提交；--apply 才实跑；--skip=bench,vqc）
+run.bat vqc            :: ★ E1 视频质检（容器/帧/时序三层，只读）
+run.bat dur --adapter minimax_h3_t2v --dry-run   :: ★ E4 适配器驱动档位跑测
+run.bat ftrend         :: ★ E5 历史趋势回归（跨快照比，检出硬回归 exit 1）
 ```
 
 > 面板内建两条省事行为：**启动即自动打开浏览器**；**ComfyUI 没起时点「开始跑测」会自动帮你拉起**。

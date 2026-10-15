@@ -80,3 +80,6 @@ AGENTS.md
 
 # 受控跑测运行日志（append-only 产物，不入库）
 03_受控跑测/h3_duration_logs/
+
+# E3 一键全链（run.py full）的 fanalyze 输出：运行产物，不入库（2026-10-16）
+07_样例输出与数据/family_full_run/

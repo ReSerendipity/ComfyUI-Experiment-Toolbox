@@ -27,6 +27,13 @@ ComfyUI 实验与改造工具箱 · 根目录统一入口
     python run.py fdiscover       # ★ 家族横评① 发现候选家族（只读取证，不出图）
     python run.py fbench --dry-run    # ★ 家族横评② 配置驱动跑测（先看计划，0 提交）
     python run.py fanalyze --out <目录>  # ★ 家族横评③ 结果分析
+    python run.py full            # ★ E3 一键全链（默认全只读 0 提交；--apply 才实跑；--skip=bench,vqc）
+
+2026-10-16 功能扩展（E1~E8）新增入口：
+
+    python run.py vqc             # ★ E1 视频质检（容器/帧/时序三层，只读）
+    python run.py dur --adapter minimax_h3_t2v --dry-run   # ★ E4 适配器驱动档位跑测
+    python run.py ftrend          # ★ E5 跨快照趋势回归（硬回归 exit 1，只读）
 
 Windows 用户可直接双击 `start.bat`（启动面板）或用 `run.bat <子命令>`，免记 python 路径。
 """
@@ -62,11 +69,60 @@ ENTRIES = {
     "frobust": ("★ 家族横评⑦ 提示词长度鲁棒性探针（full/slim 配对计划，0 提交）", "10_模型家族横评/lib_prompt_robust.py"),
     "fiqc":    ("★ 家族横评⑧ 增强客观图像指标（曝光/动态范围/色温/构图/噪点，纯像素统计）", "10_模型家族横评/lib_image_qc_enh.py"),
     "fkit":    ("★ 家族横评⑨ SFW 通用提示词素材包（类目白名单，不含任何限制级词条）", "10_模型家族横评/lib_sfw_prompts_kit.py"),
+    "ftrend":  ("★ 家族横评⑩ 跨快照趋势回归（比历史 ok 率/耗时，硬回归 exit 1，只读）", "10_模型家族横评/trend_family.py"),
+    "vqc":     ("★ 视频质检：容器层+抽帧层+时序层（只读，ffprobe/ffmpeg，--selftest 合成三态自检）", "10_模型家族横评/lib_video_qc.py"),
     "h3dur":   ("参数轨⑤ MiniMax H3 t2v 时长档位受控跑测（需 ComfyUI 已在 8188，--dry-run 0 提交）", "03_受控跑测/run_h3_durations.py"),
+    "dur":     ("★ E4 通用视频时长档位跑测器（适配器驱动，--adapter <名> --dry-run 先看计划）", "03_受控跑测/run_durations.py"),
 }
 
 # pipeline 的顺序（参数轨四步）
 PIPELINE = ["sigma", "unify", "models", "analyze"]
+
+
+def run_full(rest):
+    """E3 一键全链（2026-10-16）：把此前要手敲 5~7 条命令的横评链串起来。
+
+    默认**全只读**：flatten 打印运行时真值、fgate check、fbench --dry-run，
+    以及分析/对账/质检三步都只消费已有产物，0 提交、可在任意时刻安全跑。
+    加 --apply 才会在 ③ 之后插入 fbench 实跑（全链唯一会提交任务的一步）。
+    --skip=bench,vqc 可跳过指定环节（如无 ffmpeg 环境）。
+    """
+    apply_real = "--apply" in rest
+    skip = set()
+    for a in rest:
+        if a.startswith("--skip="):
+            skip |= {x.strip() for x in a.split("=", 1)[1].split(",") if x.strip()}
+
+    analysis_out = os.path.join(ROOT, "07_样例输出与数据", "family_full_run")
+    os.makedirs(analysis_out, exist_ok=True)
+
+    steps = [
+        ("① flatten  工作流运行时真值", "flatten", []),
+        ("② fgate    模型目录名册漂移检查", "fgate", ["check"]),
+        ("③ fbench   跑测计划（dry-run，0 提交）", "fbench", ["--dry-run"]),
+    ]
+    if apply_real and "bench" not in skip:
+        steps.append(("③' fbench  实跑（全链唯一提交步骤）", "fbench", []))
+    steps += [
+        ("④ fanalyze 结果分析 + 评分表", "fanalyze", ["--out", analysis_out]),
+        ("⑤ fverify  台账 × 产物树对账", "fverify", []),
+        ("⑥ fiqc     图像客观指标", "fiqc", []),
+        ("⑦ vqc      视频质检（容器/帧/时序）", "vqc", []),
+        ("⑧ ftrend   跨快照趋势回归（快照不足 2 个时自动跳过）", "ftrend", []),
+    ]
+
+    print("\n===== 全链开始（%s）=====" % ("含实跑" if apply_real else "只读"))
+    for name, key, args in steps:
+        if key in skip:
+            print("\n[skip] %s（--skip=%s）" % (name, key))
+            continue
+        print("\n---- %s ----" % name)
+        rc = run(ENTRIES[key][1], args)
+        if rc != 0:
+            print("\n[!] 全链中断于 %s（exit=%d）" % (name, rc))
+            return rc
+    print("\n[ok] 全链 %d 步全部完成" % len(steps))
+    return 0
 
 
 def build_env():
@@ -106,6 +162,8 @@ def show_list():
     for key, (desc, _) in ENTRIES.items():
         print("  %-*s  %s" % (width, key, desc))
     print("  %-*s  %s" % (width, "pipeline", "①→②→③→④ 顺序跑完（可加 --apply 让②写盘）"))
+    print("  %-*s  %s" % (width, "full", "★ E3 一键全链：flatten→fgate→fbench→fanalyze→fverify→fiqc→vqc→ftrend"))
+    print("  %-*s  %s" % (width, "", "       默认全只读（0 提交）；--apply 插 fbench 实跑；--skip=bench,vqc 跳过环节"))
     print("  %-*s  %s" % (width, "list", "显示本清单"))
     print("\n示例：  python run.py panel         启动面板")
     print("        python run.py unify --apply 统一提示词与种子（写盘）")
@@ -118,6 +176,9 @@ def main():
         return 0
 
     cmd, rest = argv[0], argv[1:]
+
+    if cmd == "full":
+        return run_full(rest)
 
     if cmd == "pipeline":
         for step in PIPELINE:
