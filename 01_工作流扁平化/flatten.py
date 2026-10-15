@@ -25,11 +25,19 @@ def _containers(w):
 
 def _link(x):
     if isinstance(x, dict):
-        return dict(id=x.get("id"), origin_id=x.get("origin_id"), origin_slot=x.get("origin_slot"),
-                    target_id=x.get("target_id"), target_slot=x.get("target_slot"))
-    if isinstance(x, (list, tuple)) and len(x) >= 5:
-        return dict(id=x[0], origin_id=x[1], origin_slot=x[2], target_id=x[3], target_slot=x[4])
-    return None
+        d = dict(id=x.get("id"), origin_id=x.get("origin_id"), origin_slot=x.get("origin_slot"),
+                 target_id=x.get("target_id"), target_slot=x.get("target_slot"))
+    elif isinstance(x, (list, tuple)) and len(x) >= 5:
+        d = dict(id=x[0], origin_id=x[1], origin_slot=x[2], target_id=x[3], target_slot=x[4])
+    else:
+        return None
+    # 类型归一：部分工具生成的子图 links 里 id/origin_id/target_id 混用 int 与 str
+    # （2026-10-15 实测 flux.1-dev.json），nid() 的 old<0 比较会 str-vs-int 崩溃。
+    for k in ("id", "origin_id", "origin_slot", "target_id", "target_slot"):
+        v = d[k]
+        if isinstance(v, str) and v.lstrip("-").isdigit():
+            d[k] = int(v)
+    return d
 
 
 def flatten(path, overrides=None):
