@@ -159,6 +159,7 @@ export PYTHONPATH="$ROOT/01_工作流扁平化;$ROOT/03_受控跑测;$ROOT/04_�
 
 ## 六、快速上手
 
+- 要跑 **headless 控制变量对比**（采样器×调度器 / steps / cfg / LoRA 强度单维变更 / `definitions.subgraphs` 子图扁平化后喂 `/prompt`）：先读 `06_文档与结论/skill_comfyui-headless-ab-test.md`。它在本仓**没有**注册成可装载技能（仓内无项目技能根，不会被自动选中，只能靠这句指路）；原件在 `%USERPROFILE%/.workbuddy/skills/comfyui-headless-ab-test/`，以原件为准。
 **先记住一件事：根目录就是入口。** 不用 cd 进子目录，也不用记 ComfyUI 的 python 路径。
 
 ```bat

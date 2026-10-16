@@ -1,8 +1,8 @@
----
-name: comfyui-headless-ab-test
-description: 在无人值守（headless）模式下启动本机 ComfyUI，做**控制变量对照实验**（固定提示词与种子，每轮只变一个维度：采样器 × 调度器、steps、cfg、LoRA 强度等），产出逐组输出图 + 客观指标 + 结论并记录到 Markdown。也支持把工作流当参数矩阵跑。适用于 ComfyUI-aki-v3.2 的新版 `definitions.subgraphs` 子图格式工作流——这类工作流无法直接喂给 `/prompt`，必须先扁平化为 API prompt。触发词：批量出图、参数对比、控制变量、对照实验、采样器对比、调度器对比、A/B、矩阵测试、headless、API 提交、subgraph 扁平化、ComfyUI 自动化。
-agent_created: true
----
+> **技能快照（本仓不注册为 skill）**
+> 本文是本机技能 `comfyui-headless-ab-test` 的只读快照；原件在 `%USERPROFILE%/.workbuddy/skills/comfyui-headless-ab-test/`，属主是另一套 agent 运行时，会随使用更新——**动手前以原件为准**，别把这份快照当最新。
+> 为什么不注册：仓内没有项目技能根，本文件放在 `06_文档与结论/` 只算普通文档，既不会被自动选中，也不进 lint / integrity 比对（2026-10-17 实测：把同名 `SKILL.md` 临时放进 `.agents/skills/` 会被清点成 project 作用域资产，放回这里则计 0）。要做成随仓分发的正式技能，需要先决定它与上面原件的主从关系，避免两份漂移。
+> 何时该读这份：headless 无人值守出图、采样器×调度器对比、steps / cfg / LoRA 强度单维控制变量、`definitions.subgraphs` 子图工作流扁平化后喂 `/prompt`。
+
 
 # ComfyUI Headless 参数矩阵 A/B 测试
 
