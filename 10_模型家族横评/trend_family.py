@@ -44,6 +44,25 @@ DEFAULT_SOURCES = [
 ]
 DEFAULT_DURATION_LOG = os.path.join(ROOT, "03_受控跑测", "h3_duration_logs", "result_log.jsonl")
 
+def display_path(p):
+    """把溯源路径写成可公开形态（公开仓红线，见 CONTRIBUTING.md 第 1 条 / CI Gate ⑤）。
+
+    DEFAULT_SOURCES 由运行时展开得到绝对路径，直接写进基线台账就会把本机主目录带进
+    公开仓；这里只做展示层归一：仓内→仓内相对，仓外主目录下→%USERPROFILE% 形态。
+    """
+    ap = os.path.abspath(p)
+    home = os.path.expandvars(r"%USERPROFILE%")
+    for base, mark in ((ROOT, ""), (home, "%USERPROFILE%")):
+        if not base:
+            continue
+        nb, na = os.path.normcase(base), os.path.normcase(ap)
+        if na == nb or na.startswith(nb + os.sep):
+            rest = ap[len(base):].lstrip("\\/")
+            if not mark:
+                return rest or "."
+            return os.path.join(mark, rest) if rest else mark
+    return ap
+
 SLOWER_PCT_DEFAULT = 25.0
 
 
@@ -113,7 +132,7 @@ def load_snapshot(path):
         return None
     label = (data.get("_run_window") if isinstance(data, dict) else None) \
         or time.strftime("%Y-%m-%d", time.localtime(os.path.getmtime(path)))
-    return {"label": label, "path": path, "records": recs,
+    return {"label": label, "path": display_path(path), "records": recs,
             "mtime": os.path.getmtime(path)}
 
 

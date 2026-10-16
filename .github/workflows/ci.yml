@@ -77,9 +77,13 @@ jobs:
               ["git", "-c", "core.quotepath=false", "ls-files", "-z", "--", "*.py", "*.json", "*.md"],
               stdout=subprocess.PIPE, check=True,
           ).stdout
-          files = [f.decode("utf-8", "surrogateescape") for f in raw.split(b"\\0") if f]
+          files = [f.decode("utf-8", "surrogateescape") for f in raw.split(b"\0") if f]
           # 历史归档原件（99_归档/）保持原貌，不参与本机路径扫描。
           files = [f for f in files if not f.startswith("99_归档/")]
+          # 解析到 0 条通常是分隔符/quotepath 变了，不是「仓库干净」：空跑必须判失败。
+          if not files:
+              print("::error::no-literal-machine-path gate: 解析到 0 个待扫描文件，门禁未真正生效")
+              sys.exit(1)
 
           hits = []
           for rel in files:

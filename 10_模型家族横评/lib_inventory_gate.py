@@ -116,7 +116,7 @@ def depersonalize(p):
     """输出路径脱敏：本机主目录改写为 %USERPROFILE% 形态（公开仓红线，2026-10-15）。
 
     兼容混合分隔符：外部传入路径可能是正斜杠形态（盘符:/用户名/...），而
-    %USERPROFILE% 展开是反斜杠（C:\\Users\\...），直接 startswith 会失配
+    %USERPROFILE% 展开是反斜杠形态（盘符\用户名\...），直接 startswith 会失配
     （2026-10-16 judge JSON 实测泄漏一枚，已修；替换不改变长度，切片安全）。
     """
     home = os.path.expandvars(r"%USERPROFILE%")

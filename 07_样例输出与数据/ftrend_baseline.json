@@ -3,12 +3,12 @@
  "snapshots": [
   {
    "label": "2026-09-30 ~ 2026-10-01（原始输出：本机 ComfyUI output 下 01_模型基准测试/model_benchmark，原图为一次性产物未随包）",
-   "path": "C:\\Users\\Doro\\APP\\repository\\ComfyUI-Experiment-Toolbox\\07_样例输出与数据\\family_bench_20261006\\ledger_sanitized.json",
+   "path": "07_样例输出与数据\\family_bench_20261006\\ledger_sanitized.json",
    "records": 216
   },
   {
    "label": "2026-10-15",
-   "path": "C:\\Users\\Doro\\APP\\ComfyUI-aki-v3.2\\ComfyUI\\output\\model_benchmark\\ledger.json",
+   "path": "%USERPROFILE%\\APP\\ComfyUI-aki-v3.2\\ComfyUI\\output\\model_benchmark\\ledger.json",
    "records": 81
   }
  ],
@@ -16,8 +16,8 @@
   {
    "from": "2026-09-30 ~ 2026-10-01（原始输出：本机 ComfyUI output 下 01_模型基准测试/model_benchmark，原图为一次性产物未随包）",
    "to": "2026-10-15",
-   "from_path": "C:\\Users\\Doro\\APP\\repository\\ComfyUI-Experiment-Toolbox\\07_样例输出与数据\\family_bench_20261006\\ledger_sanitized.json",
-   "to_path": "C:\\Users\\Doro\\APP\\ComfyUI-aki-v3.2\\ComfyUI\\output\\model_benchmark\\ledger.json",
+   "from_path": "07_样例输出与数据\\family_bench_20261006\\ledger_sanitized.json",
+   "to_path": "%USERPROFILE%\\APP\\ComfyUI-aki-v3.2\\ComfyUI\\output\\model_benchmark\\ledger.json",
    "objects": 8,
    "hard": 0,
    "flags": {
