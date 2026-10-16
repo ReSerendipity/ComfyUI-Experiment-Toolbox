@@ -10,7 +10,7 @@ ComfyUI 采样器/调度器受控实验（参数轨 01~04+07）与工作流结�
 ## 公开仓红线（任何改动前先读）
 
 1. **不含本机字面绝对路径**：`.py` 一律 `os.path.expandvars(r"%USERPROFILE%\...")` 形态；配置/文档用 `%USERPROFILE%` / `%WINDIR%` 变量形态。CI Gate ⑤ 扫描全部跟踪的 `.py/.json/.md`（`99_归档/` 历史原件除外），命中即红。
-2. **不含密钥与凭据形状**：gitleaks 三层防线（pre-commit / CI push+PR / 每周全量历史）。误报在 `gitleaks.toml` 追加 allowlist 并写明理由，不放宽规则本身。
+2. **不含密钥与凭据形状**：gitleaks 三层防线（pre-commit / CI push+PR / 每周全量历史）。第一层不随 clone 分发（git 不带 hook 走），每个工作副本需先装一次：`python -m pre_commit install`——用你环境里能 `import pre_commit` 的那个解释器；本机当前可用的是 `%USERPROFILE%\.workbuddy\binaries\python\envs\default\Scripts\python.exe`（pre-commit 4.7.0）。装后自检与反例见「验证要求」一节。误报在 `gitleaks.toml` 追加 allowlist 并写明理由，不放宽规则本身。
 3. **运行产物不入库**：`__pycache__/`、`*.bak*`、`09_Web面板/output/`、运行日志等已被 `.gitignore` 排除。
 
 ## 变更纪律
@@ -32,6 +32,17 @@ python "10_模型家族横评/lib_ledger_verify.py" --selftest
 ```
 
 改动 `09_Web面板/index.html` 前端逻辑后另跑 `09_Web面板/test_dom.js`（jsdom，本地环境）。CI 会复跑以上检查（语法编译 / 锁文件 / 门禁自检×3 / 结构样本验收 / 路径红线 Gate ⑤ / 依赖方向 Gate ⑥ / 单测 Gate ⑦）。
+
+本地凭据防线（第一层）装完自检与反例（2026-10-17 在全新 `git clone` 上实测）：
+
+```bat
+python -m pre_commit validate-config
+git commit --allow-empty -m "hook probe"
+```
+
+- 安装前 `.git/hooks/pre-commit` 不存在，`install` 后存在（这一步不做，三层防线实际只剩两层）。
+- `validate-config` 期望 exit 0；`--allow-empty` 提交应看到 `Detect hardcoded secrets...(no files to check)Skipped` 并放行。
+- 确认真的会拦：临时建一个含 PAT 形状字符串的 `.py`，`git add` 后 `git commit` 应被拒绝——HEAD 不前进、文件停留在暂存区；验证完 `git reset` 并删除该临时文件。实测留痕：植入的 `probe_secret.py` 命中 `github-pat:1`，提交被拦下、未产生新 commit。
 
 ## 提交与评审规范
 
