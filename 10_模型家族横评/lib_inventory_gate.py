@@ -29,6 +29,13 @@
     python lib_inventory_gate.py check  --baseline gate.json
     python lib_inventory_gate.py build --root <unet 根> --max-hash-mb 512   # 只哈希小文件
 退出码：0 零漂移 / 1 有漂移（已列明细）/ 2 用法或 IO 错。
+
+2026-10-16 策略：仓内 gate_baseline.json 已按 --max-hash-mb 256 重建——
+≤256MB（config/loras/VAE/小 TE）仍全量 sha256，>256MB 的大权重只记
+size+mtime。check 从全量重哈希 328GB 的 ~292s 降到 ~6s（~49×）；
+检测语义见 _selftest_synthetic 的 skipped-hash 三步锁定：超限文件
+touch / 原地同长改写都会经 mtime(size_mtime_fallback) 判 changed，
+被整体替换则天然命中 removed+added。
 """
 import argparse
 import fnmatch
@@ -519,6 +526,35 @@ def _selftest_synthetic():
         b2 = build_baseline(td)
         r3 = check(b2)
         steps.append(("重建基线后 check 零漂移 exit=%d" % r3["exit_code"], r3["ok"]))
+
+        # ── 大文件哈希跳过（--max-hash-mb）的回退语义（2026-10-16，check 提速）──
+        # hash_mode=skipped 的文件两边都无法比内容 → mtime 变化必须算 changed
+        # （size_mtime_fallback），否则「原地改写的大权重」会全部漏检。
+        big = os.path.join(td, "big_weight.safetensors")
+        with open(big, "wb") as fh:
+            fh.write(b"X" * 4096)
+        lb = build_baseline(td, hash_limit_bytes=2)   # >2B 全部跳过哈希
+        self_big = lb["files"]["big_weight.safetensors"]
+        steps.append(("超限文件只记 size+mtime（hash_mode=%s sha256=%r）"
+                      % (self_big["hash_mode"], self_big["sha256"]),
+                      self_big["hash_mode"] == "skipped" and self_big["sha256"] is None))
+        r4 = check(lb)
+        steps.append(("skipped 基线零漂移 exit=%d" % r4["exit_code"],
+                      r4["ok"] and r4["exit_code"] == 0))
+        st = os.stat(big)
+        os.utime(big, (st.st_atime, st.st_mtime + 5))  # 仅 touch：内容未动
+        r5 = check(lb)
+        hit5 = (r5["counts"]["changed"] == 1
+                and r5["changed"][0]["fields"] == ["mtime(size_mtime_fallback)"]
+                and r5["changed"][0]["rel"] == "big_weight.safetensors")
+        steps.append(("大文件被 touch 必须判 changed（mtime fallback 命中：%s）"
+                      % (r5["changed"][0]["fields"] if r5["counts"]["changed"] else None), hit5))
+        with open(big, "r+b") as fh:                    # 原地改写内容（同长度）
+            fh.seek(0)
+            fh.write(b"Y" * 4096)
+        r6 = check(lb)
+        steps.append(("大文件原地改写（同长度）也判 changed=%d"
+                      % r6["counts"]["changed"], r6["counts"]["changed"] == 1))
 
         # ── E6 维度①：重复量化 ──
         qd = os.path.join(td, "quant")

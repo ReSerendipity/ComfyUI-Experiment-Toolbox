@@ -1,7 +1,7 @@
 {
  "count": 191,
- "digest": "1230a43f1e8e6e26ddda142a9b704f31b3c0b2f2c83e597640cc82a53030c021",
- "elapsed_s": 292.3,
+ "digest": "66787fd50f4f053adfdff782dd811893b66348618e4e4aa9faa543c0488e9881",
+ "elapsed_s": 7.5,
  "files": {
   "Rother/README.txt": {
    "hash_mode": "full",
@@ -151,17 +151,17 @@
    "size": 1286
   },
   "SEEDVR2/ema_vae_fp16.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1775727433.758,
    "mtime_iso": "2026-04-09 17:37:13",
-   "sha256": "20678548f420d98d26f11442d3528f8b8c94e57ee046ef93dbb7633da8612ca1",
+   "sha256": null,
    "size": 501324814
   },
   "SEEDVR2/seedvr2_ema_3b_fp16.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1775728047.745,
    "mtime_iso": "2026-04-09 17:47:27",
-   "sha256": "2fd0e03a3dad24e07086750360727ca437de4ecd456f769856e960ae93e2b304",
+   "sha256": null,
    "size": 6783018808
   },
   "audio_encoders/put_audio_encoder_models_here": {
@@ -179,31 +179,31 @@
    "size": 0
   },
   "checkpoints/iIllustrious/WAI_realistic_2.5D_NSFW-illustrious-SDXL_v16_v2.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1776173427.23,
    "mtime_iso": "2026-04-14 21:30:27",
-   "sha256": "9af4fa4e93a089c49fbd66de8fa50052c3890a3419f09ed44b4881da6e69640b",
+   "sha256": null,
    "size": 6938041850
   },
   "checkpoints/iIllustrious/waiIllustriousSDXL_v160.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1776147418.761,
    "mtime_iso": "2026-04-14 14:16:58",
-   "sha256": "a5f58eb1c33616c4f06bca55af39876a7b817913cd829caa8acb111b770c85cc",
+   "sha256": null,
    "size": 6938040682
   },
   "checkpoints/pony/pornworksRealPornPhoto_ponyV04.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1776162260.0,
    "mtime_iso": "2026-04-14 18:24:20",
-   "sha256": "4142bfecb12c9183f7bfa48ffb244409c7292e7cb08b5565d5656047a4bae307",
+   "sha256": null,
    "size": 6938041176
   },
   "checkpoints/pony/pornworksRealPornPhoto_v04.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1776162354.0,
    "mtime_iso": "2026-04-14 18:25:54",
-   "sha256": "fb1d2047596d4d350092a37294426ab46ea834c7f38e3308f4a0c92703a71e64",
+   "sha256": null,
    "size": 6938042528
   },
   "checkpoints/put_checkpoints_here": {
@@ -326,73 +326,73 @@
    "size": 0
   },
   "diffusion_models/FLUX-1-dev/fluxNSFWUNLOCKED.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1775311466.0,
    "mtime_iso": "2026-04-04 22:04:26",
-   "sha256": "3b9e388080e8641767f575bb6bf95bd519751030cc140b41d61c673c4a1e4ab4",
+   "sha256": null,
    "size": 11901513960
   },
   "diffusion_models/FLUX-2-klein-9b/BigLoveKlein2_fp8.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1776824230.0,
    "mtime_iso": "2026-04-22 10:17:10",
-   "sha256": "02b68dec8f5b8e6dfa06d0b48973aae9fa5007b438dfdbbd76a574b3b2caae85",
+   "sha256": null,
    "size": 9078604336
   },
   "diffusion_models/Krea2-turbo/krea2TurboNSFWAIO_v10.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1787230930.0,
    "mtime_iso": "2026-08-20 21:02:10",
-   "sha256": "c40a22059317f968b9cc99f7c55a93e0077161d423c1014bcd2d55fcd39ede68",
+   "sha256": null,
    "size": 17833778294
   },
   "diffusion_models/Krea2-turbo/moodyKrea2Mix_v3-Global-FP8.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1791965732.995,
    "mtime_iso": "2026-10-14 16:15:32",
-   "sha256": "49591a46ef95d21635156408c91f5281befeb090284fc243d44bc4b74d783a9e",
+   "sha256": null,
    "size": 13485164976
   },
   "diffusion_models/MiniMax-H3/10Eros_Max_h3_TURBO-hybrid_beta5_int8.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1791965272.261,
    "mtime_iso": "2026-10-14 16:07:52",
-   "sha256": "4dd965496e5b1b83cd13c65cbe7a535b8a4d94ae768a7646b4e336d52c4781cf",
+   "sha256": null,
    "size": 20970414464
   },
   "diffusion_models/MiniMax-H3/minimax_h3_ref2va_XUELUO_int8_convrot.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1787229100.263,
    "mtime_iso": "2026-08-20 20:31:40",
-   "sha256": "1209bb3daff5c38c3c35524d17a96149de3703555a8491dca01d9b3bdc1778c0",
+   "sha256": null,
    "size": 34038894694
   },
   "diffusion_models/Qwen-Image-2.1-turbo/qwen-image-2.1-turbo-int8-convrot.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1791708179.424,
    "mtime_iso": "2026-10-11 16:42:59",
-   "sha256": "bc77cb2f0220311a158a10e77677f0912fac72d53a66faf78a67d7946b81f5c1",
+   "sha256": null,
    "size": 7256828688
   },
   "diffusion_models/Qwen-Image-2.1/NoctQ_V4_int8_convrot.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1791958033.222,
    "mtime_iso": "2026-10-14 14:07:13",
-   "sha256": "4d92d5538253ab36e6a73b056cce5f697950f4303cb9e6686a3198d0ea13f9e8",
+   "sha256": null,
    "size": 7256784368
   },
   "diffusion_models/Qwen-Image-2.1/qwen-image-2.1-UC-int8_convrot.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1791956276.737,
    "mtime_iso": "2026-10-14 13:37:56",
-   "sha256": "5bc5a6c007eff1e0d4004344a24c4af966b9d2c83d142e613b0d456ccceb19ae",
+   "sha256": null,
    "size": 7256796840
   },
   "diffusion_models/Qwen-Image-Edit-2511/qwen_image_edit_2511_nvfp4.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1785498624.495,
    "mtime_iso": "2026-07-31 19:50:24",
-   "sha256": "a1145911a0f9ea598f21f40b50b0ac5c38589e2abc154fb89ec77f44eb280ab4",
+   "sha256": null,
    "size": 11640471562
   },
   "diffusion_models/Qwen-image-2512/NVFP4.txt": {
@@ -403,17 +403,17 @@
    "size": 121
   },
   "diffusion_models/Qwen-image-2512/qwen-image-2512-nvfp4-Ultra.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1785402249.951,
    "mtime_iso": "2026-07-30 17:04:09",
-   "sha256": "a50bd810200bc397b4cf0109020b73cea77574bfb6e94157a76bfb2ab8b315df",
+   "sha256": null,
    "size": 14896156794
   },
   "diffusion_models/Z-image-turbo/zimageTurboNSFWByStable_2602NSFWFP8.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1776756762.604,
    "mtime_iso": "2026-04-21 15:32:42",
-   "sha256": "8dff149fbc5763e483d2a6fb375a5dffebb0ac54573ae2c0781cef7fb651b488",
+   "sha256": null,
    "size": 6154969704
   },
   "diffusion_models/put_diffusion_model_files_here": {
@@ -466,10 +466,10 @@
    "size": 0
   },
   "loras/FLUX.1-dev/F.1 皮肤纹理质感增强-去油_v1/F.1 皮肤纹理质感增强-去油_v1.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1774329619.356,
    "mtime_iso": "2026-03-24 13:20:19",
-   "sha256": "4cf9702d2fce134eb7fd2d32dda7423e7afc633d912c155f224700fc5fae7d54",
+   "sha256": null,
    "size": 306429184
   },
   "loras/FLUX.1-dev/Flux_Lustly.ai_Uncensored_nsfw_v1-lustlyai/.gitattributes": {
@@ -487,10 +487,10 @@
    "size": 8292
   },
   "loras/FLUX.1-dev/Flux_Lustly.ai_Uncensored_nsfw_v1-lustlyai/flux_lustly-ai_v1.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1775284268.0,
    "mtime_iso": "2026-04-04 14:31:08",
-   "sha256": "b1470828b182a72ac2c1b75eed8f20b21a096555bf3a6cdac29f5ed530ca5ebe",
+   "sha256": null,
    "size": 343805152
   },
   "loras/FLUX.1-dev/Flux_Lustly.ai_Uncensored_nsfw_v1-lustlyai/lustly_dev.png": {
@@ -669,17 +669,17 @@
    "size": 142324
   },
   "loras/FLUX.1-dev/LOCOmuchen《麦橘复古少女Irene》Majicflus/12.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1774191334.17,
    "mtime_iso": "2026-03-22 22:55:34",
-   "sha256": "b0d9227c18515dae1a1873c266b33c01b3e65e5445c9d14719afa3c3d6bcc9d6",
+   "sha256": null,
    "size": 306423080
   },
   "loras/FLUX.1-dev/LOCOmuchen《麦橘青衣》Majicflus/10.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1774224152.468,
    "mtime_iso": "2026-03-23 08:02:32",
-   "sha256": "adbdb71a2710dcba48bfe6462207f7bdf5e16ef11d7c91c4c013ee6f2b8a24ac",
+   "sha256": null,
    "size": 306423080
   },
   "loras/FLUX.1-dev/MAJICFLUS-麦橘光影约拍/al.24.safetensors": {
@@ -711,24 +711,24 @@
    "size": 153265776
   },
   "loras/FLUX.1-dev/flux_lustly-ai_v1.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1775284268.0,
    "mtime_iso": "2026-04-04 14:31:08",
-   "sha256": "b1470828b182a72ac2c1b75eed8f20b21a096555bf3a6cdac29f5ed530ca5ebe",
+   "sha256": null,
    "size": 343805152
   },
   "loras/FLUX.1-dev/majifluxheihong/majifluxheihong_3.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1774314505.831,
    "mtime_iso": "2026-03-24 09:08:25",
-   "sha256": "ae939385e008b611a315bc6d6db054c1db31126ca0194d4292175e8ed5cb50aa",
+   "sha256": null,
    "size": 306423264
   },
   "loras/FLUX.1-dev/东方美学/AWPortraitCN_2.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1774315477.746,
    "mtime_iso": "2026-03-24 09:24:37",
-   "sha256": "2a2ae0af820e264dc3b57a2dc7038a980e7de0bac41d3685378b219de0dfad12",
+   "sha256": null,
    "size": 612742496
   },
   "loras/FLUX.1-dev/古风小依/20.safetensors": {
@@ -739,10 +739,10 @@
    "size": 153265160
   },
   "loras/FLUX.1-dev/沐辰人像皮肤质感提升/flux-loco-v1-000008.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1774261584.915,
    "mtime_iso": "2026-03-23 18:26:24",
-   "sha256": "36efbc72686f5faba97bd697900c1287f9610c19c7237ece64af76f29b8dc9db",
+   "sha256": null,
    "size": 321759320
   },
   "loras/FLUX.1-dev/胸部调整/身材调节_蜂腰大雷_极致细腰_胸部调节_腰部调节_1.0.safetensors": {
@@ -760,24 +760,24 @@
    "size": 153265768
   },
   "loras/FLUX.1-dev/苏-FLUX抖音小红书极致真实_苏-FLUX小红书极致真实V2/苏-FLUX抖音小红书极致真实_苏-FLUX小红书极致真实V2.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1773759301.828,
    "mtime_iso": "2026-03-17 22:55:01",
-   "sha256": "b4cbf43ab3ceb62e1caf46067002a8f0470dfcc6798f91e484eb3d1a6ef83da1",
+   "sha256": null,
    "size": 306426864
   },
   "loras/FLUX.1-dev/长腿美女写实/20.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1774261480.375,
    "mtime_iso": "2026-03-23 18:24:40",
-   "sha256": "4ffbe37e8386b85a0df4894b609c2940481d2525bb2322d3d0934ac1588439ae",
+   "sha256": null,
    "size": 306423872
   },
   "loras/FLUX.1-dev/高质量美女写实/20.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1774261428.08,
    "mtime_iso": "2026-03-23 18:23:48",
-   "sha256": "94f0ab7e56eba6899448f405b037050fcc312978142b3f99ded1eb85496bd86c",
+   "sha256": null,
    "size": 287279144
   },
   "loras/FLUX.2-klein/ExcellentFullNude_F2K9B_1.safetensors": {
@@ -823,10 +823,10 @@
    "size": 165704392
   },
   "loras/FLUX.2-klein/KLEIN-Unchained-V2.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1776223425.699,
    "mtime_iso": "2026-04-15 11:23:45",
-   "sha256": "bcf84b6b72ccef01f6e36565bd8b69ce8513907e80204476cb3e42098b453341",
+   "sha256": null,
    "size": 331378480
   },
   "loras/FLUX.2-klein/Kook_Flux_klein_亚洲人像/Kook_Flux_klein_亚洲人像.safetensors": {
@@ -837,17 +837,17 @@
    "size": 87070312
   },
   "loras/FLUX.2-klein/PornMaster_innie_pussy_flux-2-klein-9b_V1.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1776223433.254,
    "mtime_iso": "2026-04-15 11:23:53",
-   "sha256": "b10f547849e75ae122433385b3b9a81a896e671b160ccc24b738ce8148141764",
+   "sha256": null,
    "size": 331379664
   },
   "loras/FLUX.2-klein/SEXGOD_ImprovedNudity_Klein9b_v3.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1776223481.299,
    "mtime_iso": "2026-04-15 11:24:41",
-   "sha256": "fb13137d085869c8fbfe9b447487ef5b0af6b8fd61744c6d503a7c3cb304bdec",
+   "sha256": null,
    "size": 662729912
   },
   "loras/FLUX.2-klein/klein-deepthroat-15epoc-k3nk.safetensors": {
@@ -865,17 +865,17 @@
    "size": 165703992
   },
   "loras/FLUX.2-klein/klein_9B_Turbo_r128.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1776223525.182,
    "mtime_iso": "2026-04-15 11:25:25",
-   "sha256": "69d54afd97c016b5a773be7e45a83083932a8e4f47e1b99eb7e6f7aa5a3c056c",
+   "sha256": null,
    "size": 1388608880
   },
   "loras/FLUX.2-klein/klein_snofs_v1_2.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1776223511.148,
    "mtime_iso": "2026-04-15 11:25:11",
-   "sha256": "ae6b2f510212741a25c946500e349aca47063199f107413b80ead017af5b7d84",
+   "sha256": null,
    "size": 1090563760
   },
   "loras/FLUX.2-klein/pov_squatting_sex_f2k9b_000002500.safetensors": {
@@ -893,24 +893,24 @@
    "size": 131229656
   },
   "loras/MiniMax-H3/minimax_h3_fl2v_turbo_4step_v1.1_768p_comfyui_bf16.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1787302732.025,
    "mtime_iso": "2026-08-21 16:58:52",
-   "sha256": "449d80f301ac571622c72e28b8fd72a4b3681b7a8df8a92f17c8f6ec43f56558",
+   "sha256": null,
    "size": 1956192992
   },
   "loras/MiniMax-H3/minimax_h3_latent_upscaler_3d_bf16.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1787187440.033,
    "mtime_iso": "2026-08-20 08:57:20",
-   "sha256": "4f57821f5837f32f7142b67d815606dbd7550f194e5c769f7d6c3f83b146a5e6",
+   "sha256": null,
    "size": 690592992
   },
   "loras/MiniMax-H3/minimax_h3_ref2v_turbo_4step_v0.1_comfyui_bf16.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1786971337.914,
    "mtime_iso": "2026-08-17 20:55:37",
-   "sha256": "5b9ab5ade15d0775676d01a907268a69a1468dc6033b3b0d3ded5502f3ebb84c",
+   "sha256": null,
    "size": 1956193000
   },
   "loras/Qwen-Image-2512/Kook_Qwen_2512_极致真实_V3/Kook_Qwen_V3极致真实.safetensors": {
@@ -921,24 +921,24 @@
    "size": 236117032
   },
   "loras/Qwen-Image/CockQwen-v3.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1776229708.878,
    "mtime_iso": "2026-04-15 13:08:28",
-   "sha256": "36331c796042b3022a98dd8490ef53057bd9c93c665c45f8d3429f84dbd45226",
+   "sha256": null,
    "size": 590154480
   },
   "loras/Qwen-Image/Eva_Qwen_V3.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1776223355.544,
    "mtime_iso": "2026-04-15 11:22:35",
-   "sha256": "dea22916f340d57629f9c225c524a3d4e3eb5be6f87447511cc7e506900fd512",
+   "sha256": null,
    "size": 590152728
   },
   "loras/Qwen-Image/Facial_Cumshots_For_Qwen_Image_V1.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1776223201.467,
    "mtime_iso": "2026-04-15 11:20:01",
-   "sha256": "eabea25b2781e21a262930d0c2d2b39543da67b630afc4441eb6caf7d128d25c",
+   "sha256": null,
    "size": 295239888
   },
   "loras/Qwen-Image/Kook_千问写实_Kook_Qwen_V2美人版/Kook_千问写实_Kook_Qwen_V2美人版.safetensors": {
@@ -949,17 +949,17 @@
    "size": 236117040
   },
   "loras/Qwen-Image/Put it here_Qwen edit_V2.0.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1776223164.576,
    "mtime_iso": "2026-04-15 11:19:24",
-   "sha256": "a05ea6e47525aecf213fd6d01be2e896acdc4487010ae840d0debba55e0f161e",
+   "sha256": null,
    "size": 472053904
   },
   "loras/Qwen-Image/Qwen-Image-Helm_v0.1.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1776222186.659,
    "mtime_iso": "2026-04-15 11:03:06",
-   "sha256": "0989fa5cd12a02b77a46dd749f5b0f5b3afebcc57b63bf46be6845ad81be6f5f",
+   "sha256": null,
    "size": 590154464
   },
   "loras/Qwen-Image/Qwen-Image-NSFW(生效要增加rsq)/qwen_image_nsfw.safetensors": {
@@ -970,52 +970,52 @@
    "size": 188807872
   },
   "loras/Qwen-Image/Qwen-Image-SynthSat-v1.0-warmup-stage2.5-nsfw-step00001000.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1776149781.941,
    "mtime_iso": "2026-04-14 14:56:21",
-   "sha256": "3a70735700be3900e05ac83926ed056401cd933592937c7e8ed8acdabc3ea9b8",
+   "sha256": null,
    "size": 295242160
   },
   "loras/Qwen-Image/Qwen-MysticXXX-v1.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1776223318.248,
    "mtime_iso": "2026-04-15 11:21:58",
-   "sha256": "e812731c86410482b40a439d7e3e8950dee93a6a694f3fcfdafae8ec0d8688fb",
+   "sha256": null,
    "size": 295146184
   },
   "loras/Qwen-Image/Qwen-NSFW-Beta5.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1776222482.851,
    "mtime_iso": "2026-04-15 11:08:02",
-   "sha256": "e269f22403ffe2127397fc4f791df245e22e58c4ca6be5ab11a59667ab009265",
+   "sha256": null,
    "size": 590154464
   },
   "loras/Qwen-Image/Qwen-NSFW.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1776229789.694,
    "mtime_iso": "2026-04-15 13:09:49",
-   "sha256": "e4335872e6dc72982a4f5d3cf850adecfe24cebadac2b672a2beea4b709c3df1",
+   "sha256": null,
    "size": 590154464
   },
   "loras/Qwen-Image/Qwen-Real PS_v1_83K.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1776223093.607,
    "mtime_iso": "2026-04-15 11:18:13",
-   "sha256": "c182fbb7b25cad7f1629d0a6095652f8ac1ce0befafc445e0e3505eb82221641",
+   "sha256": null,
    "size": 590058816
   },
   "loras/Qwen-Image/Qwen-真实人像小红书风格/Qwen-真实人像小红书风格_Qwen小红书真实风格.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1774869626.819,
    "mtime_iso": "2026-03-30 19:20:26",
-   "sha256": "415a8d5aa12459bfca0e4626cf22e87adeba5738da23addeb96d341145d4f039",
+   "sha256": null,
    "size": 590058432
   },
   "loras/Qwen-Image/Qwen4Play_v2.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1776222944.179,
    "mtime_iso": "2026-04-15 11:15:44",
-   "sha256": "a2946ee05de12814815efc3ba496b1929aef79d58616ffcb415edcea332f9464",
+   "sha256": null,
    "size": 590058432
   },
   "loras/Qwen-Image/QwenImageHentaiPIV_v3.1.safetensors": {
@@ -1026,17 +1026,17 @@
    "size": 147686808
   },
   "loras/Qwen-Image/QwenSnofs1_1.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1776222833.571,
    "mtime_iso": "2026-04-15 11:13:53",
-   "sha256": "03994ed55cf9aaa219e27015c4ef867d7a9df765a3d8a633f42996d8fe27a941",
+   "sha256": null,
    "size": 613842136
   },
   "loras/Qwen-Image/Qwen_Real_Nud3s.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1776223236.247,
    "mtime_iso": "2026-04-15 11:20:36",
-   "sha256": "35b309150b17f2ea75e73072eea763c0ef2b257a91db078a4465c03175830387",
+   "sha256": null,
    "size": 295146232
   },
   "loras/Qwen-Image/Qwen_majic_beauty/QWEN_麦橘千问美人.safetensors": {
@@ -1047,10 +1047,10 @@
    "size": 236117032
   },
   "loras/Qwen-Image/SendNudesLite (Qwen).safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1776229476.248,
    "mtime_iso": "2026-04-15 13:04:36",
-   "sha256": "69704550fadafe9968f5c167297edf40411c522c1b7df5f2c0fb452dcd7aa6d3",
+   "sha256": null,
    "size": 1179881928
   },
   "loras/Qwen-Image/WANGMOON光影v1/20.safetensors": {
@@ -1061,31 +1061,31 @@
    "size": 236117040
   },
   "loras/Qwen-Image/qwen-image_d!ck_P3N1S_LoRA_V1.1.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1776229557.173,
    "mtime_iso": "2026-04-15 13:05:57",
-   "sha256": "1f617d0b025fa6186373e489ffb0d67386bbac6e9ba2b9441bf56711b5739366",
+   "sha256": null,
    "size": 1179978088
   },
   "loras/Qwen-Image/qwen-image_nsfw_adv_v1.0.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1776229851.678,
    "mtime_iso": "2026-04-15 13:10:51",
-   "sha256": "210e840d99f8152d503665c7ad43724edddd4ce3fdf11fa15839e8146c96f018",
+   "sha256": null,
    "size": 881117472
   },
   "loras/Qwen-Image/qwen_snofs.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1776229590.791,
    "mtime_iso": "2026-04-15 13:06:30",
-   "sha256": "209c366827cf432f691eea95abdd339aa631ad7037aacb9203237541197b4deb",
+   "sha256": null,
    "size": 613843024
   },
   "loras/Qwen-Image/qwen_uncensor_000014928.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1776229509.695,
    "mtime_iso": "2026-04-15 13:05:09",
-   "sha256": "5dae8d8505f624433275acc1f673fd819e520f78960498ec98caae77f1beb900",
+   "sha256": null,
    "size": 2359534936
   },
   "loras/Qwen-Image/千问高质感皮肤真实质感/20.safetensors": {
@@ -1117,10 +1117,10 @@
    "size": 170128264
   },
   "loras/Z-image-turbo/NSFW-MASTER-Z-IMAGE-TURBO/NSFW_master_ZIT_000008766.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1775041936.196,
    "mtime_iso": "2026-04-01 19:12:16",
-   "sha256": "c9040d1f3e5fa9c4fba88747f2a62ed9596f3ad866fe3c02ea5b60594fdfaf20",
+   "sha256": null,
    "size": 1242628336
   },
   "loras/Z-image-turbo/图图的嗨丝造相-Z-Image-Turbo（8D黑色极光油亮黑丝长筒袜过膝袜丝袜）/Tutu's half-leg aurora black stockings_Zimg_V1.safetensors": {
@@ -1138,10 +1138,10 @@
    "size": 170128208
   },
   "loras/Z-image/Kook_Zimage_Base_极致真实/Kook_Zimage_Base_极致真实.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1774972554.899,
    "mtime_iso": "2026-03-31 23:55:54",
-   "sha256": "eafdf8fc73c87d69edf87a0cb1c27e483bf1f16ab12d093b719008249d33dda9",
+   "sha256": null,
    "size": 317580192
   },
   "loras/Z-image/Z-Image-LoraSet-NSFW/Z-Image-LoraSet-NSFW/.gitattributes": {
@@ -1208,66 +1208,66 @@
    "size": 246144152
   },
   "text_encoders/FLUX-1-dev/t5xxl_fp8_e4m3fn.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1774933340.339,
    "mtime_iso": "2026-03-31 13:02:20",
-   "sha256": "7d330da4816157540d6bb7838bf63a0f02f573fc48ca4d8de34bb0cbfd514f09",
+   "sha256": null,
    "size": 4893934904
   },
   "text_encoders/FLUX-2-klein-9b/qwen3-8b-heretic-v1.4_klein9b_int8_convrot.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1789957937.443,
    "mtime_iso": "2026-09-21 10:32:17",
-   "sha256": "0f7097a0c71ecc7739cdcc1955d5a9f158d5331dce5159743e46f26b4c6003b6",
+   "sha256": null,
    "size": 10212578912
   },
   "text_encoders/Krea2/qwen3-vl-4b-heretic_fp8_e4m3fn.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1789956345.585,
    "mtime_iso": "2026-09-21 10:05:45",
-   "sha256": "7443c2b8df026a3271b3095d5d1dc07800dc5cf460b6e3586692253c7a7bc17c",
+   "sha256": null,
    "size": 4831492476
   },
   "text_encoders/MiniMax-H3/qwen3vl_32b_h3_ultra_uncensored_heretic_int8_convrot.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1791966713.086,
    "mtime_iso": "2026-10-14 16:31:53",
-   "sha256": "d84547412144b7c50a6ec77437a889b869d3ace88da77ef1775d3d2a4901c192",
+   "sha256": null,
    "size": 26363476151
   },
   "text_encoders/Qwen-Image-2.1/qwen3-vl-8b-heretic-1.3.0_fp8_e4m3fn.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1791946373.724,
    "mtime_iso": "2026-10-14 10:52:53",
-   "sha256": "7f8ec20de729e2d99f3a04852d4c4499c1677cda167f5ea63d21b0882a5c32b5",
+   "sha256": null,
    "size": 10017064632
   },
   "text_encoders/Qwen-image-2512-edit/qwen_2.5_vl_7b_Abliteratedte.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1785500447.578,
    "mtime_iso": "2026-07-31 20:20:47",
-   "sha256": "3f8c3c9688bb90664c276dd917aa6f6d5445feeae497b0744993204722ef6b43",
+   "sha256": null,
    "size": 16584415574
   },
   "text_encoders/Qwen-image-2512-edit/qwen_2.5_vl_7b_huihui_abliterated_int8_convrot.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1791888133.703,
    "mtime_iso": "2026-10-13 18:42:13",
-   "sha256": "3dc4aae7dc34000c95de546cb220f1b67e51c86d7095fb9e3d19cec7032f5df7",
+   "sha256": null,
    "size": 10064106602
   },
   "text_encoders/Z-image/qwen3-4b-heretic_fp8_e4m3fn.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1791951784.299,
    "mtime_iso": "2026-10-14 12:23:04",
-   "sha256": "f4ce8b26dcb710a73d3e81fd4bdb10daf8d063496b23655de4aa2e435b5f2d18",
+   "sha256": null,
    "size": 4411666704
   },
   "text_encoders/Z-image/qwen3-4b-heretic_int8.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1791946474.325,
    "mtime_iso": "2026-10-14 10:54:34",
-   "sha256": "2aac7216371c8586ff9679c3293bdfc74e6222fb1c25bed9bd7241ed7bacd635",
+   "sha256": null,
    "size": 4416215240
   },
   "text_encoders/put_text_encoder_files_here": {
@@ -1285,38 +1285,38 @@
    "size": 0
   },
   "vae/FLUX-1-dev + Z-image/ae.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1774100534.014,
    "mtime_iso": "2026-03-21 21:42:14",
-   "sha256": "afc8e28272cd15db3919bacdb6918ce9c1ed22e96cb12c4d5ed0fba823529e38",
+   "sha256": null,
    "size": 335304388
   },
   "vae/FLUX.2-klein-9b/flux2-vae.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1774188240.0,
    "mtime_iso": "2026-03-22 22:04:00",
-   "sha256": "868fe7b343cc8f3a19dbcfcafbc3d5f888802be3f89bd81b65b3621a066ce8f3",
+   "sha256": null,
    "size": 336211292
   },
   "vae/MiniMax-H3/minimax_h3_audio_vae_fp32.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1786782558.332,
    "mtime_iso": "2026-08-15 16:29:18",
-   "sha256": "8e505d95dd1561d47abd43d4238fd40d9bb1ae9e147ed0a4cba778d76ae4db48",
+   "sha256": null,
    "size": 605254808
   },
   "vae/MiniMax-H3/minimax_h3_video_vae_fp16.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1786788203.329,
    "mtime_iso": "2026-08-15 18:03:23",
-   "sha256": "7c1f131492e7eddacaac9069a61b81bdd39de5cc96561e677c5eab1cdce5e522",
+   "sha256": null,
    "size": 5207808496
   },
   "vae/Qwen-Image-2.1/qwen_image_2.1_vae_bf16.safetensors": {
-   "hash_mode": "full",
+   "hash_mode": "skipped",
    "mtime": 1789910646.27,
    "mtime_iso": "2026-09-20 21:24:06",
-   "sha256": "bb21f7473051e1ac368515dd3f2e15cd44d7a11748ee8823e1ddca3e4876b7c9",
+   "sha256": null,
    "size": 675509688
   },
   "vae/Qwen-image+ Krea2/qwen_image_vae.safetensors": {
@@ -1341,13 +1341,86 @@
    "size": 0
   }
  },
- "generated": "2026-10-15 15:34:44",
+ "generated": "2026-10-16 08:48:50",
  "globs": [
   "*"
  ],
- "hash_limit_bytes": 0,
- "hash_skipped": [],
- "hashed_bytes": 328014941211,
+ "hash_limit_bytes": 268435456,
+ "hash_skipped": [
+  "SEEDVR2/ema_vae_fp16.safetensors",
+  "SEEDVR2/seedvr2_ema_3b_fp16.safetensors",
+  "checkpoints/iIllustrious/WAI_realistic_2.5D_NSFW-illustrious-SDXL_v16_v2.safetensors",
+  "checkpoints/iIllustrious/waiIllustriousSDXL_v160.safetensors",
+  "checkpoints/pony/pornworksRealPornPhoto_ponyV04.safetensors",
+  "checkpoints/pony/pornworksRealPornPhoto_v04.safetensors",
+  "diffusion_models/FLUX-1-dev/fluxNSFWUNLOCKED.safetensors",
+  "diffusion_models/FLUX-2-klein-9b/BigLoveKlein2_fp8.safetensors",
+  "diffusion_models/Krea2-turbo/krea2TurboNSFWAIO_v10.safetensors",
+  "diffusion_models/Krea2-turbo/moodyKrea2Mix_v3-Global-FP8.safetensors",
+  "diffusion_models/MiniMax-H3/10Eros_Max_h3_TURBO-hybrid_beta5_int8.safetensors",
+  "diffusion_models/MiniMax-H3/minimax_h3_ref2va_XUELUO_int8_convrot.safetensors",
+  "diffusion_models/Qwen-Image-2.1-turbo/qwen-image-2.1-turbo-int8-convrot.safetensors",
+  "diffusion_models/Qwen-Image-2.1/NoctQ_V4_int8_convrot.safetensors",
+  "diffusion_models/Qwen-Image-2.1/qwen-image-2.1-UC-int8_convrot.safetensors",
+  "diffusion_models/Qwen-Image-Edit-2511/qwen_image_edit_2511_nvfp4.safetensors",
+  "diffusion_models/Qwen-image-2512/qwen-image-2512-nvfp4-Ultra.safetensors",
+  "diffusion_models/Z-image-turbo/zimageTurboNSFWByStable_2602NSFWFP8.safetensors",
+  "loras/FLUX.1-dev/F.1 皮肤纹理质感增强-去油_v1/F.1 皮肤纹理质感增强-去油_v1.safetensors",
+  "loras/FLUX.1-dev/Flux_Lustly.ai_Uncensored_nsfw_v1-lustlyai/flux_lustly-ai_v1.safetensors",
+  "loras/FLUX.1-dev/LOCOmuchen《麦橘复古少女Irene》Majicflus/12.safetensors",
+  "loras/FLUX.1-dev/LOCOmuchen《麦橘青衣》Majicflus/10.safetensors",
+  "loras/FLUX.1-dev/flux_lustly-ai_v1.safetensors",
+  "loras/FLUX.1-dev/majifluxheihong/majifluxheihong_3.safetensors",
+  "loras/FLUX.1-dev/东方美学/AWPortraitCN_2.safetensors",
+  "loras/FLUX.1-dev/沐辰人像皮肤质感提升/flux-loco-v1-000008.safetensors",
+  "loras/FLUX.1-dev/苏-FLUX抖音小红书极致真实_苏-FLUX小红书极致真实V2/苏-FLUX抖音小红书极致真实_苏-FLUX小红书极致真实V2.safetensors",
+  "loras/FLUX.1-dev/长腿美女写实/20.safetensors",
+  "loras/FLUX.1-dev/高质量美女写实/20.safetensors",
+  "loras/FLUX.2-klein/KLEIN-Unchained-V2.safetensors",
+  "loras/FLUX.2-klein/PornMaster_innie_pussy_flux-2-klein-9b_V1.safetensors",
+  "loras/FLUX.2-klein/SEXGOD_ImprovedNudity_Klein9b_v3.safetensors",
+  "loras/FLUX.2-klein/klein_9B_Turbo_r128.safetensors",
+  "loras/FLUX.2-klein/klein_snofs_v1_2.safetensors",
+  "loras/MiniMax-H3/minimax_h3_fl2v_turbo_4step_v1.1_768p_comfyui_bf16.safetensors",
+  "loras/MiniMax-H3/minimax_h3_latent_upscaler_3d_bf16.safetensors",
+  "loras/MiniMax-H3/minimax_h3_ref2v_turbo_4step_v0.1_comfyui_bf16.safetensors",
+  "loras/Qwen-Image/CockQwen-v3.safetensors",
+  "loras/Qwen-Image/Eva_Qwen_V3.safetensors",
+  "loras/Qwen-Image/Facial_Cumshots_For_Qwen_Image_V1.safetensors",
+  "loras/Qwen-Image/Put it here_Qwen edit_V2.0.safetensors",
+  "loras/Qwen-Image/Qwen-Image-Helm_v0.1.safetensors",
+  "loras/Qwen-Image/Qwen-Image-SynthSat-v1.0-warmup-stage2.5-nsfw-step00001000.safetensors",
+  "loras/Qwen-Image/Qwen-MysticXXX-v1.safetensors",
+  "loras/Qwen-Image/Qwen-NSFW-Beta5.safetensors",
+  "loras/Qwen-Image/Qwen-NSFW.safetensors",
+  "loras/Qwen-Image/Qwen-Real PS_v1_83K.safetensors",
+  "loras/Qwen-Image/Qwen-真实人像小红书风格/Qwen-真实人像小红书风格_Qwen小红书真实风格.safetensors",
+  "loras/Qwen-Image/Qwen4Play_v2.safetensors",
+  "loras/Qwen-Image/QwenSnofs1_1.safetensors",
+  "loras/Qwen-Image/Qwen_Real_Nud3s.safetensors",
+  "loras/Qwen-Image/SendNudesLite (Qwen).safetensors",
+  "loras/Qwen-Image/qwen-image_d!ck_P3N1S_LoRA_V1.1.safetensors",
+  "loras/Qwen-Image/qwen-image_nsfw_adv_v1.0.safetensors",
+  "loras/Qwen-Image/qwen_snofs.safetensors",
+  "loras/Qwen-Image/qwen_uncensor_000014928.safetensors",
+  "loras/Z-image-turbo/NSFW-MASTER-Z-IMAGE-TURBO/NSFW_master_ZIT_000008766.safetensors",
+  "loras/Z-image/Kook_Zimage_Base_极致真实/Kook_Zimage_Base_极致真实.safetensors",
+  "text_encoders/FLUX-1-dev/t5xxl_fp8_e4m3fn.safetensors",
+  "text_encoders/FLUX-2-klein-9b/qwen3-8b-heretic-v1.4_klein9b_int8_convrot.safetensors",
+  "text_encoders/Krea2/qwen3-vl-4b-heretic_fp8_e4m3fn.safetensors",
+  "text_encoders/MiniMax-H3/qwen3vl_32b_h3_ultra_uncensored_heretic_int8_convrot.safetensors",
+  "text_encoders/Qwen-Image-2.1/qwen3-vl-8b-heretic-1.3.0_fp8_e4m3fn.safetensors",
+  "text_encoders/Qwen-image-2512-edit/qwen_2.5_vl_7b_Abliteratedte.safetensors",
+  "text_encoders/Qwen-image-2512-edit/qwen_2.5_vl_7b_huihui_abliterated_int8_convrot.safetensors",
+  "text_encoders/Z-image/qwen3-4b-heretic_fp8_e4m3fn.safetensors",
+  "text_encoders/Z-image/qwen3-4b-heretic_int8.safetensors",
+  "vae/FLUX-1-dev + Z-image/ae.safetensors",
+  "vae/FLUX.2-klein-9b/flux2-vae.safetensors",
+  "vae/MiniMax-H3/minimax_h3_audio_vae_fp32.safetensors",
+  "vae/MiniMax-H3/minimax_h3_video_vae_fp16.safetensors",
+  "vae/Qwen-Image-2.1/qwen_image_2.1_vae_bf16.safetensors"
+ ],
+ "hashed_bytes": 5335251758,
  "ignore": [
   "put_unet_files_here",
   "*.tmp",
