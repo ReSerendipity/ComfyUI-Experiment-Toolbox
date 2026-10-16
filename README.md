@@ -114,7 +114,7 @@ run.bat models          :: 等价于下面方式 A/B，但不用配任何环境�
 **方式 A（手工指定，不改脚本）**：
 
 ```bash
-ROOT="%USERPROFILE%/Desktop/ComfyUI-实验与改造工具箱"
+ROOT="%USERPROFILE%/APP/repository/ComfyUI-Experiment-Toolbox"
 export PYTHONPATH="$ROOT/01_工作流扁平化;$ROOT/03_受控跑测;$ROOT/04_结果分析"
 "$PY" "$ROOT/03_受控跑测/run_models.py"
 ```
