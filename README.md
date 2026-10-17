@@ -233,7 +233,7 @@ PY="%USERPROFILE%/APP/ComfyUI-aki-v3.2/python/python.exe"
 5. **判断调度器能不能用，先离线算，不用跑图**：首步 Δσ > 15% 基本判死；高噪声区（σ>0.5σ_max）步数不足同样判死。
 6. **cfg=1 时负向提示词完全不被使用**；唯一例外 `*_cfg_pp` 全族。「没有负向提示词」不是提高 cfg 的理由。
 7. **子图容器的 `widgets_values`（positional）才是运行时真值**（`Comfy.Workflow.NamedValuesRestore` 默认 false）；改参数时 positional 与 `widgets_values_named` 两处一起改。
-8. **官方模板 > 联网搜索**：本机 `comfyui_workflow_templates_json\templates\` 下的官方模板是最权威依据（结构轨最深刻教训）。
+8. **官方模板 > 联网搜索**：本机 `%USERPROFILE%\APP\ComfyUI-aki-v3.2\python\Lib\site-packages\comfyui_workflow_templates_json\templates\` 下的官方模板（2026-10-17 实测 647 份，全为 `.json`）是最权威依据（结构轨最深刻教训）。
 9. 任何工作流改动前先备份（`.bak-<时间戳>` 或独立备份目录），改后必跑 verify。
 
 > 完整证据链（官方源原文、源码位置、实测数据）见 `06_文档与结论/采样器和调度器的组合推荐.md` 第〇~九节。
