@@ -33,12 +33,18 @@ jobs:
         run: python -m pip install -r requirements-lock.txt
 
       - name: Gate ① ledger×产物树对账 selftest
+        # 失败隔离：前面任一门禁红也不遮住后面的门禁（各自独立、各自定生死）
+        if: ${{ !cancelled() }}
         run: python "10_模型家族横评/lib_ledger_verify.py" --selftest
 
       - name: Gate ② prompt QC on committed prompts
+        # 失败隔离：前面任一门禁红也不遮住后面的门禁（各自独立、各自定生死）
+        if: ${{ !cancelled() }}
         run: python "10_模型家族横评/lib_prompt_qc.py" "10_模型家族横评/prompts"
 
       - name: Gate ③ inventory-gate synthetic three-state selftest
+        # 失败隔离：前面任一门禁红也不遮住后面的门禁（各自独立、各自定生死）
+        if: ${{ !cancelled() }}
         working-directory: "10_模型家族横评"
         run: |
           python - <<'PY'
@@ -55,10 +61,14 @@ jobs:
       # 结构轨验收：只作用于仓内脱敏样本（不碰本机 ComfyUI 原件），
       # ① 样本全部结构不变量通过；② 逐类破坏不变量必须 FAIL 且指明不变量
       - name: Gate ④ 05 结构改造 verify_upgrade 样本 selftest
+        # 失败隔离：前面任一门禁红也不遮住后面的门禁（各自独立、各自定生死）
+        if: ${{ !cancelled() }}
         run: python -X utf8 "05_结构改造脚本/verify_upgrade.py" --selftest
 
       # AGENTS.md 公开仓红线自检：只读扫描纳入版本管理的 .py，命中字面本机绝对路径即失败。
       - name: Gate ⑤ no literal machine absolute paths in tracked .py/.json/.md
+        # 失败隔离：前面任一门禁红也不遮住后面的门禁（各自独立、各自定生死）
+        if: ${{ !cancelled() }}
         run: |
           python - <<'PY'
           import re, subprocess, sys
@@ -113,6 +123,8 @@ jobs:
       # 规则：01/02/04/05/根入口 不得跨轨 import；03 只准 import 01；09 只准 import 01,02；
       #       10 只准 import 01；同轨互 import 放行；tests/ 目录豁免（测试是纯消费者）。
       - name: Gate ⑥ module dependency direction (track-level)
+        # 失败隔离：前面任一门禁红也不遮住后面的门禁（各自独立、各自定生死）
+        if: ${{ !cancelled() }}
         run: |
           python - <<'PY'
           import re, subprocess, sys
@@ -165,28 +177,38 @@ jobs:
       # Gate ⑦ 标准库单元测试（tests/，2026-10-15，测试维度 P1-1/P1-3）。
       # 不引入 pytest（禁装依赖）：用 unittest 承载，test_*.py 命名保持 pytest 兼容可收集。
       - name: Gate ⑦ stdlib unittest (flatten / logutil / panel API)
+        # 失败隔离：前面任一门禁红也不遮住后面的门禁（各自独立、各自定生死）
+        if: ${{ !cancelled() }}
         run: python -X utf8 -m unittest discover -s tests -v
 
       # Gate ⑧ 视频质检 vqc 合成三态自检（2026-10-16，E1）。
       # runner 上没有 ffmpeg 时脚本自身降级为 SKIP（exit 0），不把环境差异伪装成失败；
       # 有 ffmpeg 时必须三态全命中（good 干净 / 黑帧命中 / 无音轨命中）。
       - name: Gate ⑧ video QC selftest (good / black-frame / no-audio)
+        # 失败隔离：前面任一门禁红也不遮住后面的门禁（各自独立、各自定生死）
+        if: ${{ !cancelled() }}
         run: python -X utf8 "10_模型家族横评/lib_video_qc.py" --selftest
 
       # Gate ⑨ 跨快照趋势回归 selftest（2026-10-16，E5）。
       # 合成双快照覆盖：一致不误报 / ok 率下降命中硬回归 / 耗时翻倍判 slower /
       # 对象消失判 disappeared / 扩展名差异不算假回归（历史台账全是 .safetensors 后缀差异）。
       - name: Gate ⑨ trend regression selftest (snapshot pairs)
+        # 失败隔离：前面任一门禁红也不遮住后面的门禁（各自独立、各自定生死）
+        if: ${{ !cancelled() }}
         run: python -X utf8 "10_模型家族横评/trend_family.py" --selftest
 
       # Gate ⑩ 显存自适应 selftest（2026-10-16，E2）。
       # 纯逻辑自检（不碰 GPU，runner 上无 nvidia-smi 也能全绿）：
       # 时长→档位单调性、与实测边界表逐档对齐、小卡降底档、预算未知保守降档、OOM 识别不误伤参数错。
       - name: Gate ⑩ VRAM ladder selftest (tier policy / OOM pattern)
+        # 失败隔离：前面任一门禁红也不遮住后面的门禁（各自独立、各自定生死）
+        if: ${{ !cancelled() }}
         run: python -X utf8 "03_受控跑测/lib_vram.py" --selftest
 
       # Gate ⑪ 提示词变体闭环 selftest（2026-10-16，E8）。
       # 覆盖：变体词条白名单、文本层 QC 淘汰、属性片段不被 too_short 误杀、
       # judge 三条淘汰路径（全家族失败 / 低于阈值 / 存活带家族评分）、落盘前递归脱敏（Gate ⑤）。
       - name: Gate ⑪ prompt closed-loop selftest (variants / QC / judge / sanitize)
+        # 失败隔离：前面任一门禁红也不遮住后面的门禁（各自独立、各自定生死）
+        if: ${{ !cancelled() }}
         run: python -X utf8 "10_模型家族横评/lib_prompt_closedloop.py" selftest
