@@ -116,7 +116,7 @@ def depersonalize(p):
     """输出路径脱敏：本机主目录改写为 %USERPROFILE% 形态（公开仓红线，2026-10-15）。
 
     兼容混合分隔符：外部传入路径可能是正斜杠形态（盘符:/用户名/...），而
-    %USERPROFILE% 展开是反斜杠形态（盘符\用户名\...），直接 startswith 会失配
+    %USERPROFILE% 展开是反斜杠形态（盘符 + 反斜杠分隔），直接 startswith 会失配
     （2026-10-16 judge JSON 实测泄漏一枚，已修；替换不改变长度，切片安全）。
     """
     home = os.path.expandvars(r"%USERPROFILE%")
@@ -552,9 +552,23 @@ def _selftest_synthetic():
         with open(big, "r+b") as fh:                    # 原地改写内容（同长度）
             fh.seek(0)
             fh.write(b"Y" * 4096)
+        # 改写本身只把 mtime 推到「墙上时钟的此刻」，而此刻与基线记录值往往落在同一
+        # 个时钟节拍里：Linux 的 inode 时间取自缓存时钟（节拍级），基线 round(,3) 与
+        # 改写后的 mtime 会舍成同一个毫秒值，于是 changed=0，本条断言在 runner 上必红
+        # （2026-10-17 CI #19 attempt 1/2 连红两次；本机 Windows 一直绿，正是这个差异）。
+        # 这里显式把 mtime 推离基线记录值 +10s：取 10s 是为了严格大于上一步 touch 用的
+        # +5s，两步互不串味；1s 就已超过毫秒舍入的判别需求，10s 只多不少、不含魔法调参。
+        # 被测语义不变——仍是「尺寸相同 + mtime 变化 → 经 size_mtime_fallback 判 changed」，
+        # 变的只是把「等时钟自己走」换成「自己造出这个时间差」，不弱化检测。
+        st6 = os.stat(big)
+        os.utime(big, (st6.st_atime, self_big["mtime"] + 10))
         r6 = check(lb)
-        steps.append(("大文件原地改写（同长度）也判 changed=%d"
-                      % r6["counts"]["changed"], r6["counts"]["changed"] == 1))
+        hit6 = (r6["counts"]["changed"] == 1
+                and r6["changed"][0]["fields"] == ["mtime(size_mtime_fallback)"]
+                and r6["changed"][0]["rel"] == "big_weight.safetensors")
+        steps.append(("大文件原地改写（同长度）也判 changed=%d fields=%s"
+                      % (r6["counts"]["changed"],
+                         r6["changed"][0]["fields"] if r6["counts"]["changed"] else None), hit6))
 
         # ── E6 维度①：重复量化 ──
         qd = os.path.join(td, "quant")
