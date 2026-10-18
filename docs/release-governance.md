@@ -26,11 +26,11 @@
 - 遵循 **Keep a Changelog**：`Added / Changed / Fixed / Deprecated / Removed / Security`。
 - 每次合并 `main` 在 `[Unreleased]` 追加；type 映射 `feat→Added`、`fix→Fixed`、`refactor→Changed`。
 - 发版时 `[Unreleased]` → `[VERSION] - YYYY-MM-DD`。
-- **现状缺口**：本仓根目录尚无 `CHANGELOG.md`（`check-release-standard.sh` 对此报 FAIL）。首次打 `v*` tag 推送前须按 Keep a Changelog 初始化——**待定（负责人 + 触发条件：首个正式 `v*` tag 推送前）**。
+- **现状（2026-10-18 更新）**：根级 `CHANGELOG.md` 已建立（Keep a Changelog，骨架 + 按提交回填的 `[Unreleased]`）；`check-release-standard.sh` 不再据此报 FAIL。
 
 ## 3. 发布流程（远端）
 
-1. 确认 CHANGELOG `[Unreleased]` 条目完整（首次发版前先建 `CHANGELOG.md`，见 §2）。
+1. 确认 CHANGELOG `[Unreleased]` 条目完整（见 §2）。
 2. 同步版本位：本仓版本位即 tag，无其它位需同步。
 3. 本地打 tag 并推送：`git tag v<X.Y.Z>` → `git push origin v<X.Y.Z>`。
 4. 远端凭 tag 触发 `.github/workflows/release.yml`（`on: push: tags: v*`）：
@@ -66,7 +66,7 @@
 ## 7. 发布前检查清单
 
 - [ ] 版本位即 tag（`vMAJOR.MINOR.PATCH`），无其它版本位需同步（见 §1）
-- [ ] CHANGELOG `[Unreleased]` 已改版本 + 日期（首次发版前先建 `CHANGELOG.md`）
+- [ ] CHANGELOG `[Unreleased]` 已改版本 + 日期
 - [ ] `python -m compileall -q .` 通过
 - [ ] `python -X utf8 -m unittest discover -s tests -v` 全绿（即 CI 11 道门禁全绿）
 - [ ] 本仓无镜像：Trivy 阻断 / `.trivyignore.yaml` / `provenance+sbom` 项不适用
@@ -86,7 +86,7 @@
 | **floating `latest`** | workflow 中无 `value=latest` | ✅ 已对齐 | 不改 |
 | **Trivy 报告模式 / provenance / sbom** | 本仓无容器镜像、无 `docker/build-push-action` | ➖ 不适用 | 不改 |
 | **`docs/release-governance.md`** | 原本缺失 | ❌ 未对齐 | 本文件即补齐（含「远端优先」标记） |
-| **`CHANGELOG.md`** | 原本缺失（`check-release-standard.sh` 报 FAIL） | ❌ 未对齐 | **本单不新建**（超出 D-03 范围，见红线 7）；已在 §2 登记为待定项，首次发版前补建 |
+| **`CHANGELOG.md`** | 原缺，**已由本单建立** | ✅ 已对齐 | 无 |
 | **draft → 人工 published** | 现为 tag 推送即自动 published | ⚠️ 差异 | 本单不改发布形态（避免重构发布行为）；在 §3.5 登记为待定项 |
 
 > 本仓校准的判定依据：`ReSerendipity/.github` 的 `REPOSITORY_GUIDELINES.md` §10.1（远端优先 / tag 驱动 / 产物附 SHA256SUMS）、§10.2、§10.6，以及 `.github/scripts/check-release-standard.sh` 的可机器判定条款。
