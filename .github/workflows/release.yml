@@ -13,9 +13,11 @@ jobs:
     name: Publish GitHub Release
     runs-on: ubuntu-latest
     steps:
-      - name: Validate version tag and create release
+      - name: Checkout tagged commit
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+
+      - name: Validate version tag
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG: ${{ github.ref_name }}
         run: |
           if [[ ! "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
@@ -23,4 +25,16 @@ jobs:
             exit 1
           fi
 
+      # §10.1 远端优先 + 产物可校验：归档与 SHA256SUMS 全部在远端生成，
+      # 本地不打包；命名取不可变 SemVer tag，禁 floating latest；不使用 GPG。
+      - name: Build source archive, SHA256SUMS, and publish release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          ARCHIVE="ComfyUI-Experiment-Toolbox-${TAG}.tar.gz"
+          git archive --format=tar.gz --prefix="ComfyUI-Experiment-Toolbox-${TAG}/" -o "${ARCHIVE}" HEAD
+          sha256sum "${ARCHIVE}" > SHA256SUMS.txt
           gh release create "$TAG" --generate-notes
+          gh release upload "$TAG" "${ARCHIVE}" SHA256SUMS.txt
