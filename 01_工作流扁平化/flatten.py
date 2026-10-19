@@ -17,6 +17,10 @@
 import os
 import json
 
+# widgets_values_named 里会混入前端辅助键（seed 的生成策略、PrimitiveInt 的固定开关），
+# 它们不是后端 API 输入，补全时必须剔除，否则 /prompt 报 unknown input。
+UI_ONLY_WIDGET_KEYS = frozenset({"control_after_generate", "control_before_generate", "fixed"})
+
 
 def _containers(w):
     return [n for n in w["nodes"]
@@ -85,6 +89,15 @@ def flatten(path, overrides=None):
                 wi += 1
             ins[inp["name"]] = val
             wi += 1
+        # 模板导出的节点 inputs 只列「被提升/被连线」的口，未提升的 widget 值仍完整存在于
+        # widgets_values_named。仅靠 inputs 会丢掉 weight_dtype / type / device / batch_size /
+        # double_layers 这类必填项，提交时报 required_input_missing（2026-10-19 实测 MOSS-Image）。
+        named = n.get("widgets_values_named")
+        if isinstance(named, dict):
+            for nk, nv in named.items():
+                if nk in ins or nk in UI_ONLY_WIDGET_KEYS:  # 前端辅助键，不是 API 输入
+                    continue
+                ins[nk] = nv
         nodes[key] = {"class_type": n.get("type"), "inputs": ins, "mode": n.get("mode", 0)}
         if n.get("title"):
             nodes[key]["_meta"] = {"title": n["title"]}
@@ -121,9 +134,26 @@ def flatten(path, overrides=None):
         # 直接 enumerate 全部 inputs 会对 IMAGE 口的工作流整体错位（2026-10-15 修复，
         # 症状：MiniMax H3 t2v 的 DiT 名被注入 VAE 输入、TE 名被注入 audio VAE 输入）。
         widget_names = {i["name"] for i in c.get("inputs", []) if "widget" in i}
+        sg_inputs = sg.get("inputs", [])
+        # 两种序列化形态（2026-10-19 实测 MOSS-Image 官方模板）：
+        #   A. widgets_values 只装「带 widget 标记的输入」的值（历史形态，用 wi 游标）
+        #   B. widgets_values 与 sg.inputs 等长全序 —— 容器 inputs 只列了 9 个 promoted
+        #      widget 口，而 seed/steps/cfg/sampler_name/scheduler 虽以 -10 连线提升，
+        #      前端仍把回退值按 sg.inputs 顺序写进 widgets_values（共 14 项）。
+        #      只按 widget_names 游标取会从第一个「无 widget 的输入」起整体错位
+        #      （症状：unet_name 拿到 steps=25、vae_name 拿到 sampler='er_sde'、
+        #       ComfySwitchNode.switch 拿到 seed=333599710072681）。
+        # 判据：长度相等且确实存在非 widget 输入 → 按 i 全序取；否则退回游标。
+        full_seq = (len(pos) == len(sg_inputs) and len(widget_names) < len(sg_inputs))
+        if full_seq:
+            warnings.append("%s: 容器 %s 的 widgets_values 为 sg.inputs 全序（%d 项，其中 %d 个为"
+                            "连线提升输入），按索引一一对应" % (path, c["id"], len(pos),
+                                                        len(sg_inputs) - len(widget_names)))
         wi = 0
-        for i, sinp in enumerate(sg.get("inputs", [])):
-            if sinp.get("name") in widget_names:
+        for i, sinp in enumerate(sg_inputs):
+            if full_seq:
+                pval = pos[i]
+            elif sinp.get("name") in widget_names:
                 pval = pos[wi] if wi < len(pos) else None
                 wi += 1
             else:
@@ -142,6 +172,10 @@ def flatten(path, overrides=None):
                             bad = (isinstance(cur, (int, float)) and not isinstance(cur, bool)
                                    and not isinstance(pval, (int, float))
                                    and cur is not None)
+                            # 反向守卫：目标是字符串（多为 COMBO 模型名）却注入数值 —— 典型错位特征
+                            if (not bad and isinstance(cur, str) and isinstance(pval, (int, float))
+                                    and not isinstance(pval, bool)):
+                                bad = True
                             if bad:
                                 warnings.append("%s: 容器 %s 的 %s 值 %r 类型不符（目标输入本为数值），"
                                                 "已保留节点原值 %r" % (path, c["id"], pname, str(pval)[:40], cur))
