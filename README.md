@@ -36,6 +36,7 @@ ComfyUI-实验与改造工具箱/
 ├── start.bat                      ★ Windows 双击入口 = `run.bat panel`（启动 Web 面板）
 ├── 01_工作流扁平化/               ← 【原实验工具包01，编号不变】
 │   ├── flatten.py               ★ 通用扁平化器（bypass 透传、可达性裁剪、类型守卫）
+│   ├── api_to_ui.py             ★ 反向转换：扁平 API 图 → UI 图（评测产物回流 UI 复核；动态 combo 类不支持并显式报错）
 │   └── build_prompt.py            单工作流手写版（已被 flatten 取代，留作范本）
 ├── 02_调度器sigma分析/            ← 【原实验工具包02】不跑图离线筛调度器
 │   ├── sigma_matrix.py          ★ 多模型风险矩阵
@@ -52,6 +53,8 @@ ComfyUI-实验与改造工具箱/
 ├── 04_结果分析/                   ← 【原实验工具包04】指标 + 拼版
 │   ├── analyze_models.py        ★ 跨模型指标 + 基线相似度
 │   ├── metrics.py                 单模型指标
+│   ├── light_audit.py           ★ 明度审计（深色占比/纸底占比/高光截断/顶部文字像素——封面"阴森感"探测器，2026-10-19）
+│   ├── text_grid.py             ★ 色彩网格文本投影（纯文本会话"读图"兜底 + 断言冤案复核，2026-10-19）
 │   └── focus_sheet.py             关键结果大图并排
 ├── 05_结构改造脚本/               ← 【原"工作流改造经验/01_可复用脚本"改名】24 个改造脚本（另有 1 个 gen_workflows_manifest.py 只读审计脚本，2026-10-13 按文件计数核实）
 │   └── README.md                  ★ 本轨完整经验文档（脚本速查/JSON 坑/操作清单）
@@ -68,6 +71,8 @@ ComfyUI-实验与改造工具箱/
 │   ├── lib_video_qc.py          ★ E1 视频质检（容器层+抽帧层+时序层，只读）
 │   ├── trend_family.py          ★ E5 历史趋势回归（跨快照比 ok 率/耗时，标红回归）
 │   ├── lib_prompt_closedloop.py ★ E8 提示词变体闭环（变体矩阵→跑测→QC 淘汰）
+│   ├── prompts/suite_12_generic.json  ★ 十二类通用能力面套件（中英文字/计数/长提示词/混排等，逐条可验证断言，2026-10-19；与 S1-S9 风格系互补）
+│   ├── docs/gain-ab-steady-state.md   ★ 增益件 A/B / 多种子复核 / 稳态计时 / 封面明度纪律（2026-10-19）
 │   └── lib_inventory_gate.py    ★ E6 新增 audit 模式：重复量化 / 孤儿文件检测
 └── 99_归档/                       ← 合并前的两份旧 README + 去重移除的重复文档副本
 ```
@@ -128,6 +133,8 @@ export PYTHONPATH="$ROOT/01_工作流扁平化;$ROOT/03_受控跑测;$ROOT/04_�
 | 脚本 | 依赖 |
 |---|---|
 | `flatten.py` | 无（只依赖标准库） |
+| `api_to_ui.py` | 无（只依赖标准库） |
+| `text_grid.py` / `light_audit.py` | 无（numpy + Pillow），只读输入图片 |
 | `sigma_report.py` / `sigma_matrix.py` | 需 `import comfy.*` → 用 ComfyUI 的 python |
 | `run_combos.py` | `build_prompt` |
 | `probe.py` / `cfg_probe.py` | `build_prompt`、`run_combos` |
