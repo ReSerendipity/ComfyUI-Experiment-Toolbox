@@ -45,7 +45,7 @@ DEFAULT_SOURCES = [
 DEFAULT_DURATION_LOG = os.path.join(ROOT, "03_受控跑测", "h3_duration_logs", "result_log.jsonl")
 
 def display_path(p):
-    """把溯源路径写成可公开形态（公开仓红线，见 CONTRIBUTING.md 第 1 条 / CI Gate ⑤）。
+    """把溯源路径写成可公开形态（公开仓红线，见 docs/CONTRIBUTING.md 第 1 条 / CI Gate ⑤）。
 
     DEFAULT_SOURCES 由运行时展开得到绝对路径，直接写进基线台账就会把本机主目录带进
     公开仓；这里只做展示层归一：仓内→仓内相对，仓外主目录下→%USERPROFILE% 形态。
