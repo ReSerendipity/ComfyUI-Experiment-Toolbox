@@ -24,7 +24,7 @@
 ## 2. CHANGELOG 管理
 
 - 遵循 **Keep a Changelog**：`Added / Changed / Fixed / Deprecated / Removed / Security`。
-- 每次合并 `main` 在 `[Unreleased]` 追加；type 映射 `feat→Added`、`fix→Fixed`、`refactor→Changed`。
+- 每次合并 `main` 在 `[Unreleased]` 追加；type 映射 `feat→Added`、`fix→Fixed`、`perf/ci/chore/docs/test/refactor→Changed`（以根 `CHANGELOG.md` 顶部「归类口径」为准）。
 - 发版时 `[Unreleased]` → `[VERSION] - YYYY-MM-DD`。
 - **现状（2026-10-18 更新）**：根级 `CHANGELOG.md` 已建立（Keep a Changelog，骨架 + 按提交回填的 `[Unreleased]`）；`check-release-standard.sh` 不再据此报 FAIL。
 
@@ -56,7 +56,7 @@
 - **判定**（满足任一即触发）：Release 归档无法解压、`sha256sum -c SHA256SUMS.txt` 不匹配、tag 发布后 `release.yml` / CI 门禁变红、或归档内容与预期提交不符。
 - **执行**：`git revert <bad-commit>`（保历史、可再 forward）后打新的 `v<X.Y.Z+1>` patch tag；本仓无服务端配置 / 远端部署需回滚（运行态在本机 ComfyUI，见 §10.4 本地运行边界）。
 - **破坏性动作**：重指向 / 删除 tag、移动任何远端 ref → **须仓库所有者单独授权**（`release.yml` 由 `push: tags` 触发，移动已发布 tag 会当场重跑发布链）。
-- **回滚后验证**：重跑 `python -m compileall -q .` 与 `python -X utf8 -m unittest discover -s tests -v`（即 CI 11 道门禁）；对新 Release 归档执行 `sha256sum -c SHA256SUMS.txt` 通过。
+- **回滚后验证**：重跑 `python -m compileall -q .` 与 `python -X utf8 -m unittest discover -s tests -v`（CI 的编译步与 Gate ⑦；完整 11 道门禁见 `.github/workflows/ci.yml`）；对新 Release 归档执行 `sha256sum -c SHA256SUMS.txt` 通过。
 
 ## 6. SLA / 错误预算
 
@@ -68,7 +68,7 @@
 - [ ] 版本位即 tag（`vMAJOR.MINOR.PATCH`），无其它版本位需同步（见 §1）
 - [ ] CHANGELOG `[Unreleased]` 已改版本 + 日期
 - [ ] `python -m compileall -q .` 通过
-- [ ] `python -X utf8 -m unittest discover -s tests -v` 全绿（即 CI 11 道门禁全绿）
+- [ ] `python -X utf8 -m unittest discover -s tests -v` 全绿（Gate ⑦）；CI 11 道门禁全绿（见 `.github/workflows/ci.yml`）
 - [ ] 本仓无镜像：Trivy 阻断 / `.trivyignore.yaml` / `provenance+sbom` 项不适用
 - [ ] **本地未产出任何发布交付物**（源码归档全部由远端 `release.yml` 构建）
 

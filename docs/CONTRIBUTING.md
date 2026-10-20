@@ -31,7 +31,24 @@ python "05_结构改造脚本/verify_upgrade.py" --selftest
 python "10_模型家族横评/lib_ledger_verify.py" --selftest
 ```
 
-改动 `09_Web面板/index.html` 前端逻辑后另跑 `09_Web面板/test_dom.js`（jsdom，本地环境）。CI 会复跑以上检查（语法编译 / 锁文件 / 门禁自检×3 / 结构样本验收 / 路径红线 Gate ⑤ / 依赖方向 Gate ⑥ / 单测 Gate ⑦）。
+改动 `09_Web面板/index.html` 前端逻辑后另跑 `09_Web面板/test_dom.js`（jsdom，本地环境）。
+
+CI 在以上检查之外还会跑完整 11 道门禁（`.github/workflows/ci.yml`），本地清单只是最小子集：
+
+| 步骤 | 对应门禁 |
+|---|---|
+| `compileall` / 锁文件解析 | 前置两步（非编号门禁） |
+| Gate ① ledger×产物树对账 selftest | `10_模型家族横评/lib_ledger_verify.py --selftest` |
+| Gate ② prompt QC | `10_模型家族横评/lib_prompt_qc.py "10_模型家族横评/prompts"` |
+| Gate ③ inventory-gate 三态自检 | `lib_inventory_gate._selftest_synthetic()` |
+| Gate ④ 结构样本验收 | `05_结构改造脚本/verify_upgrade.py --selftest` |
+| Gate ⑤ 路径红线 | 扫描全部 tracked `.py/.json/.md` |
+| Gate ⑥ 依赖方向 | 01/02/04/05/根入口不跨轨；03→01；09→01,02；10→01 |
+| Gate ⑦ 单测 | `python -X utf8 -m unittest discover -s tests -v` |
+| Gate ⑧ 视频质检 selftest | `10_模型家族横评/lib_video_qc.py --selftest` |
+| Gate ⑨ 趋势回归 selftest | `10_模型家族横评/trend_family.py --selftest` |
+| Gate ⑩ 显存档位 selftest | `03_受控跑测/lib_vram.py --selftest` |
+| Gate ⑪ 变体闭环 selftest | `10_模型家族横评/lib_prompt_closedloop.py selftest` |
 
 本地凭据防线（第一层）装完自检与反例（2026-10-17 在全新 `git clone` 上实测）：
 
