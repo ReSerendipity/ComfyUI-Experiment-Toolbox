@@ -72,6 +72,13 @@ service-account.json
 # --- 本地评估工具产物（2026-10-13）---
 .qoder/
 
+# --- 治理规范 §9 补充：其余本地 agent 工作目录 + 依赖目录（2026-10-20）---
+.trae/
+.zcode/
+.workbuddy/
+.workbuddy-ai/
+node_modules/
+
 
 # 仅本地容器：内部说明、agent 上下文、实验记录、纯历史（§13.1，2026-10-19 结构收敛）
 /local/
