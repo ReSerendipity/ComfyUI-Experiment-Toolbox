@@ -72,6 +72,13 @@ service-account.json
 # --- 本地评估工具产物（2026-10-13）---
 .qoder/
 
+# --- 治理规范 §9 补充：其余本地 agent 工作目录 + 依赖目录（2026-10-20）---
+.trae/
+.zcode/
+.workbuddy/
+.workbuddy-ai/
+node_modules/
+
 
 # 仅本地容器：内部说明、agent 上下文、实验记录、纯历史（§13.1，2026-10-19 结构收敛）
 /local/
@@ -84,3 +91,6 @@ AGENTS.md
 
 # E3 一键全链（run.py full）的 fanalyze 输出：运行产物，不入库（2026-10-16）
 07_样例输出与数据/family_full_run/
+
+# §9/§12：10 横评 fanalyze 运行产物误入库回退（代码/文档零引用；README 规定输出落 %USERPROFILE%/model_benchmark/）
+10_模型家族横评/10_模型家族横评/family_analysis_out/
