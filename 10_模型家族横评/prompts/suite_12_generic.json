@@ -1,0 +1,19 @@
+{
+  "_comment": "十二类通用提示词套件（t2i 能力面基线）。来源：model-eval-to-publish 流程实测（MOSS-Image 2026-10-19，12/12 通过）。设计原则：覆盖模型宣称强项 + 通用能力面；每条带可验证断言（文字用引号逐字锚定、计数写明确切数量、长提示词列 N 项独立约束）；官方负向词照抄模板。与 prompts/S1-S9（风格×机位矩阵，含成人向）互补：S 系用于风格/人像向横评，本套件用于新模型上手的能力面速查。",
+  "negative_default": "nsfw, worst quality, bad anatomy, watermark, jpeg artifact",
+  "resolution_note": "分辨率按模型约束取 16 倍数；横竖由被测模型强项决定（文字/排版类建议竖版）",
+  "cases": [
+    {"id": "m01_photoreal_portrait", "cn": "写实人像", "prompt": "Close-up portrait photograph of an elderly Chinese fisherman with deep wrinkles and a gray beard, wearing a navy blue cable-knit sweater, looking directly at the camera, overcast harbor background with fishing boats, 85mm lens, shallow depth of field", "assertion": "单人正面 / 灰白胡须 / 深蓝毛衣 / 港口背景"},
+    {"id": "m02_anime", "cn": "动漫插画", "prompt": "Anime illustration of a schoolgirl in a white sailor uniform standing on a rooftop at sunset, wind blowing her hair, dramatic orange and purple sky, cel-shaded style", "assertion": "赛璐璐 / 水手服 / 天台 / 橙紫夕阳"},
+    {"id": "m03_text_en", "cn": "英文文字海报", "prompt": "Minimalist coffee shop poster with the large headline text \"MORNING BREW\" in bold serif capitals at the top, a single espresso cup centered below, warm beige background, clean typography", "assertion": "MORNING BREW 逐字可辨认 / 单杯居中 / 米色底"},
+    {"id": "m04_text_zh", "cn": "中文文字（竖排书法）", "prompt": "中国风茶叶包装设计，正面竖排书法大字「山间清露」，下方小字「明前龙井」，米白色宣纸质感背景，两侧淡墨竹叶装饰", "assertion": "「山间清露」四字逐字锚定 + 「明前龙井」可辨认 / 竖排方向正确"},
+    {"id": "m05_product", "cn": "产品摄影", "prompt": "Studio product photograph of a matte black wireless earbuds case open on a white acrylic surface, soft gradient background, sharp reflections, commercial lighting", "assertion": "黑色耳机盒 / 白色亚克力台面 / 商业布光"},
+    {"id": "m06_landscape", "cn": "风景", "prompt": "Wide landscape photograph of terraced rice fields in Yuanyang at sunrise, low clouds filling the valleys, warm golden light, a lone farmer walking on a ridge path", "assertion": "梯田 / 云海 / 单人行走 / 暖金光"},
+    {"id": "m07_counting", "cn": "多物体计数", "prompt": "A wooden table with exactly three red apples, two green pears, and one blue ceramic bowl, top-down flat lay photograph, natural light", "assertion": "3 红苹果 + 2 青梨 + 1 蓝碗，数量与提示相符"},
+    {"id": "m08_long_prompt", "cn": "长提示词复杂场景", "prompt": "A cozy bookshop interior at night: a wooden ladder leaning against tall shelves, an orange cat sleeping on a stack of books near the window, a brass reading lamp casting warm light, rain visible through the window glass, a chalkboard sign reading \"OPEN LATE\" in white chalk, stacks of vintage hardcovers on the floor, warm amber and deep green color palette", "assertion": "7 项约束在画面中均有对应：木梯 / 橘猫 / 台灯 / 雨窗 / 黑板字 OPEN LATE / 书堆 / 琥珀+墨绿"},
+    {"id": "m09_guofeng", "cn": "国风工笔", "prompt": "国风工笔重彩画，一位身着青色宋制汉服的女子在庭院中抚琴，身后是太湖石与芭蕉，画面留白，细线勾勒，矿物颜料设色", "assertion": "工笔重彩 / 汉服抚琴 / 太湖石芭蕉 / 留白"},
+    {"id": "m10_bilingual", "cn": "中英混排标牌", "prompt": "Bilingual street sign at a mountain trailhead: the top line reads \"云雾山径\" in white Chinese characters, the bottom line reads \"CLOUD TRAIL\" in smaller white Latin capitals, dark green metal sign, misty pine forest background", "assertion": "「云雾山径」+ CLOUD TRAIL 双行逐字锚定"},
+    {"id": "m11_abstract", "cn": "抽象艺术", "prompt": "Abstract expressionist painting with sweeping strokes of deep indigo, burnt orange and cream, thick impasto texture, dynamic diagonal composition, no recognizable objects", "assertion": "靛蓝/焦橙/奶油三色 / 厚涂 / 无具象物体"},
+    {"id": "m12_architecture", "cn": "建筑", "prompt": "Photograph of a brutalist concrete library at dusk, geometric cantilevered volumes, warm interior lights glowing through narrow slit windows, wet plaza reflecting the building, long exposure", "assertion": "粗野主义 / 悬挑体量 / 暖色内光 / 湿地倒影"}
+  ]
+}

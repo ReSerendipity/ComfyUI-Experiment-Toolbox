@@ -72,8 +72,6 @@ service-account.json
 # --- 本地评估工具产物（2026-10-13）---
 .qoder/
 
-# 对内项目说明（docs/README.internal.md）：仅本地维护者，不入库（2026-10-13 README 双版本制度）
-docs/README.internal.md
 
 # 仅本地容器：内部说明、agent 上下文、实验记录、纯历史（§13.1，2026-10-19 结构收敛）
 /local/
