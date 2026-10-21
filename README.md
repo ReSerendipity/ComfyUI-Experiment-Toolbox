@@ -6,6 +6,8 @@
 - 仓库：<https://github.com/ReSerendipity/ComfyUI-Experiment-Toolbox>
 - 许可证：[Apache-2.0](LICENSE) · 变更记录：[CHANGELOG.md](CHANGELOG.md)
 
+> 治理规范：[ReSerendipity/.github/governance](https://github.com/ReSerendipity/.github/tree/main/governance)
+
 ---
 
 ## 一、这是什么
