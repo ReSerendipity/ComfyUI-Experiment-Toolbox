@@ -94,3 +94,4 @@ AGENTS.md
 
 # §9/§12：10 横评 fanalyze 运行产物误入库回退（代码/文档零引用；README 规定输出落 %USERPROFILE%/model_benchmark/）
 10_模型家族横评/10_模型家族横评/family_analysis_out/
+!/AGENTS.md
