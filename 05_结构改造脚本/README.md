@@ -193,7 +193,7 @@ python gen_workflows_manifest.py --root "%USERPROFILE%\APP\ComfyUI-aki-v3.2\Comf
   --templates "%USERPROFILE%\APP\ComfyUI-aki-v3.2\python\Lib\site-packages\comfyui_workflow_templates_json\templates"
 ```
 
-#### 漂移检测与再生成（2026-10-11 数据治理 R2 P2 补充）
+### 漂移检测与再生成（2026-10-11 数据治理 R2 P2 补充）
 
 清单由脚本**手动生成**（未接入 CI/钩子），外部原件变更后不会自动更新 → 存在快照漂移风险。维护纪律：
 
@@ -268,7 +268,7 @@ python apply_official.py
 
 ---
 
-## 九、仓内可复现验收路径（2026-10-14，verify_upgrade 样本模式）
+## 十一、仓内可复现验收路径（2026-10-14，verify_upgrade 样本模式）
 
 参照 `10_模型家族横评` 三个门禁在 CI 里以 selftest/合成样本运行的做法，`verify_upgrade.py` 新增只作用于**仓内脱敏样本**的验收路径，保持本轨「不在真实原件上盲跑」定位：
 
