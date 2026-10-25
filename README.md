@@ -39,26 +39,6 @@ A two-track **script toolbox + zero-dependency Web panel** that drives one local
 - **零依赖 Web 面板**：纯标准库 `http.server`，绑定 `127.0.0.1:8189`，不对外网开放；ComfyUI 没起时点「开始跑测」会自动拉起。
 - **结构改造全链脚本**：与 ComfyUI 官方模板逐份对照快照（`08_官方模板对齐/`，11 份），模板升级后可一键复查对齐状态。
 
-### 界面预览
-
-> 以下四张图均为本仓 `09_Web面板/panel.py` 在浏览器中的真实界面（截图环境未启动 ComfyUI，表格数据为代表性样例；①② 页本身不需要 ComfyUI）。
-
-**① 工作流真值** —— 每份工作流的运行时参数（容器 positional 值为准），并标出提示词是否为空：
-
-![工作流真值](https://gcore.jsdelivr.net/gh/ReSerendipity/ComfyUI-Experiment-Toolbox@main/docs/assets/readme-comfyui-experiment-toolbox-1.png)
-
-**② σ 风险矩阵** —— 7 模型 × 9 调度器离线判定（高危/注意/安全），不跑图：
-
-![σ 风险矩阵](https://gcore.jsdelivr.net/gh/ReSerendipity/ComfyUI-Experiment-Toolbox@main/docs/assets/readme-comfyui-experiment-toolbox-2.png)
-
-**③ 受控跑测** —— 勾选工作流 + 组合（采样器/调度器/steps/cfg 留空 = 用当前值），固定提示词与种子：
-
-![受控跑测](https://gcore.jsdelivr.net/gh/ReSerendipity/ComfyUI-Experiment-Toolbox@main/docs/assets/readme-comfyui-experiment-toolbox-3.png)
-
-**④ 结果分析** —— 客观指标 + 与 base 基线相似度 + 带标签拼版图：
-
-![结果分析](https://gcore.jsdelivr.net/gh/ReSerendipity/ComfyUI-Experiment-Toolbox@main/docs/assets/readme-comfyui-experiment-toolbox-4.png)
-
 ### 快速开始
 
 #### 前置条件
@@ -184,26 +164,6 @@ A script toolbox built around **one local ComfyUI installation**: two pipelines 
 - **Result analysis**: objective metrics (brightness / contrast σ / sharpness / colorfulness) + 1−MSE similarity against the `base` baseline + a labeled 4-column contact sheet.
 - **Zero-dependency Web panel**: stdlib `http.server` bound to `127.0.0.1:8189` (never exposed to the LAN); clicking "Start run" with ComfyUI offline auto-launches it.
 - **Structure-surgery scripts**: per-file diff snapshots against ComfyUI's official templates (`08_官方模板对齐/`, 11 files) so alignment can be re-checked after template upgrades.
-
-### Screenshots
-
-> The four images below are the real UI of `09_Web面板/panel.py` in a browser. The screenshot environment had no ComfyUI running, so table cells show representative sample data; pages ① and ② do not require ComfyUI anyway.
-
-**① Workflow truth** — runtime parameters per workflow (container positional values are authoritative), with prompt-empty flagging:
-
-![workflow truth](https://gcore.jsdelivr.net/gh/ReSerendipity/ComfyUI-Experiment-Toolbox@main/docs/assets/readme-comfyui-experiment-toolbox-1.png)
-
-**② σ risk matrix** — 7 models × 9 schedulers judged offline (high / caution / safe), no image generation:
-
-![sigma risk matrix](https://gcore.jsdelivr.net/gh/ReSerendipity/ComfyUI-Experiment-Toolbox@main/docs/assets/readme-comfyui-experiment-toolbox-2.png)
-
-**③ Controlled run** — pick workflows + combos (sampler/scheduler/steps/cfg left blank = keep current value), fixed prompt and seed:
-
-![controlled run](https://gcore.jsdelivr.net/gh/ReSerendipity/ComfyUI-Experiment-Toolbox@main/docs/assets/readme-comfyui-experiment-toolbox-3.png)
-
-**④ Result analysis** — objective metrics + similarity to the base baseline + labeled contact sheet:
-
-![result analysis](https://gcore.jsdelivr.net/gh/ReSerendipity/ComfyUI-Experiment-Toolbox@main/docs/assets/readme-comfyui-experiment-toolbox-4.png)
 
 ### Quick start
 
