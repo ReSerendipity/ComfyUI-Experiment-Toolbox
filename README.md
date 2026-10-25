@@ -45,19 +45,19 @@ A two-track **script toolbox + zero-dependency Web panel** that drives one local
 
 **① 工作流真值** —— 每份工作流的运行时参数（容器 positional 值为准），并标出提示词是否为空：
 
-![工作流真值](docs/assets/readme-comfyui-experiment-toolbox-1.png)
+![工作流真值](https://gcore.jsdelivr.net/gh/ReSerendipity/ComfyUI-Experiment-Toolbox@main/docs/assets/readme-comfyui-experiment-toolbox-1.png)
 
 **② σ 风险矩阵** —— 7 模型 × 9 调度器离线判定（高危/注意/安全），不跑图：
 
-![σ 风险矩阵](docs/assets/readme-comfyui-experiment-toolbox-2.png)
+![σ 风险矩阵](https://gcore.jsdelivr.net/gh/ReSerendipity/ComfyUI-Experiment-Toolbox@main/docs/assets/readme-comfyui-experiment-toolbox-2.png)
 
 **③ 受控跑测** —— 勾选工作流 + 组合（采样器/调度器/steps/cfg 留空 = 用当前值），固定提示词与种子：
 
-![受控跑测](docs/assets/readme-comfyui-experiment-toolbox-3.png)
+![受控跑测](https://gcore.jsdelivr.net/gh/ReSerendipity/ComfyUI-Experiment-Toolbox@main/docs/assets/readme-comfyui-experiment-toolbox-3.png)
 
 **④ 结果分析** —— 客观指标 + 与 base 基线相似度 + 带标签拼版图：
 
-![结果分析](docs/assets/readme-comfyui-experiment-toolbox-4.png)
+![结果分析](https://gcore.jsdelivr.net/gh/ReSerendipity/ComfyUI-Experiment-Toolbox@main/docs/assets/readme-comfyui-experiment-toolbox-4.png)
 
 ### 快速开始
 
@@ -191,19 +191,19 @@ A script toolbox built around **one local ComfyUI installation**: two pipelines 
 
 **① Workflow truth** — runtime parameters per workflow (container positional values are authoritative), with prompt-empty flagging:
 
-![workflow truth](docs/assets/readme-comfyui-experiment-toolbox-1.png)
+![workflow truth](https://gcore.jsdelivr.net/gh/ReSerendipity/ComfyUI-Experiment-Toolbox@main/docs/assets/readme-comfyui-experiment-toolbox-1.png)
 
 **② σ risk matrix** — 7 models × 9 schedulers judged offline (high / caution / safe), no image generation:
 
-![sigma risk matrix](docs/assets/readme-comfyui-experiment-toolbox-2.png)
+![sigma risk matrix](https://gcore.jsdelivr.net/gh/ReSerendipity/ComfyUI-Experiment-Toolbox@main/docs/assets/readme-comfyui-experiment-toolbox-2.png)
 
 **③ Controlled run** — pick workflows + combos (sampler/scheduler/steps/cfg left blank = keep current value), fixed prompt and seed:
 
-![controlled run](docs/assets/readme-comfyui-experiment-toolbox-3.png)
+![controlled run](https://gcore.jsdelivr.net/gh/ReSerendipity/ComfyUI-Experiment-Toolbox@main/docs/assets/readme-comfyui-experiment-toolbox-3.png)
 
 **④ Result analysis** — objective metrics + similarity to the base baseline + labeled contact sheet:
 
-![result analysis](docs/assets/readme-comfyui-experiment-toolbox-4.png)
+![result analysis](https://gcore.jsdelivr.net/gh/ReSerendipity/ComfyUI-Experiment-Toolbox@main/docs/assets/readme-comfyui-experiment-toolbox-4.png)
 
 ### Quick start
 
