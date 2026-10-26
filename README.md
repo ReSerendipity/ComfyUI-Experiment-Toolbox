@@ -41,11 +41,11 @@ A two-track **script toolbox + zero-dependency Web panel** that drives one local
 
 ### 界面预览
 
-> 以下四张图均为本仓 `09_Web面板/panel.py` 在浏览器中的真实界面（截图环境未启动 ComfyUI，表格数据为代表性样例；①② 页本身不需要 ComfyUI）。
+> ① 为本机 ComfyUI 画布（CPU 模式，已配置 KSampler 工作流，模型文件未安装）；②③④ 为本仓 `09_Web面板/panel.py` 的浏览器界面。
 
-**① 工作流真值** —— 每份工作流的运行时参数（容器 positional 值为准），并标出提示词是否为空：
+**① ComfyUI 画布** —— 已配置参数的 KSampler 工作流（UNET/CLIP/VAE 加载器 → 正负向提示词 → K采样器 → VAE解码 → 保存图像），节点已连线、参数已填：
 
-![工作流真值](https://gcore.jsdelivr.net/gh/ReSerendipity/ComfyUI-Experiment-Toolbox@main/docs/assets/readme-comfyui-experiment-toolbox-1.png)
+![ComfyUI 画布](docs/assets/readme-comfyui-experiment-toolbox-1-20261026.png)
 
 **② σ 风险矩阵** —— 7 模型 × 9 调度器离线判定（高危/注意/安全），不跑图：
 
@@ -187,11 +187,11 @@ A script toolbox built around **one local ComfyUI installation**: two pipelines 
 
 ### Screenshots
 
-> The four images below are the real UI of `09_Web面板/panel.py` in a browser. The screenshot environment had no ComfyUI running, so table cells show representative sample data; pages ① and ② do not require ComfyUI anyway.
+> ① is the ComfyUI canvas on this machine (CPU mode, a configured KSampler workflow; model files not installed); ②③④ are browser screenshots of this repo's `09_Web面板/panel.py`.
 
-**① Workflow truth** — runtime parameters per workflow (container positional values are authoritative), with prompt-empty flagging:
+**① ComfyUI canvas** — a configured KSampler workflow (UNET/CLIP/VAE loaders → positive/negative prompt → KSampler → VAEDecode → SaveImage), nodes wired and parameters filled:
 
-![workflow truth](https://gcore.jsdelivr.net/gh/ReSerendipity/ComfyUI-Experiment-Toolbox@main/docs/assets/readme-comfyui-experiment-toolbox-1.png)
+![ComfyUI canvas](docs/assets/readme-comfyui-experiment-toolbox-1-20261026.png)
 
 **② σ risk matrix** — 7 models × 9 schedulers judged offline (high / caution / safe), no image generation:
 
