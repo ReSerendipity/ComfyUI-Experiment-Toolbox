@@ -4,7 +4,7 @@
 固定：提示词（818 字符，已写入各工作流）+ 种子 1111119 + 各模型自身 steps / cfg / 分辨率。
 变量：只切换采样器与调度器。
 日志（v2，2026-10-11）：append-only JSONL（唯一事实源）+ 合并视图 JSON（由 jsonl 重建），
-每条记录含 seed/steps/cfg/时间戳/解释器与 ComfyUI 版本，见 logutil.py。
+每条记录含 seed/steps/cfg/prompt_id/时间戳/解释器与 ComfyUI 版本，见 logutil.py。
 """
 import json, os, platform, sys, time, shutil, urllib.request, urllib.error
 import flatten
@@ -219,6 +219,7 @@ def main():
 
     migrate_legacy(LOG_JSON, LOG_JSONL, key=lambda r: (r.get("model"), r.get("combo")))
     env = _env_snapshot()
+    n_fail = 0
     tasks = [(l, f, "ks", combos) for l, f, _, combos in PLAN] + \
             [(l, f, "custom", combos) for l, f, combos in PLAN_CUSTOM]
     only = os.environ.get("ONLY")
@@ -235,6 +236,7 @@ def main():
                 api = run_one(label, os.path.join(WF, fname), ov, prefix)
             except Exception as e:
                 print("   扁平化失败:", e, flush=True)
+                n_fail += 1  # 本次跑测的失败计数（退出码用，不读合并视图——它含历史批次）
                 append_record(LOG_JSONL, {"model": label, "combo": cname, "ok": False, "error": "flatten: %s" % e,
                             "sec": 0, "files": [], "ts": time.strftime("%Y-%m-%d %H:%M:%S"),
                             "seed": FIXED_SEED, "steps": None, "cfg": None,
@@ -249,6 +251,7 @@ def main():
             res, err = post("/prompt", {"prompt": api})
             if err:
                 print("   提交失败:", err[:400], flush=True)
+                n_fail += 1
                 append_record(LOG_JSONL, {"model": label, "combo": cname, "ok": False, "error": err[:600],
                             "sec": 0, "files": [], "ts": time.strftime("%Y-%m-%d %H:%M:%S"),
                             "seed": p["seed"], "steps": p["steps"], "cfg": p["cfg"],
@@ -265,7 +268,9 @@ def main():
             print(f"   -> {'OK' if ok else 'FAIL'} {dt}s  {len(dest)} 张", flush=True)
             if not ok:
                 print("   ", str(werr)[:300], flush=True)
-            append_record(LOG_JSONL, {"model": label, "combo": cname, "ok": bool(ok) and bool(dest),
+            if not (ok and dest):
+                n_fail += 1
+            append_record(LOG_JSONL, {"model": label, "combo": cname, "prompt_id": res["prompt_id"], "ok": bool(ok) and bool(dest),
                         "sec": dt, "files": dest, "error": None if ok else str(werr)[:600],
                         "ts": time.strftime("%Y-%m-%d %H:%M:%S"),
                         "seed": p["seed"], "steps": p["steps"], "cfg": p["cfg"],
@@ -273,7 +278,8 @@ def main():
             rebuild_consolidated(LOG_JSON, LOG_JSONL, key=lambda r: (r.get("model"), r.get("combo")))
     cons = rebuild_consolidated(LOG_JSON, LOG_JSONL, key=lambda r: (r.get("model"), r.get("combo")))
     print("\n完成：成功 %d / %d" % (sum(1 for x in cons if x["ok"]), len(cons)))
+    return 0 if n_fail == 0 else 1
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

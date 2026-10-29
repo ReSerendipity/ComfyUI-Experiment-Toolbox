@@ -4,7 +4,7 @@ Qwen_image_2_1_t2i 采样器 × 调度器组合对比测试
 固定：seed=1111119 / steps=25 / cfg=1 / 1024x1024 / 提示词（全部取自工作流原值，不修改）
 仅切换 KSampler 的 sampler_name 与 scheduler。
 日志（v2，2026-10-11）：append-only JSONL（唯一事实源）+ 合并视图 JSON（由 jsonl 重建），
-每条记录含 seed/steps/cfg/时间戳/解释器与 ComfyUI 版本，见 logutil.py。
+每条记录含 seed/steps/cfg/prompt_id/时间戳/解释器与 ComfyUI 版本，见 logutil.py。
 """
 import json, os, platform, time, shutil, sys, urllib.request, urllib.error
 
@@ -104,6 +104,7 @@ def main():
     migrate_legacy(LOG_JSON, LOG_JSONL, key=lambda r: r.get("label"))
     env = _env_snapshot()
     total = len(combos)
+    n_fail = 0
     for i, (label, samp, sched, note) in enumerate(combos, 1):
         prefix = f"ss_test/{label}"
         before = set(collect(prefix))
@@ -113,6 +114,7 @@ def main():
         res, err = post("/prompt", {"prompt": p})
         if err:
             print("   提交失败:", err[:500], flush=True)
+            n_fail += 1  # 本次跑测的失败计数（退出码用，不读合并视图——它含历史批次）
             append_record(LOG_JSONL, {"label": label, "sampler": samp, "scheduler": sched, "note": note,
                         "ok": False, "error": err[:800], "sec": 0, "files": [],
                         "ts": time.strftime("%Y-%m-%d %H:%M:%S"), "seed": SEED, "steps": STEPS, "cfg": CFG,
@@ -135,18 +137,21 @@ def main():
         print(f"   -> {'OK' if ok else 'FAIL'} {dt}s, 图片 {len(dest)} 张", flush=True)
         if not ok:
             print("   错误:", str(werr)[:500], flush=True)
+        if not (ok and dest):
+            n_fail += 1
         append_record(LOG_JSONL, {"label": label, "sampler": samp, "scheduler": sched, "note": note,
-                    "ok": bool(ok) and bool(dest), "sec": dt, "files": [os.path.basename(x) for x in dest],
+                    "prompt_id": pid, "ok": bool(ok) and bool(dest), "sec": dt, "files": [os.path.basename(x) for x in dest],
                     "error": None if ok else str(werr)[:800],
                     "ts": time.strftime("%Y-%m-%d %H:%M:%S"), "seed": SEED, "steps": STEPS, "cfg": CFG,
                     "py": env["py"], "comfy": env["comfy"]})
         rebuild_consolidated(LOG_JSON, LOG_JSONL, key=lambda r: r.get("label"))
     cons = rebuild_consolidated(LOG_JSON, LOG_JSONL, key=lambda r: r.get("label"))
     print("\n完成：成功 %d / 共 %d" % (sum(1 for x in cons if x["ok"]), total))
+    return 0 if n_fail == 0 else 1
 
 
 if __name__ == "__main__":
     s = os.environ.get("ONLY")
     if s:
         COMBOS = [c for c in COMBOS if c[0] == s]
-    main()
+    sys.exit(main())

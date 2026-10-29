@@ -29,6 +29,7 @@
 | `files` | list[str] | 产物文件名清单 | 同上 | 1（旧） |
 | `error` | str\|null | 失败原因（成功为 null） | 同上 | 1（旧） |
 | `note` | str | 备注（如官方推荐来源） | 同上 | 1（旧） |
+| `prompt_id` | str\|缺失 | 提交 `/prompt` 返回的号，用于事后与服务端 `history/<pid>` 及节点级执行对齐；扁平化失败与提交失败的记录没有该字段，2026-10-29 之前的历史记录也没有，读取方一律 `.get("prompt_id")` 容错 | run_models / run_combos 出图记录 | 2（补字段，不升 schema 版本） |
 
 ## 2. 07 样例输出与数据（审计链副本 json）
 

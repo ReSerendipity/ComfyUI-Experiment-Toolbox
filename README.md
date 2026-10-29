@@ -95,7 +95,7 @@ run.bat dur --adapter minimax_h3_t2v --dry-run  :: E4 适配器驱动档位跑�
 run.bat ftrend       :: E5 历史趋势回归（跨快照比，检出硬回归 exit 1）
 ```
 
-> `run.bat` 顶部 `PY=` 变量写死了 ComfyUI 自带 python 的路径（默认 `%USERPROFILE%\APP\ComfyUI-aki-v3.2\python\python.exe`）——**换机器只改这一行**。
+> **换机器要改的外部路径不止 `PY=` 这一行。** 同一个便携 ComfyUI 安装根在已跟踪的 `.py`/`.bat` 里出现在 42 个文件、共 55 处：`run.py` 的 `PYTHONPATH` 兜底、01/02/03/05/09 各轨脚本的模块级常量，以及 `03_受控跑测/run_models.py` / `run_combos.py` 里写死的外部工作目录 `BASE`。只改 `run.bat` 的 `PY=` 之后，未改到的入口仍会指向不存在的路径并在各自脚本上报错。仓内已有的集中写法可参照 `10_模型家族横评/family_config.json` 的 `comfy.comfy_root`（支持 `--comfy` 覆盖）；迁移时建议先集中你实际要跑的轨。
 
 #### 最小验证（不依赖 ComfyUI 也能跑）
 
