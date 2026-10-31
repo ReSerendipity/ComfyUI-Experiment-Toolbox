@@ -5,7 +5,7 @@ ComfyUI 实验与改造工具箱 · Web 面板（参数轨）
 （因为 σ 计算要 import comfy.*，结果分析要 numpy/Pillow，只有它这套环境齐）。
 
 启动：
-    cd "%USERPROFILE%/Desktop/ComfyUI-实验与改造工具箱/09_Web面板"
+    cd "%USERPROFILE%/APP/repository/ComfyUI-Experiment-Toolbox/09_Web面板"
     %USERPROFILE%/APP/ComfyUI-aki-v3.2/python/python.exe panel.py
 浏览器打开 http://127.0.0.1:8189
 

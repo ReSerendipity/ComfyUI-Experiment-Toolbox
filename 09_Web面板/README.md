@@ -8,7 +8,7 @@
 在工具箱根目录**双击 `start.bat`** 即可。等价命令：
 
 ```bash
-cd "%USERPROFILE%/Desktop/ComfyUI-实验与改造工具箱"
+cd "%USERPROFILE%/APP/repository/ComfyUI-Experiment-Toolbox"
 run.bat panel                                    # Windows
 # 或任意终端：
 "%USERPROFILE%/APP/ComfyUI-aki-v3.2/python/python.exe" run.py panel
@@ -75,7 +75,7 @@ run.bat panel                                    # Windows
 
 ```bash
 cd "%USERPROFILE%/.workbuddy/binaries/node/workspace"
-NODE_PATH="$(pwd)/node_modules" node "%USERPROFILE%/Desktop/ComfyUI-实验与改造工具箱/09_Web面板/test_dom.js"
+NODE_PATH="$(pwd)/node_modules" node "%USERPROFILE%/APP/repository/ComfyUI-Experiment-Toolbox/09_Web面板/test_dom.js"
 ```
 
 通过标准：`sampOpts>20`、`schdOpts>=9`、收集产物 `combos[0].sampler_name` 与所选一致。前置：managed node 工作区已 `npm install jsdom`（2026-09-24 已装）。
