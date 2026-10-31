@@ -53,6 +53,7 @@ python 11_版式化文生图/layout_runner.py recipe.json
 | `docs/类型库手册.md` | 10 类骨架速查表 |
 | `docs/漫画分镜实战.md` | 用本轨做连贯短篇漫画的 SOP（角色一致性、分页、收尾） |
 | `story/` | 实例短篇《末班车开往海见》：`story_data.py`（分镜与提示词）→ `gen_story.py`（生成落盘）→ `reader.html`（一页一屏阅读器） |
+| `publish/` | 发布包：`copy_data.py`（标题/正文/标签单一事实源）→ `render_copy.py`（字数与判词核验 + 渲染 `发布文案.md`）；`cover_data.py` → `gen_covers.py`（四比例封面） |
 | `samples/` | 10 类样张（压缩 jpg，见下方入库策略） |
 | `gallery.html` | 由类型库直接生成的画廊（含短篇漫画阅读区），`python run.py laygal` 重建 |
 
@@ -79,8 +80,21 @@ python 11_版式化文生图/layout_runner.py recipe.json
 复刻图是他人作品的派生。口径与 `06_文档与结论/MOSS-Image-书法与诗画合一实测结论.md`
 一致——只记结论与可复现口径，样张留在实验工作区。
 
-## 已知边界
+## 发布包
 
+`publish/` 只产出**内容**，不做平台预填与发布（发布动作由人执行）。
+
+```powershell
+python 11_版式化文生图/publish/render_copy.py           # 核字数 + 跑判词表 → 发布文案.md
+python 11_版式化文生图/publish/gen_covers.py            # 四比例封面 → covers/
+python 11_版式化文生图/publish/gen_covers.py --plan     # 只看比例与提示词长度
+```
+
+纪律：标题/正文/标签只在 `copy_data.py` 改（单一事实源），`发布文案.md` 是生成物；
+字数按平台上限核验（小红书 标题 ≤20 / 正文 ≤450，抖音图文 ≤20 / ≤1000，B站专栏 标题 ≤50），
+判词表命中即不出稿。口径段（模型/硬件/参数/单种子声明）全平台逐字一致，防口径漂移。
+
+## 已知边界
 - **文字密度上限**：单图 8–12 个文字块可控；超过后小字号块开始出现笔画粘连。
 - **跨格一致性**：同一页内多格的人物脸型会漂移；跨页一致性靠逐页复用同一段角色设定卡维持，
   不保证逐帧一致（T2I，无参考图输入）。
