@@ -52,7 +52,9 @@ python 11_版式化文生图/layout_runner.py recipe.json
 | `docs/版式化提示词七要素.md` | 方法论：什么样的提示词能让版式与文字同时成立 |
 | `docs/类型库手册.md` | 10 类骨架速查表 |
 | `docs/漫画分镜实战.md` | 用本轨做连贯短篇漫画的 SOP（角色一致性、分页、收尾） |
+| `story/` | 实例短篇《末班车开往海见》：`story_data.py`（分镜与提示词）→ `gen_story.py`（生成落盘）→ `reader.html`（一页一屏阅读器） |
 | `samples/` | 10 类样张（压缩 jpg，见下方入库策略） |
+| `gallery.html` | 由类型库直接生成的画廊（含短篇漫画阅读区），`python run.py laygal` 重建 |
 
 ## 口径（2026-10-29 实测）
 

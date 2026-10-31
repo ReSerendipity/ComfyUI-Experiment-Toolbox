@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>末班车开往海见 · 終電は海見へ</title>
+<style>
+:root { --bg:#14120f; --paper:#1c1916; --ink:#e8e2d6; --dim:#9a9285; --accent:#c8563a;
+  --mono:"JetBrains Mono","SF Mono",Consolas,monospace; }
+* { box-sizing:border-box; }
+body { margin:0; background:var(--bg); color:var(--ink);
+  font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif; line-height:1.8; }
+.cover { min-height:100vh; display:flex; flex-direction:column; justify-content:center;
+  align-items:center; text-align:center; padding:40px 24px; border-bottom:1px solid #2b2722; }
+.cover .jp { font-size:13px; letter-spacing:.4em; color:var(--dim); margin-bottom:22px; }
+.cover h1 { font-family:"Songti SC","Source Han Serif SC",Georgia,serif; font-weight:600;
+  font-size:46px; margin:0 0 10px; letter-spacing:.04em; }
+.cover .rule { width:56px; height:2px; background:var(--accent); margin:26px 0; }
+.cover p { max-width:560px; color:var(--dim); font-size:14.5px; margin:0 0 30px; }
+.cover .meta { font-size:12.5px; color:#6f675c; letter-spacing:.08em; }
+.scroll { color:var(--accent); font-size:12px; letter-spacing:.2em; margin-top:44px; }
+.pages { max-width:820px; margin:0 auto; padding:56px 20px 40px; }
+.pg { margin:0 0 64px; scroll-margin-top:24px; }
+.pg img { width:100%; display:block; border-radius:4px; cursor:zoom-in;
+  box-shadow:0 18px 50px rgba(0,0,0,.55); }
+.cap { display:flex; gap:12px; align-items:baseline; font-size:12.5px;
+  color:var(--dim); margin-top:12px; padding-left:2px; }
+.cap b { color:var(--accent); font-weight:600; flex:0 0 auto; }
+.end { text-align:center; color:var(--dim); font-size:13px; padding:40px 0 80px;
+  border-top:1px solid #2b2722; margin-top:20px; }
+.end em { display:block; font-style:normal; font-family:"Songti SC",Georgia,serif;
+  font-size:19px; color:var(--ink); margin-bottom:8px; }
+nav { position:fixed; right:18px; top:50%; transform:translateY(-50%); z-index:40;
+  display:flex; flex-direction:column; gap:4px; }
+nav a { width:26px; height:26px; line-height:26px; text-align:center; font-family:var(--mono);
+  font-size:11px; color:#6f675c; text-decoration:none; border-radius:4px; }
+nav a:hover { background:#2b2722; color:var(--ink); }
+#lb { position:fixed; inset:0; background:rgba(8,7,6,.96); display:none;
+  align-items:center; justify-content:center; z-index:999; padding:24px; cursor:zoom-out; }
+#lb.on { display:flex; }
+#lb img { max-width:100%; max-height:100%; }
+@media (max-width:760px) { nav { display:none; } .cover h1 { font-size:32px; } }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="jp">終電は海見へ</div>
+  <h1>末班车开往海见</h1>
+  <div class="rule"></div>
+  <p>沿海小城的私铁支线下个月就要废线。高中生悠人每晚坐末班车回家，某夜遇见一个穿旧式水手服的少女——她总在早已废站的「海见」下车，并且已经在那里等了三十年。</p>
+  <div class="meta">日式短篇 · 夏末 · 离别 &nbsp;·&nbsp; 全 8 页 &nbsp;·&nbsp; 800x1200</div>
+  <div class="scroll">向 下 滚 动 开 始 阅 读</div>
+</div>
+
+<nav><a href="#p1">1</a><a href="#p2">2</a><a href="#p3">3</a><a href="#p4">4</a><a href="#p5">5</a><a href="#p6">6</a><a href="#p7">7</a><a href="#p8">8</a></nav>
+
+<div class="pages">
+  <section class="pg" id="p1">
+    <img src="pages/01.jpg" alt="第 1 页" onclick="zoom(this)">
+    <div class="cap"><b>第 1 页</b><span>空车厢</span></div>
+  </section>
+  <section class="pg" id="p2">
+    <img src="pages/02.jpg" alt="第 2 页" onclick="zoom(this)">
+    <div class="cap"><b>第 2 页</b><span>同一站</span></div>
+  </section>
+  <section class="pg" id="p3">
+    <img src="pages/03.jpg" alt="第 3 页" onclick="zoom(this)">
+    <div class="cap"><b>第 3 页</b><span>剪报</span></div>
+  </section>
+  <section class="pg" id="p4">
+    <img src="pages/04.jpg" alt="第 4 页" onclick="zoom(this)">
+    <div class="cap"><b>第 4 页</b><span>你在等人吗</span></div>
+  </section>
+  <section class="pg" id="p5">
+    <img src="pages/05.jpg" alt="第 5 页" onclick="zoom(this)">
+    <div class="cap"><b>第 5 页</b><span>站牌上的日期</span></div>
+  </section>
+  <section class="pg" id="p6">
+    <img src="pages/06.jpg" alt="第 6 页" onclick="zoom(this)">
+    <div class="cap"><b>第 6 页</b><span>废线前夜</span></div>
+  </section>
+  <section class="pg" id="p7">
+    <img src="pages/07.jpg" alt="第 7 页" onclick="zoom(this)">
+    <div class="cap"><b>第 7 页</b><span>讲给她听</span></div>
+  </section>
+  <section class="pg" id="p8">
+    <img src="pages/08.jpg" alt="第 8 页" onclick="zoom(this)">
+    <div class="cap"><b>第 8 页</b><span>终电之后</span></div>
+  </section>
+  <div class="end"><em>— 完 —</em>8 页单 seed 单次生成，未修图。跨页一致性靠每页逐字复用同一段角色设定卡；仍存在面部细节漂移，这是 T2I 无参考图输入的固有边界，见 docs/漫画分镜实战.md。</div>
+</div>
+
+<div id="lb" onclick="this.classList.remove('on')"><img id="lbimg" src="" alt=""></div>
+<script>
+var ids = [1,2,3,4,5,6,7,8], i = 0;
+function zoom(el) {
+  document.getElementById('lbimg').src = el.src;
+  document.getElementById('lb').classList.add('on');
+}
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape') document.getElementById('lb').classList.remove('on');
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+    i = Math.min(i + 1, ids.length - 1); location.hash = 'p' + ids[i];
+  }
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+    i = Math.max(i - 1, 0); location.hash = 'p' + ids[i];
+  }
+});
+window.addEventListener('scroll', function () {
+  var y = window.scrollY + window.innerHeight * 0.35;
+  ids.forEach(function (id, k) {
+    var el = document.getElementById('p' + id);
+    if (el && el.offsetTop <= y) i = k;
+  });
+});
+</script>
+</body>
+</html>
