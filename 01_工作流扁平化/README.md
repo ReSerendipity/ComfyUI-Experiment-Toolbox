@@ -30,3 +30,51 @@
   - `Failed to convert an input value to a INT value` → widget 位置错位或容器取值损坏（规则 5/6）
   - `Return type mismatch`（如 `received_type(CLIP) mismatch input_type(CONDITIONING)`）→ 旁路某个节点时接错了它的输出语义
 - 若某工作流扁平化后校验不通过，**别硬猜**：把扁平化结果打印出来逐个节点核对参数值是否落在合法范围（对比 `../07_样例输出与数据/` 里的正确样例）。
+
+## 诊断：`status=success` 但 `outputs` 为空（静默无输出）
+
+跑测最费时间的一种失败：服务端返回 success、耗时正常、**一张图都没有，日志里也没有 traceback**。
+按下面顺序排，别从"模型坏了"开始猜——2026-10-11 用一整天（含把 4 个工作流的 unet 全换成已装版本）证明了**模型不是根因**。
+
+### ① 先确认服务还活着
+
+`GET /system_stats` 探不通就是进程没了。本机实测死因之一是 GPU 驱动复位（系统日志 `nvlddmkm` 事件 153）静默杀掉 ComfyUI 的 python——日志停在 `x/N` 步、无 traceback，客户端只见请求失败。
+`03_受控跑测` 的 `wait()` 已内置「每 5 次失败探活一次」，探不通立即返回 `server_dead`。
+
+### ② 再查模型名是否合法（最常见）
+
+症状链：`unet_name` 不在服务端模型列表 → `Failed to validate prompt: ... value_not_in_list` → **该节点输出被忽略** → 下游全部剪枝 → `status=success` + `outputs={}`。
+
+三个具体成因：
+
+- **JSON 里是单反斜杠**：`FLUX-1-dev\fluxNSFW...`，JSON 把 `\f` 解析成换页符 `\x0c`，实际值变成 `FLUX-1-dev\x0cluxNSFW...`
+- **用了正斜杠**：服务端列表是反斜杠，正斜杠不匹配
+- **漏了子目录前缀**：模型放在 `models/*/子文件夹/` 时，合法值是 `子文件夹\文件名`，裸文件名被拒
+
+做法：提交前用 `/object_info` 动态解析合法值（`derive_api.resolve_models`），不要硬编码文件名。
+
+### ③ 查权重格式能不能被识别
+
+`Qwen-Image-2.1-Turbo-FP8.safetensors` 报 `Could not detect model type`——它是 **torchao Float8Tensor** 格式（safetensors 头含 `_weight_scale` + `_tensor_data_names:["qdata","scale"]`），当前 ComfyUI 不认。
+同模型换 `qwen-image-2.1-turbo-int8-convrot.safetensors` 直接可跑。
+
+判据是**读 safetensors 头**，不是看文件名里的 `fp8`/`int8`——文件名标称与真实格式可能不一致（同目录同名不同架构的情况见 `10_模型家族横评/docs/Z_image_turbo链路SOP.md`）。
+
+### ④ 查「你改的到底是不是生效的那份」
+
+- **ComfyUI 按 UUID 缓存子图定义**：改磁盘上的 `definitions.subgraphs` 后 UI 里仍用旧定义，必须重载页面（`location.reload()`）或在 UI 内改。
+- **ComfyUI 有自动保存**：手改的 JSON 会被覆盖。改工作流要在 UI 内做，然后**右键顶部工作流标签的「名称」→ 保存**（`Ctrl+S` 和点标签本身都不弹菜单）。
+- **提交读容器值，不读内部节点值**：`/prompt` 取的是子图容器上被提升的 widget（`容器.widgets_values[]` / `widgets_values_named`），改子图内部 `UNETLoader` 的 widget 无效。
+- **子图输入按输入顺序绑 slot，不按 `linkIds`**：改 `sg.inputs[].linkIds` 不生效；要么交换 link 目标，要么改容器 positional 值。
+- **值来源分两类**：`unet_name` 是容器 widget → 改容器三处（`widgets[i].value` + `widgets_values[i]` + `widgets_values_named`）即持久化；是提升的 COMBO 输入（`link=null`、无 widget）→ 值在子图定义里，且真正被序列化的是 `app.graph.subgraphs`（按 UUID 键的 Map），只改 `c.subgraph.nodes` 运行生效但**不落盘**。
+
+### ⑤ 还不行：换一个「已知能出图」的子图试
+
+用前端 API 复制正常子图（`app.canvas.selectNode(sub,false)` + `copyToClipboard()`），切到问题工作流 `pasteFromClipboard()`，再把 SaveImage 的 `images` 输入接到新子图输出槽。
+
+能出图 → 原工作流的子图结构本身坏了，不是参数问题。**注意此时跑的是复制来的管线，模型与工作流名不再对应**，别把结果当成该模型的结论。
+
+### 回读真值：别猜参数，读出来
+
+出图 PNG 的 tEXt `prompt` 元数据里存着**实际提交的完整 API 图**。注入是否生效、模型名是什么、seed/steps 取值，直接读它比对着代码猜快一个量级。
+

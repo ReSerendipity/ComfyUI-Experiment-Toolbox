@@ -33,6 +33,7 @@
 
 ### Changed
 
+- `docs(01/08/10)`: 跨工作区经验移植 —— 01 补「`status=success` 但 `outputs` 为空」四层诊断（服务存活 / 模型名非法被静默剪枝 / 权重格式不识别 / 改的不是生效那份）、08 补「同模型多份官方模板怎么选」与模板计数漂移、10 文字横评补三条判读纪律（全宽裁切后再放大、≥3 种子、数字脚本重算）（2026-10-31）
 - `perf(gate)`: 名册基线改 256MB 哈希上限，check 292s → ~6s（2026-10-16）
 - `ci`: 门禁扩至 ⑪ —— E1/E2/E5/E8 四个新 selftest 接入（2026-10-16）
 - `ci(gates)`: 11 道门禁逐步失败隔离，一道红不再遮住其余（2026-10-17）
@@ -56,6 +57,7 @@
 
 ### Fixed
 
+- `fix(09)`: 清理合并迁仓前的旧桌面路径（`%USERPROFILE%/Desktop/ComfyUI-实验与改造工具箱` → `APP/repository/ComfyUI-Experiment-Toolbox`），`README.md` L11/L78 与 `panel.py` docstring 三处（2026-10-31）
 - `fix(03)`: 服务端死亡快速识别 —— `wait()` 每 5 次失败探活 `/system_stats`，探不通立即返回 `server_dead` 并中断本轮（此前 1800s/900s timeout 空转在死服务上，整张矩阵退化成一堆 `timeout` 看不出真因）；README 补磁盘预算按「图片体积 ×2~4」预留（2026-10-27）
 - `fix(10)`: Gate ③ 同长改写断言去除时钟依赖（2026-10-17）
 - `fix(gate)`: 修正 Gate ⑤ 的 NUL 分隔符并补空集失败闸（2026-10-16）
