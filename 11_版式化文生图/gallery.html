@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>版式化文生图 · 类型库与复刻方法</title>
+<style>
+:root { --bg:#f6f4ee; --paper:#fffefa; --ink:#1b1a17; --ink2:#565248; --ink3:#8d887a;
+  --line:#e3ded2; --accent:#b04a2f; --green:#2f5d50;
+  --mono:"JetBrains Mono","SF Mono",Consolas,monospace; }
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { margin:0; background:var(--bg); color:var(--ink); font-size:15px; line-height:1.75;
+  font-family:"PingFang SC","Microsoft YaHei","Helvetica Neue",Arial,sans-serif;
+  -webkit-font-smoothing:antialiased; }
+.wrap { max-width:1240px; margin:0 auto; padding:0 32px; }
+h1,h2,h3,h4 { font-family:"Songti SC","Source Han Serif SC",Georgia,serif; font-weight:600; }
+header { padding:74px 0 42px; border-bottom:1px solid var(--line); }
+.kicker { font-size:12px; letter-spacing:.22em; text-transform:uppercase; color:var(--accent); margin-bottom:18px; }
+header h1 { font-size:42px; line-height:1.3; margin:0 0 18px; }
+header h1 em { font-style:normal; color:var(--accent); }
+.lede { font-size:16px; color:var(--ink2); max-width:800px; margin:0 0 28px; }
+.meta-row { display:flex; flex-wrap:wrap; gap:10px; }
+.chip { font-size:12.5px; padding:5px 12px; border:1px solid var(--line); border-radius:999px;
+  background:var(--paper); color:var(--ink2); }
+.chip b { color:var(--ink); font-weight:600; }
+nav { position:sticky; top:0; z-index:50; background:rgba(246,244,238,.93);
+  backdrop-filter:blur(10px); border-bottom:1px solid var(--line); }
+nav .wrap { display:flex; gap:26px; align-items:center; height:52px; overflow-x:auto; }
+nav a { color:var(--ink2); text-decoration:none; font-size:13.5px; white-space:nowrap; }
+nav a:hover { color:var(--accent); }
+nav .brand { font-weight:600; color:var(--ink); margin-right:8px; font-size:13.5px; }
+section { padding:62px 0 8px; }
+.sec-head { display:flex; align-items:baseline; gap:16px; margin-bottom:8px; }
+.sec-head .no { font-family:var(--mono); font-size:12px; color:var(--accent); letter-spacing:.1em; }
+.sec-head h2 { font-size:28px; margin:0; }
+.sec-sub { color:var(--ink2); max-width:860px; margin:6px 0 32px; }
+ol.principles { list-style:none; margin:0; padding:0; display:grid;
+  grid-template-columns:repeat(2,1fr); gap:2px; background:var(--line);
+  border:1px solid var(--line); border-radius:12px; overflow:hidden; }
+ol.principles li { background:var(--paper); padding:24px 26px; }
+ol.principles li:last-child { grid-column:1/-1; }
+ol.principles .num { font-family:var(--mono); font-size:12px; color:var(--accent); }
+ol.principles h4 { margin:6px 0 8px; font-size:17px; }
+ol.principles p { margin:0; font-size:13.5px; color:var(--ink2); }
+ol.principles b { color:var(--ink); font-weight:600; background:#f3ece2; padding:0 3px; border-radius:3px; }
+.filters { display:flex; gap:8px; margin-bottom:24px; flex-wrap:wrap; }
+.filters button { font:inherit; font-size:13px; padding:6px 15px; border-radius:999px;
+  border:1px solid var(--line); background:var(--paper); color:var(--ink2); cursor:pointer; }
+.filters button.on { background:var(--ink); color:#fff; border-color:var(--ink); }
+.tgrid { display:grid; grid-template-columns:repeat(2,1fr); gap:26px; }
+.tcard { background:var(--paper); border:1px solid var(--line); border-radius:14px;
+  overflow:hidden; display:flex; flex-direction:column; }
+.tcard-media { position:relative; background:#efece4; display:flex; align-items:center;
+  justify-content:center; padding:22px; min-height:300px; }
+.tcard-media img { max-width:100%; max-height:460px; border-radius:6px; display:block;
+  box-shadow:0 8px 28px rgba(0,0,0,.13); cursor:zoom-in; }
+.missing { font-size:12.5px; color:var(--ink3); text-align:center; }
+.missing span { font-family:var(--mono); color:var(--accent); }
+.badge { position:absolute; top:14px; left:14px; font-size:11px; letter-spacing:.06em;
+  background:var(--c); color:#fff; padding:3px 10px; border-radius:999px; }
+.tcard-body { padding:20px 24px 22px; display:flex; flex-direction:column; gap:12px; flex:1; }
+.tcard-head { display:flex; align-items:baseline; gap:10px; }
+.tcard-head h3 { margin:0; font-size:19px; }
+.tcard-head code { font-family:var(--mono); font-size:11.5px; color:var(--ink3); }
+.tagline { margin:0; font-size:13.5px; color:var(--ink2); }
+dl.spec { margin:0; display:grid; grid-template-columns:72px 1fr; gap:6px 12px; font-size:12.5px; }
+dl.spec dt { color:var(--ink3); }
+dl.spec dd { margin:0; color:var(--ink); }
+.note { margin:0; font-size:12.5px; color:var(--ink2); background:#f4f1e9;
+  border-radius:6px; padding:9px 12px; }
+.note span { font-size:11px; letter-spacing:.1em; color:var(--accent); margin-right:8px; font-weight:600; }
+details summary { cursor:pointer; font-size:12.5px; color:var(--accent); }
+details pre { white-space:pre-wrap; font-family:inherit; font-size:12.5px; line-height:1.8;
+  color:var(--ink2); background:#f8f6f0; border:1px solid var(--line); border-radius:8px;
+  padding:16px; margin:12px 0 0; max-height:340px; overflow:auto; }
+table { width:100%; border-collapse:collapse; font-size:13.5px; background:var(--paper);
+  border:1px solid var(--line); border-radius:12px; overflow:hidden; }
+th,td { text-align:left; padding:12px 16px; border-bottom:1px solid var(--line); vertical-align:top; }
+th { font-size:11.5px; letter-spacing:.12em; color:var(--ink3); font-weight:600; background:#f9f7f1; }
+tr:last-child td { border-bottom:none; }
+td.mono { font-family:var(--mono); font-size:12.5px; }
+.story-meta { display:flex; flex-wrap:wrap; gap:22px; font-size:12.5px; color:var(--ink3);
+  margin-bottom:26px; padding-bottom:18px; border-bottom:1px solid var(--line); }
+.story-meta b { color:var(--ink); }
+.story { display:grid; grid-template-columns:repeat(2,1fr); gap:28px; }
+.story .page { margin:0; }
+.story .page img { width:100%; border-radius:8px; border:1px solid var(--line);
+  box-shadow:0 10px 30px rgba(0,0,0,.1); cursor:zoom-in; display:block; }
+.story figcaption { font-size:12.5px; color:var(--ink2); margin-top:10px; }
+.story figcaption b { color:var(--accent); }
+.story figcaption em { display:block; font-style:normal; color:var(--ink3); font-size:12px; margin-top:3px; }
+pre.shell { background:#1b1a17; color:#e8e3d6; border-radius:10px; padding:20px 24px;
+  font-family:var(--mono); font-size:12.5px; line-height:1.85; overflow:auto; }
+pre.shell .c { color:#8d887a; }
+footer { margin-top:66px; padding:34px 0 60px; border-top:1px solid var(--line);
+  font-size:12.5px; color:var(--ink3); }
+footer b { color:var(--ink2); }
+#lb { position:fixed; inset:0; background:rgba(20,19,16,.93); display:none;
+  align-items:center; justify-content:center; z-index:999; padding:36px; cursor:zoom-out; }
+#lb.on { display:flex; }
+#lb img { max-width:100%; max-height:100%; border-radius:6px; }
+@media (max-width:900px) {
+  .tgrid,.story,ol.principles { grid-template-columns:1fr; }
+  header h1 { font-size:30px; }
+  .wrap { padding:0 20px; }
+}
+</style>
+</head>
+<body>
+
+<header><div class="wrap">
+  <div class="kicker">MOSS-Image · Layout-Conditioned Text-to-Image</div>
+  <h1>把「一张图」当<em>版面</em>来生成<br>类型库与复刻方法</h1>
+  <p class="lede">
+    以两张版式化作品为基准做复刻验证，把「结构化中文提示词」抽象成两条主线共 10 类版式骨架，
+    再用同一套骨架做出连贯短篇漫画。
+  </p>
+  <div class="meta-row">
+    <span class="chip">模型 <b>moss_image_sft_int8_convrot</b></span>
+    <span class="chip">文本编码器 <b>qwen3.5_9b_int8_convrot</b></span>
+    <span class="chip">VAE <b>flux2-vae</b></span>
+    <span class="chip">口径 <b>euler / 30 步 / CFG 4</b></span>
+    <span class="chip">模块 <b>11_版式化文生图</b></span>
+  </div>
+</div></header>
+
+<nav><div class="wrap">
+  <span class="brand">目录</span>
+  <a href="#method">01 七个要素</a>
+  <a href="#types">02 类型矩阵</a>
+  <a href="#params">03 参数口径</a>
+  <a href="#story">04 短篇漫画</a>
+  <a href="#usage">05 复用方式</a>
+</div></nav>
+
+<main class="wrap">
+
+<section id="method">
+  <div class="sec-head"><span class="no">01</span><h2>可复刻的七个要素</h2></div>
+  <p class="sec-sub">
+    核心结论：<b>版式是模型的先验，文字是必须显式注入的内容</b>。
+    同 seed 同参数，1751 字结构化提示词能复刻出逐字正确的卡牌；换成 9 字短提示，
+    卡牌结构仍然完整，但说明栏文字退化成伪汉字、卡号变成乱码。
+    由此得到七条可复用规则，详见 <code>docs/版式化提示词七要素.md</code>。
+  </p>
+  <ol class="principles"><li><span class="num">01</span><h4>先声明「这是一件完整的平面物」</h4><p>开头第一句不是描述画面，而是锁定对象：<b>整张…完整展示 / 四边与画面边缘平行 / 居中排列 / 四周留少量背景</b>。这一句决定模型进入「排版模式」还是「插画模式」。</p></li><li><span class="num">02</span><h4>版式骨架用方位词顺序推进</h4><p>顶部 → 中央 → 底部，左侧 → 右侧，逐区块描述、不跳序。模型按 token 顺序建版面，乱序会把后提到的区块挤到错位。</p></li><li><span class="num">03</span><h4>文字块单独成段 +「写出：」+ 空行 + 原文</h4><p>文字渲染的触发格式。<b>写出：\n\n青眼白龙\n\n四个字横向排列…</b> —— 换行即分段，原文独占一行，模型才把它当「要画的字」而不是「要理解的描述」。</p></li><li><span class="num">04</span><h4>文字四件套：颜色 + 字号 + 字体 + 对齐</h4><p>每个文字块都给全：<b>黑色 / 大号 / 楷书风格 / 位置偏左</b>。缺任何一项，模型会自己选。</p></li><li><span class="num">05</span><h4>数量与数值必须写死</h4><p>8 枚星、9 格、ATK/3000、89631143、¥3,842.60、1900 M。模糊表述会被四舍五入。</p></li><li><span class="num">06</span><h4>结尾一段枚举色板做全局收束</h4><p><b>配色限定为米白、深棕、淡赭与一点橙红</b> 比零散提色更能压住一致性。</p></li><li><span class="num">07</span><h4>否定约束写在相关段落同句内</h4><p>「不使用任何彩色」「绝非真人照片」「无阴影无材质」——有效，但堆在末尾会衰减。</p></li></ol>
+</section>
+
+<section id="types">
+  <div class="sec-head"><span class="no">02</span><h2>类型扩展矩阵</h2></div>
+  <p class="sec-sub">
+    两条主线：<b>A 单画布多区块排版</b>（一张图 = 一个完整信息载体）与
+    <b>B 多画布叙事序列</b>（一张图 = N 个镜头或画格）。每条类型都给出可复用的版式骨架、
+    文字密度档位与推荐分辨率，全部单 seed 单次生成通过验收。
+  </p>
+  <div class="filters">
+    <button class="on" onclick="filt(this,'all')">全部 10 类</button>
+    <button onclick="filt(this,'A')">A 单画布排版 8 类</button>
+    <button onclick="filt(this,'B')">B 叙事序列 2 类</button>
+  </div>
+  <div class="tgrid">
+
+    <article class="tcard" data-family="A">
+      <div class="tcard-media" onclick="zoom(this)">
+        <img src="samples/tarot.jpg" alt="塔罗牌" loading="lazy">
+        <span class="badge" style="--c:#b04a2f">A 单画布排版</span>
+      </div>
+      <div class="tcard-body">
+        <div class="tcard-head"><h3>塔罗牌</h3><code>tarot</code></div>
+        <p class="tagline">外框 + 罗马数字 + 中英牌名，单主体强象征</p>
+        <dl class="spec">
+          <dt>版式骨架</dt><dd>外框(双线+角饰) → 顶部罗马数字 → 主画面 → 底部牌名(中/英)</dd>
+          <dt>文字密度</dt><dd>标签级</dd>
+          <dt>分辨率</dt><dd>768 × 1344 · 30 步 · CFG 4.0 · euler</dd>
+        </dl>
+        <p class="note"><span>实拍</span>XVII 与 7 颗小星位置准确，金线双框完整</p>
+        <details><summary>查看完整提示词（519 字）</summary><pre>竖版塔罗牌，2:3 画幅，整张牌面完整展示，四边与画面边缘平行，居中排列，外围留一圈极窄的深靛蓝背景。
+
+牌面为深靛蓝到紫黑的渐变底色，布满细密星点。外框是一圈金色细线双框，线宽均匀，四角各有一枚小型金色四芒星装饰。牌面上下各留出横向窄带。
+
+顶部窄带中央，以金色罗马数字写出：
+XVII
+
+中央为主画面区域。画面中一位年轻女性单膝跪在湖边浅滩，侧身面向画面右侧，上身以垂落的长发与臂弯自然遮挡，姿态舒展安静。她左手持一只赭红色陶罐，罐口向下，清水呈细长弧线倾入湖面，水面泛起环形涟漪；右手持另一只陶罐，倾斜于岸边的草地，水流入土。
+
+她头顶正上方悬挂一颗巨大的八芒星，星体明亮，放射出八道长短交替的金色光芒。八芒星周围散布七颗较小的白色五角星，大小略有差异，呈弧形排列。
+
+背景左侧是一棵高大的深绿色柏树，树形修长；右侧远处是连绵的低矮山峦，山脚有一座小湖。天空中另有几缕淡紫色云带。
+
+画面底部窄带中央，以金色楷体中文写出牌名：
+星辰
+
+中文牌名下方一行，以更小的金色衬线字母写出：
+THE STAR · XVII
+
+整体采用新艺术运动风格的塔罗牌绘制法，深色底衬托金色线条，色彩克制，构图对称稳定，线条细腻，具有神秘、宁静的仪式感。</pre></details>
+      </div>
+    </article>
+
+    <article class="tcard" data-family="A">
+      <div class="tcard-media" onclick="zoom(this)">
+        <img src="samples/dossier.jpg" alt="人物档案卡" loading="lazy">
+        <span class="badge" style="--c:#b04a2f">A 单画布排版</span>
+      </div>
+      <div class="tcard-body">
+        <div class="tcard-head"><h3>人物档案卡</h3><code>dossier</code></div>
+        <p class="tagline">左立绘 + 右数据面板，能力条形图按数值等比</p>
+        <dl class="spec">
+          <dt>版式骨架</dt><dd>机密标题带 → 左立绘 / 右信息面板(姓名·能力条·技能·信息块) → 印章</dd>
+          <dt>文字密度</dt><dd>标签级</dd>
+          <dt>分辨率</dt><dd>1024 × 1536 · 30 步 · CFG 4.0 · euler</dd>
+        </dl>
+        <p class="note"><span>实拍</span>四条能力条长度与 8/9/7/6 严格等比，红章自然压边</p>
+        <details><summary>查看完整提示词（719 字）</summary><pre>竖版 2:3 画幅，一张完整的特工档案卡，四边与画面边缘平行，居中排列，四周留少量深灰色桌面背景。
+
+卡片为做旧军绿色纸质底，表面有细微的纸张纤维与磨损痕迹，边缘略深。整张卡片外围有一圈细黑描边与轻微投影。
+
+顶部横向贯穿一条深墨绿色标题带，标题带左侧以白色无衬线大写字母写出：
+CLASSIFIED
+
+右侧以较小的白色字母写出：
+FILE NO. NB-047
+
+标题带下方，卡片左半部分为人物立绘区：一位二十七八岁的短发女性特工，齐耳黑色短发，面容冷静，眼神平直看向观者，穿黑色高领战术夹克，肩部有织带与金属扣，双手自然垂放。立绘为半身，背景为该区域的浅米色留白，人物边缘有一圈极细的深色描线，类似档案照片的剪贴效果。
+
+卡片右半部分为信息面板，自上而下分栏。第一栏以黑色粗体中文写出姓名：
+代号：夜莺
+
+下方一行以较小灰色字母写出：
+CODENAME NIGHTINGALE
+
+第二栏为四项能力条，每项左侧中文标签，右侧一条横向进度条与一个数字。四项依次为：
+体能 8
+智力 9
+隐蔽 7
+火力 6
+
+进度条为深墨绿色实心填充，底槽为浅灰色，条形长度与数字成正比，四条等宽等高，纵向等距排列。
+
+第三栏为技能列表，以黑色小号中文逐条写出，每条左侧有一枚小小的黑色实心方块：
+无线电静默渗透
+三语即时口译
+高空索降
+
+第四栏位于卡片底部，横向排布三枚信息块，每块上方为灰色小标签，下方为黑色粗体值：
+所属 UN-7
+权限 LEVEL A
+状态 ACTIVE
+
+卡片右下角有一枚圆形红色印章，印文为：
+绝密
+
+印章边缘不规则，墨色略有晕开，呈半透明覆盖在纸面上。整体呈现冷静、严谨的机构档案质感，配色限定在军绿、米白、墨黑与一点印章红。</pre></details>
+      </div>
+    </article>
+
+    <article class="tcard" data-family="A">
+      <div class="tcard-media" onclick="zoom(this)">
+        <img src="samples/magazine.jpg" alt="杂志封面" loading="lazy">
+        <span class="badge" style="--c:#b04a2f">A 单画布排版</span>
+      </div>
+      <div class="tcard-body">
+        <div class="tcard-head"><h3>杂志封面</h3><code>magazine</code></div>
+        <p class="tagline">刊名横贯顶部 + 左侧导读 + 价格角标 + 条码</p>
+        <dl class="spec">
+          <dt>版式骨架</dt><dd>刊名横贯顶部 → 期号 → 主视觉 → 左侧导读三条 → 价格角标 → 条码</dd>
+          <dt>文字密度</dt><dd>标题级</dd>
+          <dt>分辨率</dt><dd>1024 × 1536 · 30 步 · CFG 4.0 · euler</dd>
+        </dl>
+        <p class="note"><span>实拍</span>刊名 / 期号 / 三条导读 / ¥38.00 / 条码全部到位</p>
+        <details><summary>查看完整提示词（536 字）</summary><pre>竖版 2:3 画幅，一张完整的杂志封面，四边与画面边缘平行，居中排列。
+
+封面主视觉为雨后的东京小巷：石板路面湿润反光，两侧是密集的居酒屋招牌与暖黄灯笼，一位穿米色风衣的女性背对镜头，撑一把透明长柄伞，正向巷子深处走去，伞面有水珠，背景虚化。
+
+刊名横贯封面上部，以极大的白色粗体无衬线中文写出：
+城市漫游
+
+刊名下方一行，以较小的白色字母写出：
+CITYWALK
+
+刊名右下方，以白色小字写出期号：
+2026 / 11月号
+
+封面左侧中部纵向排列三条导读，每条以白色小号中文写出，条与条之间留出清晰间距，每条前面有一枚细小的白色圆点：
+深夜食堂地图：十二家开到凌晨的店
+一个人的美术馆
+阳台种菜三年记
+
+封面右侧中部偏上，以白色中号中文写出本期主打标题：
+雨停之后，城市才开始说话
+
+右上角有一枚白色矩形价格标签，内部以黑色数字写出：
+¥ 38.00
+
+封面底部横向排布一行小字，以白色字母写出：
+NOVEMBER 2026 · VOL.128 · CITYWALK MAGAZINE
+
+右下角放置一枚竖排条形码，黑白条纹清晰，下方有一串细小的黑色数字。
+
+整体为高对比度的杂志封面摄影风格，画面暗部偏冷，招牌与灯笼的暖光形成对比，文字全部为纯白色，排版干净、留白充足。</pre></details>
+      </div>
+    </article>
+
+    <article class="tcard" data-family="A">
+      <div class="tcard-media" onclick="zoom(this)">
+        <img src="samples/poster.jpg" alt="电影海报" loading="lazy">
+        <span class="badge" style="--c:#b04a2f">A 单画布排版</span>
+      </div>
+      <div class="tcard-body">
+        <div class="tcard-head"><h3>电影海报</h3><code>poster</code></div>
+        <p class="tagline">主视觉占上 2/3 + 标语 + 主标题 + credit block</p>
+        <dl class="spec">
+          <dt>版式骨架</dt><dd>主视觉占上 2/3 → 标语 → 主标题(中/英) → 底部 credit block → 上映信息</dd>
+          <dt>文字密度</dt><dd>标题级</dd>
+          <dt>分辨率</dt><dd>1024 × 1536 · 30 步 · CFG 4.0 · euler</dd>
+        </dl>
+        <p class="note"><span>实拍</span>中英标题层级正确，四行 credit block 字号自动缩小且可读</p>
+        <details><summary>查看完整提示词（539 字）</summary><pre>竖版 2:3 画幅，一张完整的院线电影海报，四边与画面边缘平行，四周留少量黑色背景。
+
+主视觉占据画面上方约三分之二：暴雨夜的荒漠中，一座巨大的白色射电望远镜天线仰面朝向天空，碟面直径占据画面宽度的大部分，天线支架的钢架结构在闪电中形成剪影。碟面正下方站着一个极小的黑色人影，仰头望天，比例悬殊。天空为压低的墨蓝色雷云，一道枝状闪电从云层劈下，落在碟面边缘。
+
+画面下方三分之一为纯黑色渐变，文字全部排布在这一区域内。
+
+主标题位于黑色区域上部，以极大的白色无衬线中文写出：
+静默频率
+
+主标题下方一行，以较小的白色字母写出：
+SILENT FREQUENCY
+
+标语位于主标题上方、主视觉下缘，以较小的白色中文写出：
+有些声音，只有孤独能听见。
+
+底部为演职员表区块，以极小的白色字母分四行居中排布，行距紧凑：
+DIRECTED BY LIN WEN
+STARRING ZHOU YAN · CHEN MU · K. ANDERSON
+MUSIC BY HAN XIAO
+2026 · 128 MIN
+
+最底部一行，以白色中文写出上映信息：
+11月14日 全国上映
+
+整体为冷色调科幻惊悚海报风格，主视觉高对比、颗粒感明显，文字区域干净克制，字体为无衬线现代体，排版居中对齐。</pre></details>
+      </div>
+    </article>
+
+    <article class="tcard" data-family="A">
+      <div class="tcard-media" onclick="zoom(this)">
+        <img src="samples/app_ui.jpg" alt="手机 App 界面" loading="lazy">
+        <span class="badge" style="--c:#b04a2f">A 单画布排版</span>
+      </div>
+      <div class="tcard-body">
+        <div class="tcard-head"><h3>手机 App 界面</h3><code>app_ui</code></div>
+        <p class="tagline">状态栏 → 主数据卡 → 三分类卡 → 列表 → 底部 tab</p>
+        <dl class="spec">
+          <dt>版式骨架</dt><dd>状态栏 → 问候区 → 主数据卡(环形图) → 三分类卡 → 列表 → 底部 tab</dd>
+          <dt>文字密度</dt><dd>标签级</dd>
+          <dt>分辨率</dt><dd>768 × 1664 · 30 步 · CFG 4.0 · euler</dd>
+        </dl>
+        <p class="note"><span>实拍</span>金额 / 图标 / tab 全对；环形进度弧被画成分段（已知弱点）</p>
+        <details><summary>查看完整提示词（726 字）</summary><pre>竖版 9:19.5 画幅，一张完整的手机 App 首页截图，屏幕内容铺满整个画面，四边与画面边缘平行，无手机外壳边框。
+
+界面为浅色主题，背景为极浅的米白色。顶部为系统状态栏，左侧以黑色小字写出时间：
+9:41
+右侧依次排列信号格、Wi-Fi 图标与电池图标，均为黑色线性图标。
+
+状态栏下方为 App 头部区域，左侧以黑色中号中文写出问候：
+晚上好，Doro
+
+下方一行以灰色小字写出：
+本月已记录 47 笔
+
+头部区域下方为一张圆角矩形主卡片，卡片底色为深墨绿色，内部以白色文字排版。卡片左上角以白色小字写出：
+本月支出
+
+其下方以极大的白色数字写出：
+¥ 3,842.60
+
+卡片右侧放置一枚环形进度图，圆环底槽为半透明白色，进度弧为亮橙色，环心以白色小字写出：
+预算 62%
+
+主卡片下方为三张等宽的圆角分类卡片，横向排布。每张卡片左上角有一枚简单的线性图标，下方以黑色中文写出分类名，再下方以黑色粗体数字写出金额。三张卡片依次为：
+餐饮，图标为碗筷，¥ 1,286
+交通，图标为地铁，¥ 412
+娱乐，图标为票券，¥ 738
+
+分类卡片下方为「最近记录」列表，标题以黑色小字写出，下方三条记录纵向排列，每条左侧为圆形图标，中间两行文字，右侧为金额。三条依次为：
+深夜食堂 · 22:14 · -¥ 68
+地铁通勤 · 19:02 · -¥ 6
+电影票 · 15:30 · -¥ 45
+
+屏幕底部为固定标签栏，横向四个图标与文字标签，当前选中项以墨绿色高亮，其余为灰色。四个标签依次为：
+首页 账单 预算 我的
+
+整体为清爽的现代移动端 UI 设计风格，圆角统一为中等半径，间距规整，层次分明，字体为无衬线体，配色限定为米白、墨绿、亮橙与深灰。</pre></details>
+      </div>
+    </article>
+
+    <article class="tcard" data-family="A">
+      <div class="tcard-media" onclick="zoom(this)">
+        <img src="samples/packaging.jpg" alt="产品包装" loading="lazy">
+        <span class="badge" style="--c:#b04a2f">A 单画布排版</span>
+      </div>
+      <div class="tcard-body">
+        <div class="tcard-head"><h3>产品包装</h3><code>packaging</code></div>
+        <p class="tagline">封口条 → 圆形插画 → 品牌 → 品名风味 → 刻度 + 净含量</p>
+        <dl class="spec">
+          <dt>版式骨架</dt><dd>封口条 → 圆形插画 → 品牌名 → 品名+风味 → 烘焙刻度+净含量</dd>
+          <dt>文字密度</dt><dd>段落级</dd>
+          <dt>分辨率</dt><dd>1024 × 1024 · 30 步 · CFG 4.0 · euler</dd>
+        </dl>
+        <p class="note"><span>实拍</span>几乎可直接投产，烘焙刻度指针与产地行都在</p>
+        <details><summary>查看完整提示词（625 字）</summary><pre>正方形 1:1 画幅，一款单品咖啡豆包装袋的正面完整展示，包装直立居中，四周留少量浅灰色背景，袋身有轻微的自然褶皱与柔和投影。
+
+包装为米白色牛皮纸自立袋，顶部有一条深棕色封口条，封口条上方有两个圆形排气孔。袋身左右两侧有纵向压痕。
+
+袋身正面自上而下分为四个区块。
+
+第一区块位于上部，居中一枚圆形手绘插画：淡赭色的层叠山峦，山后一轮橙红色太阳，山脚有几株细小的咖啡树，插画为单色线描加平涂，外圈有一圈深棕色细线圆框。
+
+第二区块为品牌名，位于插画下方，以深棕色粗体中文写出：
+山雾山
+
+品牌名下方一行，以较小的深棕色字母写出：
+MOUNTAIN MIST
+
+第三区块为品名与风味，位于袋身中部。品名以黑色中号中文写出：
+埃塞俄比亚 耶加雪菲
+
+品名下方一行，以灰色小字写出处理法：
+水洗 · 浅烘
+
+风味描述以三个短词横向排布，词与词之间以细竖线分隔，字体为黑色小号中文：
+柑橘 | 茉莉 | 蜂蜜
+
+第四区块位于袋身下部，包含两行信息。第一行为一条横向烘焙度刻度条，左端标「浅」、右端标「深」，刻度条上有一枚小三角指针停在偏左位置。第二行以灰色小字左右分列写出：
+净含量 250g
+烘焙日期 2026.10.18
+
+袋身最底部居中，以极小的灰色字母写出一行产地信息：
+YIRGACHEFFE · ETHIOPIA · 1900M
+
+整体为克制的精品咖啡包装设计风格，配色限定为米白、深棕、淡赭与一点橙红，排版以居中对齐为主，留白充足，纸质哑光。</pre></details>
+      </div>
+    </article>
+
+    <article class="tcard" data-family="A">
+      <div class="tcard-media" onclick="zoom(this)">
+        <img src="samples/infographic.jpg" alt="中文信息图" loading="lazy">
+        <span class="badge" style="--c:#b04a2f">A 单画布排版</span>
+      </div>
+      <div class="tcard-body">
+        <div class="tcard-head"><h3>中文信息图</h3><code>infographic</code></div>
+        <p class="tagline">标题带 + 四等高区块（图标 / 阶段 / 说明 / 数字）</p>
+        <dl class="spec">
+          <dt>版式骨架</dt><dd>标题带 → 四个等高区块(图标+阶段名+说明+关键数字) → 来源脚注</dd>
+          <dt>文字密度</dt><dd>段落级</dd>
+          <dt>分辨率</dt><dd>1024 × 1536 · 30 步 · CFG 4.0 · euler</dd>
+        </dl>
+        <p class="note"><span>实拍</span>四区块对齐严格，橙色数字层级清楚</p>
+        <details><summary>查看完整提示词（683 字）</summary><pre>竖版 2:3 画幅，一张完整的中文信息图海报，四边与画面边缘平行，四周留少量浅米色背景。
+
+整体底色为温暖的米白色，顶部有一条横向深棕色标题带。
+
+标题带内以白色粗体中文写出主标题：
+一杯咖啡的一生
+
+主标题下方一行，以较小的白色中文写出副标题：
+从海拔 1900 米到你手中的 12 分钟
+
+标题带下方，版面自上而下分为四个等高的横向区块，区块之间以一条细棕色虚线分隔。每个区块左侧为一个圆形图标，右侧为文字说明。
+
+第一区块图标为山坡与咖啡树。区块内以深棕色粗体中文写出阶段名：
+01 种植
+下方以黑色小字写出一句说明：
+生长在 1200 至 2200 米的高海拔坡地，昼夜温差让果实缓慢成熟。
+说明下方以橙色粗体数字写出关键数据：
+1900 M
+
+第二区块图标为一双手捧着红色果实。区块内以深棕色粗体中文写出：
+02 采摘
+下方说明：
+全部手工选果，只摘取完全成熟的深红色果实。
+关键数据：
+100% 手采
+
+第三区块图标为水槽与发酵桶。区块内以深棕色粗体中文写出：
+03 处理
+下方说明：
+水洗发酵 72 小时，再经日晒干燥至含水率 11%。
+关键数据：
+72 H
+
+第四区块图标为烘焙机滚筒与火焰。区块内以深棕色粗体中文写出：
+04 烘焙
+下方说明：
+滚筒内 210 摄氏度，一爆后 90 秒出锅，锁定花果香。
+关键数据：
+210 ℃
+
+版面最底部有一条细棕色横线，线下方以灰色小字左右分列写出：
+数据来源：山雾山烘焙实验室
+制图 2026.10
+
+整体为扁平化中文信息图风格，图标为单色线描，配色限定为米白、深棕、橙色，排版严格对齐，层级清晰，大量留白。</pre></details>
+      </div>
+    </article>
+
+    <article class="tcard" data-family="A">
+      <div class="tcard-media" onclick="zoom(this)">
+        <img src="samples/elevation.jpg" alt="建筑立面图" loading="lazy">
+        <span class="badge" style="--c:#b04a2f">A 单画布排版</span>
+      </div>
+      <div class="tcard-body">
+        <div class="tcard-head"><h3>建筑立面图</h3><code>elevation</code></div>
+        <p class="tagline">图框 + 正立面 + 尺寸线 / 标高 + 标题栏 + 指北针</p>
+        <dl class="spec">
+          <dt>版式骨架</dt><dd>图框 → 正立面(轴线对称) → 尺寸线/标高符号 → 标题栏 → 指北针</dd>
+          <dt>文字密度</dt><dd>标注级</dd>
+          <dt>分辨率</dt><dd>1280 × 864 · 30 步 · CFG 4.0 · euler</dd>
+        </dl>
+        <p class="note"><span>实拍</span>尺寸线、标高符号、标题栏全部成图；开窗数未严格按 3 扇</p>
+        <details><summary>查看完整提示词（550 字）</summary><pre>横版 3:2 画幅，一张完整的建筑立面图纸，图纸铺满画面，四边与画面边缘平行。
+
+图纸为纯白底，所有线条为深蓝色，呈标准建筑制图的线稿风格，不使用任何彩色。
+
+画面主体为一栋三层坡屋顶独立住宅的正立面，居中偏左放置，立面宽度约占图纸宽度的七成。住宅为对称构图：底层为深色基座与入口门廊，门廊由两根细柱支撑，门前有三级台阶；二层与三层各有三扇等宽的竖向长窗，窗框为细线矩形，窗台有横向细线；屋顶为双坡屋顶，屋脊水平，两侧檐口略微出挑，屋顶上方有一个小型烟囱。
+
+立面四周绘制尺寸标注：左右两侧各有一条竖向尺寸线，标注层高 3000、3000、2800；底部有一条横向总尺寸线，标注总宽 11800；各段尺寸线两端有细斜线箭头，数字以深蓝色小号数字写在尺寸线上方。
+
+立面右侧绘制一条竖向标高线，自上而下标注三个标高符号，符号为小三角形，旁边写出：
++8.80
++5.80
+±0.00
+
+图纸右下角为标题栏，为一个双层矩形框，框内以深蓝色小字分四行写出：
+南立面图
+SCALE 1:100
+DWG NO. A-201
+2026.10
+
+图纸左上角有一枚圆形指北针，内部为细线箭头与字母 N。
+
+整体为精确、干净的二维建筑制图风格，线宽有粗细层级，轮廓线较粗、标注线较细，无阴影无材质，纯粹的工程图纸质感。</pre></details>
+      </div>
+    </article>
+
+    <article class="tcard" data-family="B">
+      <div class="tcard-media" onclick="zoom(this)">
+        <img src="samples/storyboard.jpg" alt="电影故事板" loading="lazy">
+        <span class="badge" style="--c:#2f5d50">B 叙事序列</span>
+      </div>
+      <div class="tcard-body">
+        <div class="tcard-head"><h3>电影故事板</h3><code>storyboard</code></div>
+        <p class="tagline">2×3 画格，每格一条 镜号 / 景别 / 运镜 说明条</p>
+        <dl class="spec">
+          <dt>版式骨架</dt><dd>标题栏 → 2×3 画格 + 每格下方说明条(镜号/景别/运镜)</dd>
+          <dt>文字密度</dt><dd>标签级</dd>
+          <dt>分辨率</dt><dd>1280 × 720 · 30 步 · CFG 4.0 · euler</dd>
+        </dl>
+        <p class="note"><span>实拍</span>六格叙事连贯，铅笔排线质感统一，英文说明条全部正确</p>
+        <details><summary>查看完整提示词（787 字）</summary><pre>横版 16:9 画幅，一张完整的电影故事板纸，四边与画面边缘平行，四周留少量浅灰色桌面背景。
+
+纸张为浅米白色，表面有淡淡的方格网线。顶部有一条横向标题栏，以黑色无衬线大写字母写出：
+RAIN CHASE — STORYBOARD
+
+右侧以较小的黑色字母写出：
+SCENE 12 / 6 SHOTS
+
+标题栏下方，版面分为 2 行 × 3 列共六个等大的矩形画格，格与格之间留出均匀的白色间隙，每个画格为横向构图，画格外围有一圈细黑边框。
+
+每个画格下方紧接一条与画格等宽的说明条，说明条底色为浅灰，内部以黑色小号字母分左右两部分写出镜号与运镜说明。
+
+六个画格的内容依次为：
+第1格，大远景，俯视雨夜城市十字路口，路面积水反光，一辆黑色轿车急转，车灯在雨幕中拉出长条光带，说明条写：SHOT 01 / WIDE / CRANE DOWN
+第2格，中景，侧面跟拍，黑色轿车贴着路边护栏疾驰，车轮卷起水雾，说明条写：SHOT 02 / MEDIUM / TRACKING
+第3格，特写，湿滑路面上的轮胎与飞溅水花，画面几乎被水雾填满，说明条写：SHOT 03 / CLOSE UP / LOW ANGLE
+第4格，主观视角，从车内透过雨刷划过的挡风玻璃看向前方，雨刷在画面中形成一道斜向遮挡，说明条写：SHOT 04 / POV / HANDHELD
+第5格，近景，驾驶座上的女性侧脸，短发被雨打湿，眼睛紧盯前方，窗外霓虹在脸上划过，说明条写：SHOT 05 / CLOSE / PROFILE
+第6格，大远景，镜头急速拉远，轿车驶入高架桥下，桥体阴影吞没车身，说明条写：SHOT 06 / EXTREME WIDE / PULL BACK
+
+六个画格统一采用黑白铅笔速写风格，线条放松、有轻重变化，暗部以排线与灰色马克笔平涂表现，不使用彩色。整体呈现专业分镜师的工作稿质感。</pre></details>
+      </div>
+    </article>
+
+    <article class="tcard" data-family="B">
+      <div class="tcard-media" onclick="zoom(this)">
+        <img src="samples/yonkoma.jpg" alt="四格漫画" loading="lazy">
+        <span class="badge" style="--c:#2f5d50">B 叙事序列</span>
+      </div>
+      <div class="tcard-body">
+        <div class="tcard-head"><h3>四格漫画</h3><code>yonkoma</code></div>
+        <p class="tagline">2×2 等大格，起承转合，每格一枚台词气泡</p>
+        <dl class="spec">
+          <dt>版式骨架</dt><dd>2×2 等大画格 → 起承转合 → 每格一枚台词气泡</dd>
+          <dt>文字密度</dt><dd>对话级</dd>
+          <dt>分辨率</dt><dd>1024 × 1024 · 30 步 · CFG 4.0 · euler</dd>
+        </dl>
+        <p class="note"><span>实拍</span>四格气泡台词全对，猫与人物造型跨格一致</p>
+        <details><summary>查看完整提示词（569 字）</summary><pre>正方形 1:1 画幅，一整页日式四格漫画，四边与画面边缘平行，居中排列，四周留少量白色页边。
+
+页面为纯白底，版面分为 2 行 × 2 列共四个等大的正方形画格，格与格之间留出均匀的白色间隙，每个画格外围有一圈细黑边框。阅读顺序为左上、右上、左下、右下。
+
+统一风格：日式四格漫画，清晰黑色描线，赛璐璐平涂上色，色彩明亮简洁，人物为夸张的 Q 版比例，大头小身，表情夸张。
+
+第1格，左上：夜晚的公寓客厅，一只橘白相间的胖猫蹲坐在空食盆前，仰头看向画面右侧，眼神空洞，尾巴尖轻轻抽动。画格右上角有一枚白色圆形气泡，内部以黑色中文写出：
+喵。
+
+第2格，右上：厨房台面特写，一位戴眼镜的年轻女性背影，正用开罐器打开猫罐头，罐头边缘翘起，一小缕蒸汽升起。画格左下角有一枚锯齿边气泡，内部以黑色中文写出：
+来了来了。
+
+第3格，左下：橘猫扭头看向画面左侧，一脸嫌弃，胡须向下垂，旁边用三道短斜线表示无语。画格右侧有一枚小圆气泡，内部以黑色中文写出：
+换口味了？
+
+第4格，右下：女性坐在沙发上，一手拿着猫罐头，一手用叉子把罐头里的肉块送进自己嘴里，表情满足；橘猫站在沙发扶手上，瞪大眼睛，耳朵向后压。画格顶部有一枚爆炸形气泡，内部以黑色粗体中文写出：
+这是我的！
+
+整页四个画格的人物与猫保持一致的造型与配色，格与格之间色调统一，整体轻松幽默。</pre></details>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section id="params">
+  <div class="sec-head"><span class="no">03</span><h2>参数口径</h2></div>
+  <p class="sec-sub">
+    原作标注的参数与官方模板默认值并不一致，实测两者都能复刻成功。
+    <b>稳定性来自提示词结构，不来自采样参数</b>——参数只影响锐度与耗时。
+  </p>
+  <table>
+    <thead><tr><th>项</th><th>本次口径</th><th>官方模板默认</th><th>实测结论</th></tr></thead>
+    <tbody><tr><td>采样器</td><td class='mono'>euler</td><td class='mono'>er_sde</td><td>两种都能复刻成功；模板默认也正常</td></tr><tr><td>步数</td><td class='mono'>30</td><td class='mono'>25</td><td>25 步已足够，30 步更稳，耗时 +30%</td></tr><tr><td>CFG</td><td class='mono'>4.0</td><td class='mono'>2.5</td><td>CFG 4 文字更锐，2.5 画面更柔；文字密集时用 4</td></tr><tr><td>调度器</td><td class='mono'>simple</td><td class='mono'>simple</td><td>无差异</td></tr><tr><td>分辨率</td><td class='mono'>1024×1536 / 720×1280</td><td class='mono'>1024×1536</td><td>宽高必须为 16 的倍数；总像素 1M–2M 最佳</td></tr><tr><td>SLG</td><td class='mono'>关</td><td class='mono'>关（switch=false）</td><td>官方建议开时跳过层 22；动漫风格可能过曝</td></tr></tbody>
+  </table>
+</section>
+
+
+<section id="story">
+  <div class="sec-head"><span class="no">04</span><h2>末班车开往海见</h2></div>
+  <p class="sec-sub">沿海小城的私铁支线下个月就要废线。高中生悠人每晚坐末班车回家，某夜遇见一个穿旧式水手服的少女——她总在早已废站的「海见」下车，并且已经在那里等了三十年。</p>
+  <div class="story-meta">
+    <span>题材 <b>日式短篇 · 夏末 · 离别</b></span><span>页数 <b>8 页</b></span>
+    <span>画幅 <b>800x1200</b></span><span>口径 <b>euler / 30 步 / CFG 4</b></span>
+  </div>
+  <div class="story">
+      <figure class="page">
+        <img src="story/pages/01.jpg" alt="第 1 页" loading="lazy" onclick="zoom(this)">
+        <figcaption><b>第 1 页</b> · 空车厢<em>那是末班车，也是我第一次见到她的夜晚。</em></figcaption>
+      </figure>
+      <figure class="page">
+        <img src="story/pages/02.jpg" alt="第 2 页" loading="lazy" onclick="zoom(this)">
+        <figcaption><b>第 2 页</b> · 同一站<em>海见站。地图上没有这一站。</em></figcaption>
+      </figure>
+      <figure class="page">
+        <img src="story/pages/03.jpg" alt="第 3 页" loading="lazy" onclick="zoom(this)">
+        <figcaption><b>第 3 页</b> · 剪报<em>平成八年七月。三十年前。</em></figcaption>
+      </figure>
+      <figure class="page">
+        <img src="story/pages/04.jpg" alt="第 4 页" loading="lazy" onclick="zoom(this)">
+        <figcaption><b>第 4 页</b> · 你在等人吗<em>她的脚踝，被站台的灯穿过去了。</em></figcaption>
+      </figure>
+      <figure class="page">
+        <img src="story/pages/05.jpg" alt="第 5 页" loading="lazy" onclick="zoom(this)">
+        <figcaption><b>第 5 页</b> · 站牌上的日期<em>她一直站在三十年前的那个晚上。</em></figcaption>
+      </figure>
+      <figure class="page">
+        <img src="story/pages/06.jpg" alt="第 6 页" loading="lazy" onclick="zoom(this)">
+        <figcaption><b>第 6 页</b> · 废线前夜<em>我可以说，也可以不说。</em></figcaption>
+      </figure>
+      <figure class="page">
+        <img src="story/pages/07.jpg" alt="第 7 页" loading="lazy" onclick="zoom(this)">
+        <figcaption><b>第 7 页</b> · 讲给她听<em>这三十年，我把这条线讲完了。</em></figcaption>
+      </figure>
+      <figure class="page">
+        <img src="story/pages/08.jpg" alt="第 8 页" loading="lazy" onclick="zoom(this)">
+        <figcaption><b>第 8 页</b> · 终电之后<em>末班车之后，还有很长的一段路。</em></figcaption>
+      </figure></div>
+  <p class="sec-sub" style="margin-top:26px">8 页单 seed 单次生成，未修图。跨页一致性靠每页逐字复用同一段角色设定卡；仍存在面部细节漂移，这是 T2I 无参考图输入的固有边界，见 docs/漫画分镜实战.md。</p>
+</section>
+
+<section id="usage">
+  <div class="sec-head"><span class="no">05</span><h2>复用方式</h2></div>
+  <p class="sec-sub">
+    驱动把官方模板的子图摊平成 9 个节点直接提交 <code>/prompt</code>，
+    不经前端、不改模板 JSON，参数就是参数，没有隐式状态。
+  </p>
+  <pre class="shell"><span class="c"># 0. 必须用 ComfyUI 自带 python，且 ComfyUI 已在 127.0.0.1:8188</span>
+<span class="c"># 1. 契约自检：三件套是否在 /object_info 下拉表里（避免静默无图）</span>
+python run.py lay --probe
+
+<span class="c"># 2. 列类型 / 跑全部 / 跑指定类型</span>
+python run.py lay --list
+python run.py lay
+python run.py lay tarot dossier
+
+<span class="c"># 3. 自定义：写 recipe.json 交给驱动</span>
+python run.py layrun recipe.json
+
+<span class="c"># recipe.json 字段</span>
+{ "name": "my_card", "prompt": "...", "width": 1024, "height": 1536,
+  "steps": 30, "cfg": 4.0, "sampler": "euler", "scheduler": "simple", "seed": 0 }</pre>
+  <p class="sec-sub" style="margin-top:22px">
+    模型名口径：模型放在 <code>models/*/MOSS-Image/</code> 子目录时，组合框合法值是
+    <code>MOSS-Image\文件名</code>。写裸名会被判 <code>value_not_in_list</code>，
+    节点输出被忽略、下游剪枝，最终 <code>status=success</code> 但 <code>outputs={}</code>——
+    静默无图，最难查。所以第一步永远是 <code>--probe</code>。
+  </p>
+</section>
+
+</main>
+
+<footer><div class="wrap">
+  <b>11 · 版式化文生图</b> &nbsp;·&nbsp; ComfyUI-Experiment-Toolbox &nbsp;·&nbsp;
+  结论内核 <code>06_文档与结论/MOSS-Image-版式化文生图实测结论.md</code>。
+  全部样张为单 seed 单次生成，未做后期修图。
+</div></footer>
+
+<div id="lb" onclick="this.classList.remove('on')"><img id="lbimg" src="" alt=""></div>
+<script>
+function zoom(el) {
+  var src = el.tagName === 'IMG' ? el.src : el.querySelector('img').src;
+  document.getElementById('lbimg').src = src;
+  document.getElementById('lb').classList.add('on');
+}
+function filt(btn, f) {
+  document.querySelectorAll('.filters button').forEach(function(b){ b.classList.remove('on'); });
+  btn.classList.add('on');
+  document.querySelectorAll('.tcard').forEach(function(c){
+    c.style.display = (f === 'all' || c.dataset.family === f) ? '' : 'none';
+  });
+}
+document.addEventListener('keydown', function(e){
+  if (e.key === 'Escape') document.getElementById('lb').classList.remove('on');
+});
+</script>
+</body>
+</html>

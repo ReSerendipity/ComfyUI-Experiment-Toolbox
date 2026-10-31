@@ -35,6 +35,15 @@ ComfyUI 实验与改造工具箱 · 根目录统一入口
     python run.py dur --adapter minimax_h3_t2v --dry-run   # ★ E4 适配器驱动档位跑测
     python run.py ftrend          # ★ E5 跨快照趋势回归（硬回归 exit 1，只读）
 
+2026-10-29 新增「第三轨：版式化文生图」（变量维度 = 提示词结构）：
+
+    python run.py lay --probe     # 契约自检：三件套是否在 /object_info 下拉表里
+    python run.py lay --list      # 列出 10 类版式骨架
+    python run.py lay             # 按类型库出全部样张（需 ComfyUI 在 8188）
+    python run.py lay tarot dossier        # 只出指定类型
+    python run.py layrun recipe.json       # 自定义 recipe 直连驱动
+    python run.py laygal          # 由类型库重建 gallery.html
+
 Windows 用户可直接双击 `start.bat`（启动面板）或用 `run.bat <子命令>`，免记 python 路径。
 """
 import os
@@ -50,6 +59,7 @@ IMPORT_DIRS = [
     "03_受控跑测",
     "04_结果分析",
     "10_模型家族横评",
+    "11_版式化文生图",
 ]
 
 # 入口表：子命令 -> (说明, 相对脚本路径)
@@ -73,6 +83,9 @@ ENTRIES = {
     "vqc":     ("★ 视频质检：容器层+抽帧层+时序层（只读，ffprobe/ffmpeg，--selftest 合成三态自检）", "10_模型家族横评/lib_video_qc.py"),
     "h3dur":   ("参数轨⑤ MiniMax H3 t2v 时长档位受控跑测（需 ComfyUI 已在 8188，--dry-run 0 提交）", "03_受控跑测/run_h3_durations.py"),
     "dur":     ("★ E4 通用视频时长档位跑测器（适配器驱动，--adapter <名> --dry-run 先看计划）", "03_受控跑测/run_durations.py"),
+    "lay":     ("★ 版式化文生图：按类型库出样张（--probe 契约自检 / --list 列类型）", "11_版式化文生图/gen_types.py"),
+    "layrun":  ("★ 版式化文生图：自定义 recipe.json 直连驱动", "11_版式化文生图/layout_runner.py"),
+    "laygal":  ("★ 版式化文生图：由类型库重建 gallery.html", "11_版式化文生图/build_gallery.py"),
 }
 
 # pipeline 的顺序（参数轨四步）

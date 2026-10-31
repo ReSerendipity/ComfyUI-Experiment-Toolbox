@@ -27,6 +27,7 @@ A two-track **script toolbox + zero-dependency Web panel** that drives one local
 - **结构改造轨（`05` + `08`）**：备份 → 官方模板对齐 → 加槽位 → 清理 → verify。回答"工作流怎么改对"。
 - **`09_Web面板`**：纯 Python 标准库（`http.server`）实现的人类用户入口，**零第三方依赖**，浏览器四页覆盖参数轨全流程。
 - **`10_模型家族横评`**：同底座换权重的单变量横评（去重、台账、断点续跑、门禁、对账、趋势回归、视频质检、提示词变体闭环）。
+- **`11_版式化文生图`**：变量维度是**提示词结构**的第三轨——把一张图当版面生成（卡牌/海报/封面/界面/图纸/分镜页），10 类版式骨架 + API 直连驱动 + 连贯短篇漫画实例。回答"怎么让模型把版式和文字同时画对"。
 
 > 它**不是** ComfyUI 自定义节点（没有 `__init__.py` / `nodes.py`，不装进 `custom_nodes/`），而是在 ComfyUI 之外跑的脚本集合；只有跑测那一步会通过 `127.0.0.1:8188` 把 API prompt 提交给本机 ComfyUI。
 
@@ -314,7 +315,7 @@ Edit only the `PY=` line at the top of `run.bat` to point at ComfyUI's bundled p
 ```
 ComfyUI-Experiment-Toolbox/
 ├── README.md                  ← this file
-├── run.py / run.bat / start.bat  ★ single entry (19 subcommands + pipeline / full)
+├── run.py / run.bat / start.bat  ★ single entry (22 subcommands + pipeline / full)
 ├── requirements-lock.txt      ← pinned third-party deps (numpy / Pillow)
 ├── 01_工作流扁平化/            ★ subgraph flattener + reverse (API → UI)
 ├── 02_调度器sigma分析/         ★ offline scheduler risk matrix (no image gen)
@@ -326,6 +327,7 @@ ComfyUI-Experiment-Toolbox/
 ├── 08_官方模板对齐/           11 workflow-vs-official-template diff snapshots
 ├── 09_Web面板/                ★ browser UI: 4 pages, port 8189, zero deps
 ├── 10_模型家族横评/           ★ same-arch cross-check (dedup/ledger/resume/gate/reconcile/trend/QC/closed-loop)
+├── 11_版式化文生图/           ★ layout-conditioned T2I: 10 layout skeletons + API driver + short manga
 ├── 99_归档/                   pre-merge old READMEs and deduped duplicates
 ├── tests/                    stdlib unit tests (wired into CI)
 └── docs/                      CONTRIBUTING.md, release-governance.md
