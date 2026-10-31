@@ -11,6 +11,8 @@ import flatten
 from logutil import append_record, migrate_legacy, rebuild_consolidated
 
 COMFY = "http://127.0.0.1:8188"
+SERVER_DEAD = ("server_dead: /system_stats 不可达（ComfyUI 进程可能已被杀死）；"
+               "重启服务后用 ONLY=<模型标签> 续跑")
 BASE = os.path.expandvars(r"%USERPROFILE%\WorkBuddy\2026-09-22-23-53-24\ss_test")
 OUT = os.path.join(BASE, "output_models")
 WF = os.path.expandvars(r"%USERPROFILE%\APP\ComfyUI-aki-v3.2\ComfyUI\user\default\workflows\Image")
@@ -76,13 +78,31 @@ def post(path, payload):
         return None, str(e)
 
 
+def _alive():
+    """服务端探活。/system_stats 是 ComfyUI 唯一的轻量健康端点。"""
+    try:
+        with urllib.request.urlopen(COMFY + "/system_stats", timeout=5) as r:
+            return bool(json.loads(r.read().decode()))
+    except Exception:
+        return False
+
+
 def wait(pid, timeout=1800):
     t0 = time.time()
+    miss = 0
     while time.time() - t0 < timeout:
         try:
             with urllib.request.urlopen(f"{COMFY}/history/{pid}", timeout=15) as r:
                 h = json.loads(r.read().decode())
+            miss = 0
         except Exception:
+            miss += 1
+            # 服务端可能已被静默杀死：本机 2026-10-27 实测，nvlddmkm 事件 153（GPU 引擎复位）
+            # 会直接杀掉 ComfyUI 的 python——日志停在 x/N 步、无 traceback，客户端只见请求失败。
+            # 每 5 次失败探活一次；探不通立即返回，别把整个 timeout 空转在死服务上，
+            # 否则整张矩阵会退化成一堆 timeout，看不出真因。
+            if miss % 5 == 0 and not _alive():
+                return False, None, SERVER_DEAD
             time.sleep(3); continue
         if pid in h:
             st = h[pid].get("status", {})
@@ -257,6 +277,10 @@ def main():
                             "seed": p["seed"], "steps": p["steps"], "cfg": p["cfg"],
                             "py": env["py"], "comfy": env["comfy"]})
                 rebuild_consolidated(LOG_JSON, LOG_JSONL, key=lambda r: (r.get("model"), r.get("combo")))
+                if not _alive():
+                    print("\n[中断] 服务端已死（提交阶段），剩余组合不再提交；"
+                          "重启 ComfyUI 后用 ONLY=<模型标签> 续跑。", flush=True)
+                    break
                 continue
             ok, outs, werr = wait(res["prompt_id"])
             dt = round(time.time() - t0, 1)
@@ -276,6 +300,10 @@ def main():
                         "seed": p["seed"], "steps": p["steps"], "cfg": p["cfg"],
                         "py": env["py"], "comfy": env["comfy"]})
             rebuild_consolidated(LOG_JSON, LOG_JSONL, key=lambda r: (r.get("model"), r.get("combo")))
+            if not ok and str(werr).startswith("server_dead"):
+                print("\n[中断] 服务端已死，剩余组合不再提交；"
+                      "重启 ComfyUI 后用 ONLY=<模型标签> 续跑。", flush=True)
+                break
     cons = rebuild_consolidated(LOG_JSON, LOG_JSONL, key=lambda r: (r.get("model"), r.get("combo")))
     print("\n完成：成功 %d / %d" % (sum(1 for x in cons if x["ok"]), len(cons)))
     return 0 if n_fail == 0 else 1

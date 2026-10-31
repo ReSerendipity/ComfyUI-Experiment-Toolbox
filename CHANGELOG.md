@@ -55,6 +55,7 @@
 
 ### Fixed
 
+- `fix(03)`: 服务端死亡快速识别 —— `wait()` 每 5 次失败探活 `/system_stats`，探不通立即返回 `server_dead` 并中断本轮（此前 1800s/900s timeout 空转在死服务上，整张矩阵退化成一堆 `timeout` 看不出真因）；README 补磁盘预算按「图片体积 ×2~4」预留（2026-10-27）
 - `fix(10)`: Gate ③ 同长改写断言去除时钟依赖（2026-10-17）
 - `fix(gate)`: 修正 Gate ⑤ 的 NUL 分隔符并补空集失败闸（2026-10-16）
 - `fix(privacy)`: 本机字面路径脱敏为 %USERPROFILE%/占位符形态，Gate ⑤ 扩面至 .json/.md（架构 P1-3）（2026-10-15）
