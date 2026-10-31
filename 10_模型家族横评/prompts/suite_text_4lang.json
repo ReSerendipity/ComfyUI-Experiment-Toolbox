@@ -1,0 +1,247 @@
+{
+ "_comment": "四语文字渲染套件（t2i 字形先验基线）。落地 10_模型家族横评/docs/覆盖矩阵设计.md 第 16 条「文字渲染：非拉丁 + 多行」（原列第二批）。设计原则：①四语共用完全相同的版面骨架（标题/副标/插画/三行菜单/印章/页脚），只替换引号内的目标语言文字，横向对比时差异只可能来自语言本身；②四语文案是同一家茶屋的对应表达，字符量级接近（中/日 4 字标题、英 17 字母、韩 6 音节），避免「某语言字多所以更难」的偏差；③10 项逐字断言，跨 6 个字号层级（主标→副标→菜单品名/价格→印章→页脚），同时考字号区分、左右对齐、数字混排、标点处理。实测来源：2026-10-29/30 九模型 × 四语 × 四种子（144 张），结果见 docs/文字渲染四语横评.md。",
+ "negative_default": "blurry text, illegible letters, misspelled words, gibberish characters, extra words, watermark, signature, logo, low contrast, cluttered background",
+ "resolution_note": "1024×1360（3:4，16 的整数倍）。改分辨率会重排构图，比图必须重跑；裁切核对时用全宽（1024px）不要窄带放大——窄带会切掉草字头与韩文收音，实测因此把「山间茶屋」误读成「山间余屋」。",
+ "cases": [
+  {
+   "id": "t16_text_zh",
+   "cn": "中文文字海报（同版式四语之一）",
+   "lang": "zh",
+   "prompt": "A vertical poster for a small tea shop, minimal modern layout, warm cream paper background, dark charcoal ink text, one red seal accent.\n\nFrom top to bottom:\n1. A large bold title at the top center: \"山间茶屋\"\n2. A thin horizontal line under the title\n3. A smaller subtitle line: \"秋日限定 · 桂花乌龙\"\n4. In the middle, a simple flat illustration of a ceramic teapot and one teacup on a wooden tray\n5. Below the illustration, three menu rows, each item name aligned left and its price aligned right:\n   \"桂花乌龙\"  \"28 元\"\n   \"炭焙铁观音\"  \"32 元\"\n   \"陈皮普洱\"  \"26 元\"\n6. A small red square stamp in the lower right corner with the single character \"茶\"\n7. One line of small print at the very bottom: \"营业时间 09:00 — 21:00\"\n\nRender every quoted string exactly as written, correctly spelled, sharp and fully legible. Do not add any other words, letters or numbers anywhere in the image.",
+   "assertion": "主标题「山间茶屋」 / 副标题「秋日限定 · 桂花乌龙」 / 菜单1 品名「桂花乌龙」 / 菜单1 价格「28 元」 / 菜单2 品名「炭焙铁观音」 / 菜单2 价格「32 元」 / 菜单3 品名「陈皮普洱」 / 菜单3 价格「26 元」 / 印章「茶」 / 页脚「营业时间 09:00 — 21:00」",
+   "assertions": [
+    {
+     "item": "主标题",
+     "expect": "山间茶屋",
+     "core": true
+    },
+    {
+     "item": "副标题",
+     "expect": "秋日限定 · 桂花乌龙",
+     "core": true
+    },
+    {
+     "item": "菜单1 品名",
+     "expect": "桂花乌龙",
+     "core": true
+    },
+    {
+     "item": "菜单1 价格",
+     "expect": "28 元",
+     "core": false
+    },
+    {
+     "item": "菜单2 品名",
+     "expect": "炭焙铁观音",
+     "core": false
+    },
+    {
+     "item": "菜单2 价格",
+     "expect": "32 元",
+     "core": false
+    },
+    {
+     "item": "菜单3 品名",
+     "expect": "陈皮普洱",
+     "core": false
+    },
+    {
+     "item": "菜单3 价格",
+     "expect": "26 元",
+     "core": false
+    },
+    {
+     "item": "印章",
+     "expect": "茶",
+     "core": false
+    },
+    {
+     "item": "页脚",
+     "expect": "营业时间 09:00 — 21:00",
+     "core": false
+    }
+   ],
+   "core_note": "核心项（错一项扣 2）：主标题、副标题、菜单1 品名——提示词直接要求的那几个字；其余错一项扣 1；格式偏离扣 0.5。满分 10。"
+  },
+  {
+   "id": "t16_text_en",
+   "cn": "English文字海报（同版式四语之一）",
+   "lang": "en",
+   "prompt": "A vertical poster for a small tea shop, minimal modern layout, warm cream paper background, dark charcoal ink text, one red seal accent.\n\nFrom top to bottom:\n1. A large bold title at the top center: \"MOUNTAIN TEA HOUSE\"\n2. A thin horizontal line under the title\n3. A smaller subtitle line: \"AUTUMN SPECIAL · OSMANTHUS OOLONG\"\n4. In the middle, a simple flat illustration of a ceramic teapot and one teacup on a wooden tray\n5. Below the illustration, three menu rows, each item name aligned left and its price aligned right:\n   \"OSMANTHUS OOLONG\"  \"$4.50\"\n   \"ROASTED TIE GUAN YIN\"  \"$5.00\"\n   \"AGED PU-ERH\"  \"$4.00\"\n6. A small red square stamp in the lower right corner with the single character \"TEA\"\n7. One line of small print at the very bottom: \"OPEN DAILY 09:00 — 21:00\"\n\nRender every quoted string exactly as written, correctly spelled, sharp and fully legible. Do not add any other words, letters or numbers anywhere in the image.",
+   "assertion": "主标题「MOUNTAIN TEA HOUSE」 / 副标题「AUTUMN SPECIAL · OSMANTHUS OOLONG」 / 菜单1 品名「OSMANTHUS OOLONG」 / 菜单1 价格「$4.50」 / 菜单2 品名「ROASTED TIE GUAN YIN」 / 菜单2 价格「$5.00」 / 菜单3 品名「AGED PU-ERH」 / 菜单3 价格「$4.00」 / 印章「TEA」 / 页脚「OPEN DAILY 09:00 — 21:00」",
+   "assertions": [
+    {
+     "item": "主标题",
+     "expect": "MOUNTAIN TEA HOUSE",
+     "core": true
+    },
+    {
+     "item": "副标题",
+     "expect": "AUTUMN SPECIAL · OSMANTHUS OOLONG",
+     "core": true
+    },
+    {
+     "item": "菜单1 品名",
+     "expect": "OSMANTHUS OOLONG",
+     "core": true
+    },
+    {
+     "item": "菜单1 价格",
+     "expect": "$4.50",
+     "core": false
+    },
+    {
+     "item": "菜单2 品名",
+     "expect": "ROASTED TIE GUAN YIN",
+     "core": false
+    },
+    {
+     "item": "菜单2 价格",
+     "expect": "$5.00",
+     "core": false
+    },
+    {
+     "item": "菜单3 品名",
+     "expect": "AGED PU-ERH",
+     "core": false
+    },
+    {
+     "item": "菜单3 价格",
+     "expect": "$4.00",
+     "core": false
+    },
+    {
+     "item": "印章",
+     "expect": "TEA",
+     "core": false
+    },
+    {
+     "item": "页脚",
+     "expect": "OPEN DAILY 09:00 — 21:00",
+     "core": false
+    }
+   ],
+   "core_note": "核心项（错一项扣 2）：主标题、副标题、菜单1 品名——提示词直接要求的那几个字；其余错一项扣 1；格式偏离扣 0.5。满分 10。"
+  },
+  {
+   "id": "t16_text_ja",
+   "cn": "日本語文字海报（同版式四语之一）",
+   "lang": "ja",
+   "prompt": "A vertical poster for a small tea shop, minimal modern layout, warm cream paper background, dark charcoal ink text, one red seal accent.\n\nFrom top to bottom:\n1. A large bold title at the top center: \"山の茶屋\"\n2. A thin horizontal line under the title\n3. A smaller subtitle line: \"秋限定・金木犀烏龍\"\n4. In the middle, a simple flat illustration of a ceramic teapot and one teacup on a wooden tray\n5. Below the illustration, three menu rows, each item name aligned left and its price aligned right:\n   \"金木犀烏龍\"  \"480 円\"\n   \"炭焙鉄観音\"  \"520 円\"\n   \"陳皮普洱\"  \"450 円\"\n6. A small red square stamp in the lower right corner with the single character \"茶\"\n7. One line of small print at the very bottom: \"営業時間 09:00 — 21:00\"\n\nRender every quoted string exactly as written, correctly spelled, sharp and fully legible. Do not add any other words, letters or numbers anywhere in the image.",
+   "assertion": "主标题「山の茶屋」 / 副标题「秋限定・金木犀烏龍」 / 菜单1 品名「金木犀烏龍」 / 菜单1 价格「480 円」 / 菜单2 品名「炭焙鉄観音」 / 菜单2 价格「520 円」 / 菜单3 品名「陳皮普洱」 / 菜单3 价格「450 円」 / 印章「茶」 / 页脚「営業時間 09:00 — 21:00」",
+   "assertions": [
+    {
+     "item": "主标题",
+     "expect": "山の茶屋",
+     "core": true
+    },
+    {
+     "item": "副标题",
+     "expect": "秋限定・金木犀烏龍",
+     "core": true
+    },
+    {
+     "item": "菜单1 品名",
+     "expect": "金木犀烏龍",
+     "core": true
+    },
+    {
+     "item": "菜单1 价格",
+     "expect": "480 円",
+     "core": false
+    },
+    {
+     "item": "菜单2 品名",
+     "expect": "炭焙鉄観音",
+     "core": false
+    },
+    {
+     "item": "菜单2 价格",
+     "expect": "520 円",
+     "core": false
+    },
+    {
+     "item": "菜单3 品名",
+     "expect": "陳皮普洱",
+     "core": false
+    },
+    {
+     "item": "菜单3 价格",
+     "expect": "450 円",
+     "core": false
+    },
+    {
+     "item": "印章",
+     "expect": "茶",
+     "core": false
+    },
+    {
+     "item": "页脚",
+     "expect": "営業時間 09:00 — 21:00",
+     "core": false
+    }
+   ],
+   "core_note": "核心项（错一项扣 2）：主标题、副标题、菜单1 品名——提示词直接要求的那几个字；其余错一项扣 1；格式偏离扣 0.5。满分 10。"
+  },
+  {
+   "id": "t16_text_ko",
+   "cn": "한국어文字海报（同版式四语之一）",
+   "lang": "ko",
+   "prompt": "A vertical poster for a small tea shop, minimal modern layout, warm cream paper background, dark charcoal ink text, one red seal accent.\n\nFrom top to bottom:\n1. A large bold title at the top center: \"산속 찻집\"\n2. A thin horizontal line under the title\n3. A smaller subtitle line: \"가을 한정 · 계화 우롱\"\n4. In the middle, a simple flat illustration of a ceramic teapot and one teacup on a wooden tray\n5. Below the illustration, three menu rows, each item name aligned left and its price aligned right:\n   \"계화 우롱\"  \"4,800원\"\n   \"탄배 철관음\"  \"5,200원\"\n   \"진피 보이\"  \"4,500원\"\n6. A small red square stamp in the lower right corner with the single character \"차\"\n7. One line of small print at the very bottom: \"영업시간 09:00 — 21:00\"\n\nRender every quoted string exactly as written, correctly spelled, sharp and fully legible. Do not add any other words, letters or numbers anywhere in the image.",
+   "assertion": "主标题「산속 찻집」 / 副标题「가을 한정 · 계화 우롱」 / 菜单1 品名「계화 우롱」 / 菜单1 价格「4,800원」 / 菜单2 品名「탄배 철관음」 / 菜单2 价格「5,200원」 / 菜单3 品名「진피 보이」 / 菜单3 价格「4,500원」 / 印章「차」 / 页脚「영업시간 09:00 — 21:00」",
+   "assertions": [
+    {
+     "item": "主标题",
+     "expect": "산속 찻집",
+     "core": true
+    },
+    {
+     "item": "副标题",
+     "expect": "가을 한정 · 계화 우롱",
+     "core": true
+    },
+    {
+     "item": "菜单1 品名",
+     "expect": "계화 우롱",
+     "core": true
+    },
+    {
+     "item": "菜单1 价格",
+     "expect": "4,800원",
+     "core": false
+    },
+    {
+     "item": "菜单2 品名",
+     "expect": "탄배 철관음",
+     "core": false
+    },
+    {
+     "item": "菜单2 价格",
+     "expect": "5,200원",
+     "core": false
+    },
+    {
+     "item": "菜单3 品名",
+     "expect": "진피 보이",
+     "core": false
+    },
+    {
+     "item": "菜单3 价格",
+     "expect": "4,500원",
+     "core": false
+    },
+    {
+     "item": "印章",
+     "expect": "차",
+     "core": false
+    },
+    {
+     "item": "页脚",
+     "expect": "영업시간 09:00 — 21:00",
+     "core": false
+    }
+   ],
+   "core_note": "核心项（错一项扣 2）：主标题、副标题、菜单1 品名——提示词直接要求的那几个字；其余错一项扣 1；格式偏离扣 0.5。满分 10。"
+  }
+ ]
+}
