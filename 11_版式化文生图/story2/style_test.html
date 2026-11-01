@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>画风试点 · 猫与台风夜</title>
+<style>
+:root{--bg:#f6f4ee;--paper:#fffefa;--ink:#1b1a17;--ink2:#565248;--ink3:#8d887a;
+--line:#e3ded2;--accent:#b04a2f;}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;
+font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
+.wrap{max-width:1400px;margin:0 auto;padding:48px 28px 80px}
+h1{font-family:"Songti SC",Georgia,serif;font-size:34px;margin:0 0 8px}
+.sub{color:var(--ink2);font-size:14px;margin:0 0 8px}
+.meta{font-size:12.5px;color:var(--ink3);margin:0 0 30px}
+table{width:100%;border-collapse:separate;border-spacing:14px}
+th{font-size:14px;font-weight:600;text-align:left;padding:0 0 6px}
+th span{font-weight:400;font-size:11.5px;color:var(--ink3)}
+th.row{width:96px;vertical-align:middle;font-family:"Songti SC",Georgia,serif;
+font-size:15px;padding-right:6px}
+th.row span{display:block;color:var(--ink3);font-size:11.5px;margin-top:2px}
+td{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:10px;
+vertical-align:top;width:22%}
+td img{width:100%;border-radius:5px;display:block;cursor:zoom-in}
+.miss{height:320px;display:flex;align-items:center;justify-content:center;
+color:var(--ink3);font-size:12.5px}
+.note{margin-top:34px;font-size:13px;color:var(--ink2);background:var(--paper);
+border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:8px;padding:18px 22px}
+.note b{color:var(--ink)}
+#lb{position:fixed;inset:0;background:rgba(20,19,16,.93);display:none;align-items:center;
+justify-content:center;z-index:99;padding:30px;cursor:zoom-out}
+#lb.on{display:flex}#lb img{max-width:100%;max-height:100%}
+@media(max-width:900px){table,tbody,tr,td,th{display:block;width:auto}
+th.row{margin-top:26px}}
+</style></head><body><div class="wrap">
+<h1>画风试点 · 猫与台风夜</h1>
+<p class="sub">同一段分镜、同一个 seed，只换画风块——其余提示词一字不改。</p>
+<p class="meta">4 种画风 × 2 页 &nbsp;·&nbsp; 800×1200 &nbsp;·&nbsp;
+euler / 30 步 / CFG 4.0 &nbsp;·&nbsp; 单种子单次生成，未修图</p>
+<table><thead><tr><th></th><th>彩色赛璐璐<br><span>沿用《末班车》口径：清晰描线 + 平涂 + 柔和光影</span></th><th>黑白网点<br><span>全图仅黑白灰：纯黑实心 + 细密网点，无任何彩色</span></th><th>水彩柔光<br><span>淡彩晕开 + 纸纹可见 + 大量留白</span></th><th>厚涂电影感<br><span>剧场版动画背景美术：笔触可见 + 强明暗 + 景深</span></th></tr></thead><tbody><tr><th class="row">P1<br><span>台风夜</span></th><td><img src="style_test/cel_p1.jpg" alt="彩色赛璐璐" onclick="zoom(this)"></td><td><img src="style_test/mono_p1.jpg" alt="黑白网点" onclick="zoom(this)"></td><td><img src="style_test/water_p1.jpg" alt="水彩柔光" onclick="zoom(this)"></td><td><img src="style_test/paint_p1.jpg" alt="厚涂电影感" onclick="zoom(this)"></td></tr><tr><th class="row">P6<br><span>一碟牛奶</span></th><td><img src="style_test/cel_p6.jpg" alt="彩色赛璐璐" onclick="zoom(this)"></td><td><img src="style_test/mono_p6.jpg" alt="黑白网点" onclick="zoom(this)"></td><td><img src="style_test/water_p6.jpg" alt="水彩柔光" onclick="zoom(this)"></td><td><img src="style_test/paint_p6.jpg" alt="厚涂电影感" onclick="zoom(this)"></td></tr></tbody></table>
+<div class="note">
+<b>怎么挑：</b>看三件事——① 雨夜那页的<b>光比</b>够不够狠；② 老人那页的<b>手背与猫毛</b>有没有质感；
+③ 台词气泡里的中文字在缩放后是否还认得出。选定一个，我按它出全 8 页。
+<br><br>
+<b>本轮已修的两处：</b>① 角色卡改为<b>按页取子集</b>（P1 只有少年与猫，P6 只有老人与猫），
+第一轮把全员都画进来了；② 黑白网点改为<b>逐项交代网点替代方案</b>并把颜色写进负向词，
+第一轮虽然加了「不使用任何彩色」，模型仍保留了蓝色卫衣与橘色斑块。
+</div></div>
+<div id="lb" onclick="this.classList.remove('on')"><img id="lbimg" src="" alt=""></div>
+<script>function zoom(e){document.getElementById('lbimg').src=e.src;
+document.getElementById('lb').classList.add('on')}
+document.addEventListener('keydown',function(e){
+if(e.key==='Escape')document.getElementById('lb').classList.remove('on')})</script>
+</body></html>

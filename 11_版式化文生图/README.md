@@ -53,6 +53,7 @@ python 11_版式化文生图/layout_runner.py recipe.json
 | `docs/类型库手册.md` | 10 类骨架速查表 |
 | `docs/漫画分镜实战.md` | 用本轨做连贯短篇漫画的 SOP（角色一致性、分页、收尾） |
 | `story/` | 实例短篇《末班车开往海见》：`story_data.py`（分镜与提示词）→ `gen_story.py`（生成落盘）→ `reader.html`（一页一屏阅读器） |
+| `story2/` | 第二部《猫与台风夜》+ 选题池：`选题清单.md`（11 个主题的故事圣经）、`story_data.py`（分镜 + 四画风定义）、`gen_style_test.py`（同 seed 只换画风的试点）、`style_test.html`（四画风对比） |
 | `publish/` | 发布包：`copy_data.py`（标题/正文/标签单一事实源）→ `render_copy.py`（字数与判词核验 + 渲染 `发布文案.md`）；`cover_data.py` → `gen_covers.py`（四比例封面） |
 | `samples/` | 10 类样张（压缩 jpg，见下方入库策略） |
 | `gallery.html` | 由类型库直接生成的画廊（含短篇漫画阅读区），`python run.py laygal` 重建 |
