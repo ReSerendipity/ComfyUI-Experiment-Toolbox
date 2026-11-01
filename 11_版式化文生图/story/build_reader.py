@@ -5,16 +5,21 @@
 不用 fetch 读 JSON（file:// 下会被 CORS 拦），页表直接内联进 HTML。
 
 用法：
-  python build_reader.py
+  python build_reader.py                          # 读同目录 story.json → reader.html
+  python build_reader.py ../story2/story.json     # 读指定 story.json，输出到它同目录的 reader.html
 """
 import html
 import json
 import os
+import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 E = lambda s: html.escape(s, quote=False)
 
-S = json.load(open(os.path.join(HERE, "story.json"), encoding="utf-8"))
+SJ = os.path.abspath(sys.argv[1]) if len(sys.argv) > 1 else os.path.join(HERE, "story.json")
+OUT_DIR = os.path.dirname(SJ)
+
+S = json.load(open(SJ, encoding="utf-8"))
 
 pages = []
 for p in S["pages"]:
@@ -77,7 +82,7 @@ nav a:hover {{ background:#2b2722; color:var(--ink); }}
   <h1>{title}</h1>
   <div class="rule"></div>
   <p>{logline}</p>
-  <div class="meta">{genre} &nbsp;·&nbsp; 全 {n} 页 &nbsp;·&nbsp; {size}</div>
+  <div class="meta">{genre} &nbsp;·&nbsp; 全 {n} 页 &nbsp;·&nbsp; {size}{style_tail}</div>
   <div class="scroll">向 下 滚 动 开 始 阅 读</div>
 </div>
 
@@ -116,8 +121,9 @@ window.addEventListener('scroll', function () {{
     title=E(S["title"]), sub=E(S.get("subtitle", "")), logline=E(S.get("logline", "")),
     genre=E(S.get("genre", "")), n=len(S["pages"]), size=E(S.get("size", "")),
     nav=nav, pages="".join(pages), note=E(S.get("note", "")),
-    ids=",".join(str(p["no"]) for p in S["pages"]))
+    ids=",".join(str(p["no"]) for p in S["pages"]),
+    style_tail=(" &nbsp;·&nbsp; " + E(S["style"])) if S.get("style") else "")
 
-out = os.path.join(HERE, "reader.html")
+out = os.path.join(OUT_DIR, "reader.html")
 open(out, "w", encoding="utf-8").write(doc)
 print("written %s (%.1f KB)" % (out, len(doc) / 1024))
