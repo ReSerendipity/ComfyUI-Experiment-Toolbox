@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>短篇集 · 版式化文生图</title>
+<style>
+:root{--bg:#f6f4ee;--paper:#fffefa;--ink:#1b1a17;--ink2:#565248;--ink3:#8d887a;
+--line:#e3ded2;--accent:#b04a2f;}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);line-height:1.75;
+font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
+.wrap{max-width:1280px;margin:0 auto;padding:64px 32px 90px}
+h1{font-family:"Songti SC",Georgia,serif;font-size:40px;margin:0 0 10px}
+.sub{color:var(--ink2);max-width:760px;margin:0 0 12px}
+.meta{font-size:12.5px;color:var(--ink3);margin:0 0 42px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+.card{display:flex;flex-direction:column;background:var(--paper);border:1px solid var(--line);
+border-radius:14px;overflow:hidden;text-decoration:none;color:inherit;transition:.18s}
+.card:hover{transform:translateY(-3px);box-shadow:0 14px 34px rgba(0,0,0,.1)}
+.card img{width:100%;display:block;background:#efece4}
+.card .body{padding:18px 20px 20px;position:relative}
+.idx{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--accent);letter-spacing:.1em}
+.card h3{font-family:"Songti SC",Georgia,serif;font-size:19px;margin:4px 0 2px}
+.jp{font-size:11.5px;color:var(--ink3);letter-spacing:.12em;margin:0 0 10px}
+.log{font-size:12.5px;color:var(--ink2);margin:0 0 14px;display:-webkit-box;
+-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.meta span{font-size:11px;color:var(--ink3);border:1px solid var(--line);border-radius:999px;
+padding:2px 8px;margin-right:6px;white-space:nowrap}
+footer{margin-top:60px;padding-top:26px;border-top:1px solid var(--line);
+font-size:12.5px;color:var(--ink3)}
+@media(max-width:980px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.grid{grid-template-columns:1fr}.wrap{padding:40px 18px 60px}}
+</style></head><body><div class="wrap">
+<h1>短篇集</h1>
+<p class="sub">同一套版式化提示词方法，同一画风口径，十一部日式短篇。每部 8 页，起承转合完整、有结局。</p>
+<p class="meta">12 部 · 每部 8 页 · 800×1200 · 厚涂电影感 · 单种子单次生成，未修图</p>
+<div class="grid">
+    <a class="card" href="story/reader.html">
+      <img src="story/pages/01.jpg" alt="末班车开往海见" loading="lazy">
+      <div class="body">
+        <div class="idx">01</div>
+        <h3>末班车开往海见</h3>
+        <p class="jp">終電は海見へ</p>
+        <p class="log">沿海小城的私铁支线下个月就要废线。高中生悠人每晚坐末班车回家，某夜遇见一个穿旧式水手服的少女——她总在早已废站的「海见」下车，并且已经在那里等了三十年。</p>
+        <div class="meta"><span>8 页</span><span>日式短篇 · 夏末 · 离别</span><span></span></div>
+      </div>
+    </a>
+    <a class="card" href="story2/reader.html">
+      <img src="story2/pages/01.jpg" alt="猫与台风夜" loading="lazy">
+      <div class="body">
+        <div class="idx">02</div>
+        <h3>猫与台风夜</h3>
+        <p class="jp">台風の夜、猫と</p>
+        <p class="log">台风夜，少年在便利店门口收留了一只湿透的三花猫。三天后它又回来了，一路把他带到三条街外——那里住着一位每天晚上都在门口放一碟牛奶的老人。</p>
+        <div class="meta"><span>8 页</span><span>日式短篇 · 治愈 · 九月台风季</span><span>厚涂电影感</span></div>
+      </div>
+    </a>
+    <a class="card" href="story3/reader.html">
+      <img src="story3/pages/01.jpg" alt="便利店的第七年" loading="lazy">
+      <div class="body">
+        <div class="idx">03</div>
+        <h3>便利店的第七年</h3>
+        <p class="jp">七年目のコンビニ</p>
+        <p class="log">国道旁的便利店，夜班店员站了七年。一个女孩每晚 2:14 来买同一个鲑鱼饭团。他辞职前问了为什么——那盏灯下面，是她父亲站了十年的位置。</p>
+        <div class="meta"><span>8 页</span><span>日式短篇 · 都市 · 深夜</span><span>厚涂电影感</span></div>
+      </div>
+    </a>
+    <a class="card" href="story4/reader.html">
+      <img src="story4/pages/01.jpg" alt="阳台上的番茄" loading="lazy">
+      <div class="body">
+        <div class="idx">04</div>
+        <h3>阳台上的番茄</h3>
+        <p class="jp">ベランダのトマト</p>
+        <p class="log">独居老人种了一季番茄，全被隔壁小孩摘光。他抓着孩子的手腕找上门，却看见那两个番茄洗干净了，摆在一张小小的遗像前。</p>
+        <div class="meta"><span>8 页</span><span>日式短篇 · 治愈 · 夏末</span><span>厚涂电影感</span></div>
+      </div>
+    </a>
+    <a class="card" href="story5/reader.html">
+      <img src="story5/pages/01.jpg" alt="最后一碗" loading="lazy">
+      <div class="body">
+        <div class="idx">05</div>
+        <h3>最后一碗</h3>
+        <p class="jp">最後の一杯</p>
+        <p class="log">拉面店关门前最后一天，来了三个客人，各坐一角，各点一碗，谁也不说话。老板认出他们——二十年前，这父子三人在这家店吃过一次，之后就没再一起吃过。</p>
+        <div class="meta"><span>8 页</span><span>日式短篇 · 都市 · 父子</span><span>厚涂电影感</span></div>
+      </div>
+    </a>
+    <a class="card" href="story6/reader.html">
+      <img src="story6/pages/01.jpg" alt="纸灯放流" loading="lazy">
+      <div class="body">
+        <div class="idx">06</div>
+        <h3>纸灯放流</h3>
+        <p class="jp">灯籠流し</p>
+        <p class="log">夏日祭的河边，把名字写在纸灯上放流，河会替你实现一个愿望，代价是忘掉一个人。他写下了自己的名字。第二天早上，他记不起母亲的脸。</p>
+        <div class="meta"><span>8 页</span><span>日式短篇 · 怪谈 · 夏日祭</span><span>厚涂电影感</span></div>
+      </div>
+    </a>
+    <a class="card" href="story7/reader.html">
+      <img src="story7/pages/01.jpg" alt="雨女的伞" loading="lazy">
+      <div class="body">
+        <div class="idx">07</div>
+        <h3>雨女的伞</h3>
+        <p class="jp">雨女の傘</p>
+        <p class="log">她撑伞出门就会下雨，所以她从不出门。隔壁的男人每天「恰好」带两把伞，直到有一天他不信，拉着她走进街上——伞撑开的一瞬间，雨落下来。</p>
+        <div class="meta"><span>8 页</span><span>日式短篇 · 奇幻 · 都市</span><span>厚涂电影感</span></div>
+      </div>
+    </a>
+    <a class="card" href="story8/reader.html">
+      <img src="story8/pages/01.jpg" alt="座敷童子的房子" loading="lazy">
+      <div class="body">
+        <div class="idx">08</div>
+        <h3>座敷童子的房子</h3>
+        <p class="jp">ざしきわらしの家</p>
+        <p class="log">老屋要拆了，屋里住着一个座敷童子。他回来处理拆迁，夜里听见小孩跑动，壁橱里有一双小小的赤脚印——一直延伸到后院廊下。</p>
+        <div class="meta"><span>8 页</span><span>日式短篇 · 怪谈 · 老屋</span><span>厚涂电影感</span></div>
+      </div>
+    </a>
+    <a class="card" href="story9/reader.html">
+      <img src="story9/pages/01.jpg" alt="放学后的天文台" loading="lazy">
+      <div class="body">
+        <div class="idx">09</div>
+        <h3>放学后的天文台</h3>
+        <p class="jp">放課後の天文台</p>
+        <p class="log">天文社只剩一个人。他在废弃的圆顶里收到一段来自三十年后的信号——是他自己的声音，只说了一句话：把望远镜留给下一个来的人。</p>
+        <div class="meta"><span>8 页</span><span>日式短篇 · 科幻 · 校园</span><span>厚涂电影感</span></div>
+      </div>
+    </a>
+    <a class="card" href="story10/reader.html">
+      <img src="story10/pages/01.jpg" alt="转学生的第七天" loading="lazy">
+      <div class="body">
+        <div class="idx">10</div>
+        <h3>转学生的第七天</h3>
+        <p class="jp">転校生の七日目</p>
+        <p class="log">转学生每周一出现、周日消失，全班都记得他，只有主角记得「上周也有一个」。第二周又来一个一模一样的。第七天，主角把自己的名字从值日表上擦掉了。</p>
+        <div class="meta"><span>8 页</span><span>日式短篇 · 悬疑 · 校园</span><span>厚涂电影感</span></div>
+      </div>
+    </a>
+    <a class="card" href="story11/reader.html">
+      <img src="story11/pages/01.jpg" alt="第七次重启" loading="lazy">
+      <div class="body">
+        <div class="idx">11</div>
+        <h3>第七次重启</h3>
+        <p class="jp">七度目の朝</p>
+        <p class="log">每天醒来都是同一天。他试了六次都没能救下那个人。第七次他决定不救，而是陪她走完这一天。</p>
+        <div class="meta"><span>8 页</span><span>日式短篇 · 科幻 · 时间循环</span><span>厚涂电影感</span></div>
+      </div>
+    </a>
+    <a class="card" href="story12/reader.html">
+      <img src="story12/pages/01.jpg" alt="复制品的告别" loading="lazy">
+      <div class="body">
+        <div class="idx">12</div>
+        <h3>复制品的告别</h3>
+        <p class="jp">複製体の別れ</p>
+        <p class="log">他被复制了一份，复制品只有七天寿命，负责替他上课。第六天复制品说：我想去一次海边。</p>
+        <div class="meta"><span>8 页</span><span>日式短篇 · 科幻 · 校园</span><span>厚涂电影感</span></div>
+      </div>
+    </a>
+</div>
+<footer>全部提示词在各自的 <code>story_data.py</code>，可复现；阅读器一页一屏，方向键翻页。</footer>
+</div></body></html>

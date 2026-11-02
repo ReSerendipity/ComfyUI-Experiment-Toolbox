@@ -52,10 +52,13 @@ python 11_版式化文生图/layout_runner.py recipe.json
 | `docs/版式化提示词七要素.md` | 方法论：什么样的提示词能让版式与文字同时成立 |
 | `docs/类型库手册.md` | 10 类骨架速查表 |
 | `docs/漫画分镜实战.md` | 用本轨做连贯短篇漫画的 SOP（角色一致性、分页、收尾） |
-| `story/` | 实例短篇《末班车开往海见》：`story_data.py`（分镜与提示词）→ `gen_story.py`（生成落盘）→ `reader.html`（一页一屏阅读器） |
-| `story2/` | 第二部《猫与台风夜》（厚涂电影感 · 8 页）：`选题清单.md`（11 个主题的故事圣经）、`story_data.py`（全 8 页分镜 + 四画风定义）、`gen_story2.py`、`reader.html` |
-| `story3/` | 第三部《便利店的第七年》（厚涂电影感 · 8 页）：`story_data.py` + 薄壳 `gen.py` |
-| `story_kit.py` | **通用引擎**：给定任一故事数据模块即可出图、压图、写索引。新增一部只需写 `story_data.py` 与 6 行 `gen.py` |
+| `story/` | 第一部《末班车开往海见》：`story_data.py` → `gen_story.py` → `reader.html` |
+| `story2/` | 第二部《猫与台风夜》+ `选题清单.md`（11 个主题的故事圣经）+ `story_data.py`（四画风定义）+ `gen_style_test.py`（画风试点）+ `reader.html` |
+| `story3/` | 第三部《便利店的第七年》 |
+| `story4/` … `story12/` | 第四至十二部（阳台上的番茄 / 最后一碗 / 纸灯放流 / 雨女的伞 / 座敷童子的房子 / 放学后的天文台 / 转学生的第七天 / 第七次重启 / 复制品的告别），每部 `story_data.py` + 6 行 `gen.py` |
+| `story_common.py` | 共用画风库与 `make_page()`，第 4 部起统一从这里取 |
+| `story_kit.py` | **通用引擎**：给定任一故事数据模块即可出图、压图、写索引 |
+| `build_series.py` → `series.html` | 短篇集总目录，扫 `story*/story.json` 自动生成 |
 | `publish/` | 发布包：`copy_data.py`（标题/正文/标签单一事实源）→ `render_copy.py`（字数与判词核验 + 渲染 `发布文案.md`）；`cover_data.py` → `gen_covers.py`（四比例封面） |
 | `samples/` | 10 类样张（压缩 jpg，见下方入库策略） |
 | `gallery.html` | 由类型库直接生成的画廊（含短篇漫画阅读区），`python run.py laygal` 重建 |
