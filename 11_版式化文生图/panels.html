@@ -22,6 +22,7 @@ figcaption{padding:12px 14px 14px}
 .tag{font-size:11px;padding:2px 8px;border-radius:999px;border:1px solid}
 .tag.ok{color:var(--ok);border-color:#bcd8c7;background:#f2f8f4}
 .tag.bad{color:var(--bad);border-color:#e6c4bf;background:#fbf3f2}
+.tag.mid{color:#9a6a12;border-color:#e6d6ad;background:#fdf8ec}
 .sub2,.sub{font-size:11.5px;color:var(--ink3)}
 .note{margin-top:38px;font-size:13px;color:var(--ink2);background:var(--paper);
 border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:8px;padding:20px 24px}
@@ -38,94 +39,53 @@ justify-content:center;z-index:99;padding:26px;cursor:zoom-out}
 @media(max-width:680px){.grid{grid-template-columns:1fr}.wrap{padding:36px 16px 60px}}
 </style></head><body><div class="wrap">
 <h1>漫画格数上限实测</h1>
-<p class="sub">同一段故事（少年回家路上的 16 个瞬间）、同一个 seed、同一套漫画页面语法
-（画格大小不等 + 出血格 + 横向错位 + 气泡/旁白分级），<b>只改格数</b>。</p>
+<p class="sub">同一幕戏（黄昏的无人车站，两个高中生等末班车）、同一个 seed、同一套漫画页面语法
+（画格大小不等 + 出血格 + 横向错位），每格按 <b>说</b>／<b>白</b>／<b>静</b> 三种类型分，
+<b>只改格数</b>。</p>
 <p class="meta">MOSS-Image SFT · 30 步 / CFG 4 / euler · seed 20261111 · 单种子单次生成，未修图</p>
 <div class="grid">
   <figure class="card">
     <img src="samples_panels/4_2x2_moss.jpg" alt="4 格" loading="lazy" onclick="zoom(this)">
     <figcaption>
       <div class="top"><b>4 格</b><span class="tag ok">通过</span></div>
-      <div class="sub">800×1200 &nbsp;·&nbsp; 实测 4</div>
+      <div class="sub">800×1200 &nbsp;·&nbsp; 实测 5（1 格静默）</div>
     </figcaption>
   </figure>
   <figure class="card">
     <img src="samples_panels/6_2x3_moss.jpg" alt="6 格" loading="lazy" onclick="zoom(this)">
     <figcaption>
-      <div class="top"><b>6 格</b><span class="tag ok">通过</span></div>
-      <div class="sub">800×1200 &nbsp;·&nbsp; 实测 7（1 格静默）</div>
+      <div class="top"><b>6 格</b><span class="tag mid">部分失效</span></div>
+      <div class="sub">800×1200 &nbsp;·&nbsp; 实测 6</div>
     </figcaption>
   </figure>
   <figure class="card">
     <img src="samples_panels/8_2x4_moss.jpg" alt="8 格" loading="lazy" onclick="zoom(this)">
     <figcaption>
-      <div class="top"><b>8 格</b><span class="tag ok">通过</span></div>
-      <div class="sub">800×1200 &nbsp;·&nbsp; 实测 8</div>
-    </figcaption>
-  </figure>
-  <figure class="card">
-    <img src="samples_panels/9_3x3_moss.jpg" alt="9 格" loading="lazy" onclick="zoom(this)">
-    <figcaption>
-      <div class="top"><b>9 格</b><span class="tag ok">通过</span></div>
-      <div class="sub">800×1200 &nbsp;·&nbsp; 实测 10（1 格静默）</div>
-    </figcaption>
-  </figure>
-  <figure class="card">
-    <img src="samples_panels/12_3x4_moss.jpg" alt="12 格" loading="lazy" onclick="zoom(this)">
-    <figcaption>
-      <div class="top"><b>12 格</b><span class="tag bad">漂移</span></div>
-      <div class="sub">800×1200 &nbsp;·&nbsp; 实测 15</div>
-    </figcaption>
-  </figure>
-  <figure class="card">
-    <img src="samples_panels/16_4x4_moss.jpg" alt="16 格" loading="lazy" onclick="zoom(this)">
-    <figcaption>
-      <div class="top"><b>16 格</b><span class="tag bad">漂移</span></div>
-      <div class="sub">800×1200 &nbsp;·&nbsp; 实测 16</div>
-    </figcaption>
-  </figure>
-  <figure class="card">
-    <img src="samples_panels/20_4x5_moss.jpg" alt="20 格" loading="lazy" onclick="zoom(this)">
-    <figcaption>
-      <div class="top"><b>20 格</b><span class="tag bad">漂移</span></div>
-      <div class="sub">800×1200 &nbsp;·&nbsp; 实测 20</div>
-    </figcaption>
-  </figure>
-  <figure class="card">
-    <img src="samples_panels/12_3x4_hi_moss.jpg" alt="12 格" loading="lazy" onclick="zoom(this)">
-    <figcaption>
-      <div class="top"><b>12 格</b><span class="tag bad">漂移</span></div>
-      <div class="sub">1024×1536 &nbsp;·&nbsp; 实测 15</div>
-    </figcaption>
-  </figure>
-  <figure class="card">
-    <img src="samples_panels/16_4x4_hi_moss.jpg" alt="16 格" loading="lazy" onclick="zoom(this)">
-    <figcaption>
-      <div class="top"><b>16 格</b><span class="tag bad">漂移</span></div>
-      <div class="sub">1024×1536 &nbsp;·&nbsp; 实测 16</div>
+      <div class="top"><b>8 格</b><span class="tag bad">失效</span></div>
+      <div class="sub">800×1200 &nbsp;·&nbsp; 实测 10</div>
     </figcaption>
   </figure>
 </div>
 <div class="note">
-<b>结论</b>
+<b>结论：瓶颈不是格数，是「谁在说」</b>
 <table>
-<tr><th>目标格数</th><th>800×1200</th><th>1024×1536</th><th>判定</th></tr>
-<tr><td>4 / 6 / 8 / 9</td><td>格数基本准，台词全对</td><td>—</td><td>通过</td></tr>
-<tr><td>12</td><td>出了 15 格，1 处伪汉字</td><td>15 格，重复 + 错序</td><td>漂移</td></tr>
-<tr><td>16</td><td>16 格，3 组台词重复</td><td>16 格，2 组重复</td><td>漂移</td></tr>
-<tr><td>20</td><td>20 格，重复 + 顺序错乱</td><td>—</td><td>漂移</td></tr>
+<tr><th>层</th><th>失效点</th><th>表现</th></tr>
+<tr><td>台词文字</td><td>8 格内没失效</td><td>全部逐字正确</td></tr>
+<tr><td><b>气泡归属</b></td><td><b>6 格开始错</b></td><td>女主的台词被安到男主脸上</td></tr>
+<tr><td>格数控制</td><td>8 格开始失控</td><td>要 8 格出 10 格</td></tr>
 </table>
 <ul>
-<li><b>漫画语法下，9 格以内稳。</b>6 格与 9 格各多出 1 个「静默格」（没有台词的空镜）——
-这在漫画里是正常手法，不算缺陷。</li>
-<li><b>12 格开始漂</b>：格数失控（要 12 出 15）、台词重复、顺序错乱、偶发伪汉字。</li>
-<li><b>加分辨率救不回来</b>：1024×1536 同样漂。瓶颈不是像素，是模型对版面的注意力分配。</li>
-<li><b>对比等大网格</b>：同一套测试用「等大网格」跑，20 格仍然干净、24 格才破。
-也就是说<b>不等大排版吃掉了一半的格数余量</b>——换来的是漫画感。</li>
-<li>20 格时单格画面质感也降级（厚涂退成平涂），说明高格数下模型会牺牲每格的渲染质量。</li>
+<li><b>4 格是「对白 + 归属 + 格数」三样全对的最后一档。</b></li>
+<li>每格按类型分三种：<b>说</b>（圆形气泡 + 写明说话人 + 尾部指向）、
+<b>白</b>（矩形旁白，只补画面看不到的信息）、<b>静</b>（无字留白）。
+「静默格」是漫画的停顿手法，不算缺陷。</li>
+<li><b>旁白不能复述画面。</b>写「车站没有人」「灯亮着」这类看图就懂的句子，
+就变成给图配字幕了——那不是漫画。</li>
+<li><b>说话人必须逐格写死。</b>只写「气泡尾部指向说话的人」等于留空，模型只能猜；
+写成「气泡尾部明确指向千夏」才生效。</li>
+<li>6–8 格能出好看的页面，但要逐格核气泡归属；8 格以上先解决格数失控。</li>
 </ul>
-<b>怎么用</b>：一页 8–9 格是漫画语法的舒适区，能做大小节奏、出血、跨格；
-真要 12 格以上，改回等大网格（故事板式）或拆成两页。
+<b>未完成</b>：9 / 12 格没跑——生成时 ComfyUI 队列被其他任务占着，撤了自己的待跑任务没有抢占 GPU。
 </div></div>
 <div id="lb" onclick="this.classList.remove('on')"><img id="lbimg" src="" alt=""></div>
 <script>function zoom(e){document.getElementById('lbimg').src=e.src;
