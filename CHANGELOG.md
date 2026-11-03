@@ -18,7 +18,7 @@
 
 ### Added
 
-- `feat(11)`: 漫画格数上限实测 —— `panel_test.py` 同一幕对白戏只改格数，`build_panels.py` → `panels.html`；结论是**三层按顺序失效**（台词文字 8 格内不失效 / 气泡归属 6 格起错 / 格数控制 8 格起失控），4 格是三样全对的最后一档（2026-11-03）
+- `feat(11)`: 漫画格数上限实测 —— `panel_test.py` 同一幕对白戏只改格数（4/6/8/9/12 格），`build_panels.py` → `panels.html`；结论是**按层判、逐格核**：4 格是对白/归属/格数三样全对的最后一档，5 格以上气泡归属与文字保真度各自独立抽签（9 格归属全对但编出台词，12 格反之），8 格以上格数本身失控；操作口径一页 3–4 格（2026-11-03）
 - `docs(06)`: 版式化是否 MOSS 专属 —— 跨模型对照（10 类 × MOSS / Qwen-Image-2.1-turbo，同提示词同 seed）；十类全过，差别在画风与速度（2.4 倍）不在版式与文字（2026-11-02）
 - `feat(11)`: 跨模型对照 `model_ab.py`（三件套 / 潜空间节点 / `CLIPLoader.type` 按家族给，提交前 `/object_info` 校验）+ `build_ab.py` → `ab_matrix.html`（2026-11-02）
 - `feat(11)`: 短篇集 12 部 × 8 页共 88 页 —— `story_kit.py` 通用引擎 + `story_common.py` 共用画风库，第 4 部起每部只写 `story_data.py` 与 6 行 `gen.py`；`build_series.py` → `series.html` 总目录（2026-11-02）
