@@ -135,7 +135,7 @@ python "05_结构改造脚本/verify_upgrade.py" --selftest
 σ 计算需要 `import comfy.*` + torch 并遍历 7 模型 × 9 调度器；算完常驻缓存到面板重启。这一步完全离线，不提交任何图。
 
 **Q：换一台机器怎么快速上手？**
-只改 `run.bat` 顶部 `PY=` 一行指向 ComfyUI 自带 python；脚本内所有运行时路径都用 `%USERPROFILE%` 展开（`os.path.expandvars`），不需要改脚本本体。
+不是只改一行就完事。`%USERPROFILE%` 只保证路径不写死本机绝对路径，便携根的目录名仍落在各脚本顶部常量里——同一个根在已跟踪的 `.py`/`.bat` 中共 **42 个文件、55 处**（见上文换机警示块）：`run.py` 的 `PYTHONPATH` 兜底、01/02/03/05/09 各轨的模块级常量，以及 `03_受控跑测/run_models.py` / `run_combos.py` 里写死的 `BASE`。**只改 `run.bat` 的 `PY=` 不够**：未改到的入口仍指向不存在的路径，会在各自脚本上报错。逐项改顶部常量（口径见 `docs/CONTRIBUTING.md`「路径常量：改常量不改逻辑」）；想少改几处，可先按 `10_模型家族横评/family_config.json` 的 `comfy.comfy_root`（支持 `--comfy` 覆盖）把实际要跑的轨集中。
 
 **Q：`steps` / `cfg` 留空是什么意思？**
 "用该工作流当前值"（见 ① 页）。base 组合 = 全部留空 = 完全按当前工作流跑，作为后续对照的基线。
@@ -147,6 +147,7 @@ python "05_结构改造脚本/verify_upgrade.py" --selftest
 
 - 目录导览、依赖矩阵、硬编码常量表见下方"目录导览"一节。
 - 共享结论（采样器×调度器主文档、H3 笔记）：[`06_文档与结论/`](06_文档与结论/)。
+- docs 索引：[docs/README.md](docs/README.md)（Agent 契约 / 贡献指南 / 发布规范）。
 - 发布与回滚口径：[`docs/release-governance.md`](docs/release-governance.md)（版本位为 Git tag `v*`）。
 - 治理规范：[ReSerendipity/.github/governance](https://github.com/ReSerendipity/.github/tree/main/governance)。
 - 变更记录：[`CHANGELOG.md`](CHANGELOG.md)。
@@ -242,7 +243,7 @@ run.bat dur --adapter minimax_h3_t2v --dry-run  :: E4 adapter-driven tier run
 run.bat ftrend       :: E5 historical trend regression (exit 1 on hard regression)
 ```
 
-> The `PY=` variable at the top of `run.bat` hard-codes ComfyUI's bundled python path (default `%USERPROFILE%\APP\ComfyUI-aki-v3.2\python\python.exe`). **Changing machines = edit that one line.**
+> The `PY=` variable at the top of `run.bat` hard-codes ComfyUI's bundled python path (default `%USERPROFILE%\APP\ComfyUI-aki-v3.2\python\python.exe`). **Changing machines takes more than that one line**: the same portable root appears in 42 tracked `.py`/`.bat` files, 55 places in total (the `PYTHONPATH` fallback in `run.py`, module-level constants across the 01/02/03/05/09 tracks, and the hard-coded `BASE` workdir in `03_受控跑测/run_models.py` / `run_combos.py`). Edit only `PY=` and any entry you missed still points at a path that does not exist, failing in its own script. To cut the number of edits, consolidate the tracks you actually run via `comfy.comfy_root` in `10_模型家族横评/family_config.json` (supports `--comfy` override).
 
 #### Minimal verification (no ComfyUI required)
 
@@ -281,7 +282,7 @@ No. There is no `__init__.py` / `nodes.py`. It is a collection of scripts runnin
 σ math imports `comfy.*` + torch and walks 7 models × 9 schedulers; the result is then cached until the panel restarts. It is fully offline — no image is submitted.
 
 **Q: How do I get up to speed on a new machine?**
-Edit only the `PY=` line at the top of `run.bat` to point at ComfyUI's bundled python. All other runtime paths expand via `%USERPROFILE%` (`os.path.expandvars`); script bodies do not need to change.
+It is not a one-line edit. `%USERPROFILE%` only keeps literal absolute paths out of the scripts — the portable root's directory name still lives in top-of-file constants: the same root appears in **42 tracked `.py`/`.bat` files, 55 places in total** (see the machine-switch note above) — the `PYTHONPATH` fallback in `run.py`, module-level constants across the 01/02/03/05/09 tracks, and the hard-coded `BASE` in `03_受控跑测/run_models.py` / `run_combos.py`. **Editing only `PY=` in `run.bat` is not enough**: entries you miss keep pointing at a path that does not exist and fail in their own scripts. Change the top-of-file constants per `docs/CONTRIBUTING.md` ("change the constant, not the logic"); to cut the number of edits, consolidate the tracks you actually run via `comfy.comfy_root` in `10_模型家族横评/family_config.json` (supports `--comfy`).
 
 **Q: What does leaving `steps` / `cfg` blank mean?**
 "Keep that workflow's current value" (see page ①). The `base` combo = all blank = run exactly as the workflow currently is, serving as the baseline for later comparisons.
