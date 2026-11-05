@@ -32,6 +32,18 @@ jobs:
       - name: Resolve locked third-party deps (numpy/Pillow)
         run: python -m pip install -r requirements-lock.txt
 
+      # SCA pip 依赖漏洞扫描（对应评估 P1「pip 面零 SCA」）：pip-audit 只读审计锁文件，
+      # 对钉死版本逐条核验已知漏洞，命中即非零退出（CI 红）。--no-deps 要求全钉死（本锁满足）。
+      # 首扫实测（2026-11-06，pip-audit 2.10.1）：numpy==2.3.5 零命中；
+      # Pillow==12.1.0 命中 76 行 / 58 个唯一通告，修复位 12.1.1/12.2.0/12.3.0/13.0.0。
+      # 升级与否属属主裁决（锁文件版本取自 ComfyUI 自带 python 实测环境），红到裁决落地为止。
+      - name: SCA pip-audit on requirements-lock.txt (read-only, known vuln = red)
+        # 失败隔离：前面任一门禁红也不遮住后面的门禁（各自独立、各自定生死）
+        if: ${{ !cancelled() }}
+        run: |
+          python -m pip install pip-audit==2.10.1
+          python -m pip_audit --no-deps -r requirements-lock.txt --progress-spinner off
+
       - name: Gate ① ledger×产物树对账 selftest
         # 失败隔离：前面任一门禁红也不遮住后面的门禁（各自独立、各自定生死）
         if: ${{ !cancelled() }}

@@ -40,6 +40,8 @@
 
 ### Changed
 
+- `ci(sca)`: pip 依赖漏洞扫描接入 CI —— pip-audit 2.10.1 只读审计 requirements-lock.txt（`--no-deps`，命中已知漏洞即非零退出）；首扫实测 numpy==2.3.5 零命中，Pillow==12.1.0 命中 76 行 / 58 个唯一通告，修复位 12.1.1/12.2.0/12.3.0/13.0.0，升级属主裁决（2026-11-06）
+- `docs(release)`: 发布链本地实跑一轮 —— §7 清单本地可跑项全过（compileall exit 0 + Gate ①–⑪ 全绿），`git archive` → `SHA256SUMS.txt` → `sha256sum -c` 校验通过（归档 27,626,908 字节 / 408 文件与 `git ls-files` 全等）；tag 推送半程与 §3.5 draft-vs-published 待定项登记为阻塞点，记录见 `docs/release-governance.md` §8.1（2026-11-06）
 - `docs(01/08/10)`: 跨工作区经验移植 —— 01 补「`status=success` 但 `outputs` 为空」四层诊断（服务存活 / 模型名非法被静默剪枝 / 权重格式不识别 / 改的不是生效那份）、08 补「同模型多份官方模板怎么选」与模板计数漂移、10 文字横评补三条判读纪律（全宽裁切后再放大、≥3 种子、数字脚本重算）（2026-10-31）
 - `perf(gate)`: 名册基线改 256MB 哈希上限，check 292s → ~6s（2026-10-16）
 - `ci`: 门禁扩至 ⑪ —— E1/E2/E5/E8 四个新 selftest 接入（2026-10-16）

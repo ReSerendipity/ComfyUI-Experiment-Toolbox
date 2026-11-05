@@ -91,6 +91,24 @@
 
 > 本仓校准的判定依据：`ReSerendipity/.github` 的 `REPOSITORY_GUIDELINES.md` §10.1（远端优先 / tag 驱动 / 产物附 SHA256SUMS）、§10.2、§10.6，以及 `.github/scripts/check-release-standard.sh` 的可机器判定条款。
 
+### 8.1 发布链本地实跑记录（2026-11-06，整改单 rem_ComfyUI_Experiment_Toolbox_20261105 条目 2）
+
+按 §7 清单做了一轮**本地实跑**。本轮整改单硬约束禁止 `git tag` / `git push`，因此触发 `release.yml` 的远端半程未能执行；本地可跑部分全部实跑并留档：
+
+| 实跑项 | 命令 / 方法 | 结果（2026-11-06 实测） |
+|---|---|---|
+| 版本位唯一性（§7 第 1 项） | `ls pyproject.toml setup.py setup.cfg package.json config.yaml` | 全部不存在，版本位即 tag（§1 口径成立） |
+| compileall（§7 第 3 项） | `python -m compileall -q .` | exit 0，零输出 |
+| CI 门禁（§7 第 4 项） | Gate ①–⑪ 逐条按 `.github/workflows/ci.yml` 原命令本地执行 | 11/11 全绿：Gate ⑤ 扫 202 个 tracked 文件 0 命中；Gate ⑥ 扫 106 个 .py 0 违规；Gate ⑦ unittest 30 用例 OK |
+| tag 正则校验（release.yml validate 步等价） | 对候选串 `v1.0.0` / `v1.0.0-beta.1` 复算 `^v[0-9]+\.[0-9]+\.[0-9]+$` | 正例通过、负例拒绝。**顺带实测**：`-beta.1` 等预发布后缀会被该正则拒绝，与 §1 预发布口径存在潜在冲突——本轮不改，留属主裁决 |
+| 归档 + 完整性（§4 / §7 第 6 项） | `git archive --format=tar.gz --prefix="ComfyUI-Experiment-Toolbox-v1.0.0/" -o …` → `sha256sum` → `sha256sum -c` | 归档 27,626,908 字节，408 个文件与 `git ls-files`（408）全等、文件名集合一致；未跟踪文件与 `__pycache__` 均未混入；SHA256 `c2b8a85896bc12e6…` 校验 OK。产物在仓外临时目录，未入库 |
+
+**阻塞点（发布链未能走到 Release 的原因）与解阻条件**：
+
+1. **tag 推送被禁**：本轮整改单硬约束禁止 `git tag` / `git push` → `release.yml`（`on: push: tags`）无法触发。解阻：属主单独授权打 `vX.Y.Z` tag（版本号由属主定）并推送。
+2. **§3.5 待定项未决**：首个正式 Release 的 draft vs published 形态、负责人、触发条件仍待属主裁决（§3 第 5 条）。解阻：属主填定后，按裁决形态走首发。
+3. **SCA 首扫为红**：ci.yml 新增 pip-audit 步骤对锁文件首扫，Pillow==12.1.0 命中 58 个唯一漏洞通告（76 行）——接入后 §7「CI 门禁全绿」将含一项红，直到属主裁决升级位（12.1.1 / 12.2.0 / 12.3.0 / 13.0.0，须与 ComfyUI 自带 python 环境实测对齐后回填锁文件）或登记豁免。numpy==2.3.5 零命中。
+
 ## 禁止事项
 
 - 不得重写 §10 的公共条款（远端优先、tag 驱动、版本位一致、不可变标签、扫描阻断、无 GPG）。
