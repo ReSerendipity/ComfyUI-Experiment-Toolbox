@@ -84,7 +84,7 @@ run.bat panel
 #### 其它常用子命令
 
 ```bat
-run.bat              :: 列出全部 19 个入口
+run.bat              :: 列出全部 22 个入口
 run.bat sigma        :: 参数轨① 离线 σ 风险矩阵
 run.bat unify --apply:: 参数轨② 统一提示词与种子（先不加 --apply 看 dry-run）
 run.bat models       :: 参数轨③ 跨模型跑测
@@ -231,7 +231,7 @@ A browser opens at <http://127.0.0.1:8189> (pass `--no-browser` to suppress). Pa
 #### Other useful subcommands
 
 ```bat
-run.bat              :: list all 19 entry points
+run.bat              :: list all 22 entry points
 run.bat sigma        :: param track ① offline σ risk matrix
 run.bat unify --apply:: param track ② unify prompt & seed (omit --apply for dry-run)
 run.bat models       :: param track ③ cross-model controlled run
