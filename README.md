@@ -56,9 +56,7 @@ A two-track **script toolbox + zero-dependency Web panel** that drives one local
 
 ![受控跑测](https://gcore.jsdelivr.net/gh/ReSerendipity/ComfyUI-Experiment-Toolbox@main/docs/assets/readme-comfyui-experiment-toolbox-3.png)
 
-**④ 结果分析** —— 客观指标 + 与 base 基线相似度 + 带标签拼版图：
-
-![结果分析](https://gcore.jsdelivr.net/gh/ReSerendipity/ComfyUI-Experiment-Toolbox@main/docs/assets/readme-comfyui-experiment-toolbox-4.png)
+**④ 结果分析** —— 客观指标 + 与 base 基线相似度：
 
 ### 快速开始
 
@@ -203,9 +201,7 @@ A script toolbox built around **one local ComfyUI installation**: two pipelines 
 
 ![controlled run](https://gcore.jsdelivr.net/gh/ReSerendipity/ComfyUI-Experiment-Toolbox@main/docs/assets/readme-comfyui-experiment-toolbox-3.png)
 
-**④ Result analysis** — objective metrics + similarity to the base baseline + labeled contact sheet:
-
-![result analysis](https://gcore.jsdelivr.net/gh/ReSerendipity/ComfyUI-Experiment-Toolbox@main/docs/assets/readme-comfyui-experiment-toolbox-4.png)
+**④ Result analysis** — objective metrics + similarity to the base baseline:
 
 ### Quick start
 
