@@ -81,7 +81,11 @@ node_modules/
 
 
 # 仅本地容器：内部说明、agent 上下文、实验记录、纯历史（§13.1，2026-10-19 结构收敛）
-/local/
+/local/*
+!/local/agents/
+/local/agents/*
+!/local/agents/GOTCHAS.md
+!/local/agents/REVISION_LOG.md
 
 # AGENTS.md：AI 辅助开发指南，仅本地维护者上下文（治理规范 §7 / §13.1，无斜线模式匹配任意深度）
 AGENTS.md
