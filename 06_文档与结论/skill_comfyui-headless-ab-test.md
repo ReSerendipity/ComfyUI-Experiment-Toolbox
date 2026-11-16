@@ -1,8 +1,6 @@
-> **技能快照（本仓不注册为 skill）**
-> 本文是本机技能 `comfyui-headless-ab-test` 的只读快照；原件在 `%USERPROFILE%/.workbuddy/skills/comfyui-headless-ab-test/`，属主是另一套 agent 运行时，会随使用更新——**动手前以原件为准**，别把这份快照当最新。
-> 为什么不注册：仓内没有项目技能根，本文件放在 `06_文档与结论/` 只算普通文档，既不会被自动选中，也不进 lint / integrity 比对（2026-10-17 实测：把同名 `SKILL.md` 临时放进 `.agents/skills/` 会被清点成 project 作用域资产，放回这里则计 0）。要做成随仓分发的正式技能，需要先决定它与上面原件的主从关系，避免两份漂移。
+> **技能真源（2026-11-16 起）**
+> 本文档是本机技能 `comfyui-headless-ab-test` 的全量沉淀与**唯一活跃真源**：原 `%USERPROFILE%/.workbuddy/skills/comfyui-headless-ab-test/` 原件与 Agent-Knowledge 存档副本已于 2026-11-16 删除，本文件内容为删除前原件全量版，取代二者。仓内没有项目技能根，本文件不注册为可装载 skill，由根 `AGENTS.md` §3 指路（2026-10-17 实测：把同名 `SKILL.md` 临时放进 `.agents/skills/` 会被清点成 project 作用域资产，放回这里则计 0）。
 > 何时该读这份：headless 无人值守出图、采样器×调度器对比、steps / cfg / LoRA 强度单维控制变量、`definitions.subgraphs` 子图工作流扁平化后喂 `/prompt`。
-
 
 # ComfyUI Headless 参数矩阵 A/B 测试
 
