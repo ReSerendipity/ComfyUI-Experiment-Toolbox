@@ -5,6 +5,7 @@
 | 文件 | 功能 | 使用方式 | 适用场景 | 依赖 |
 |---|---|---|---|---|
 | **`flatten.py`** ★ | 通用扁平化器：子图容器 → API prompt。支持容器 `-10`/`-20` 虚拟槽映射、`mode:4` bypass 递归透传、可达性裁剪（丢掉用不到的分支，如挂着的 SeedVR2）、容器取值类型守卫 | 作为模块用：<br>`import flatten`<br>`api, applied = flatten.flatten(工作流路径, {"KSampler": {"sampler_name":"euler","scheduler":"simple"}})`<br>命令行自测：`python flatten.py <工作流.json>` | 任何子图格式工作流的 headless 跑图前置步骤 | 仅标准库 |
+| **`workflow_lint.py`** ★ | **离线** API 图体检：悬空引用、自引用、环、缺 `class_type`、稳定拓扑序（迭代 Kahn，不受 Python 递归上限影响）。与 `derive_api.validate` 的分工：后者查"未知输入/必填缺失"，需要本地 ComfyUI `/object_info`；本模块不需要服务 | `python workflow_lint.py <工作流.json或目录>`；或 `import workflow_lint; workflow_lint.lint_api(api)` | flatten 之后、提交 `/prompt` 之前的静态闸门；批量目录扫描 | 仅标准库 |
 | **`derive_api.py`** ★ | 模板派生层：① `resolve_switches` 把 `ComfySwitchNode` 折叠成直连并删除开关节点（惰性开关只跳过执行不跳过校验，未选分支会拖慢并可能改写提示词）；② `prune_unreachable` 重算可达性；③ `validate` 基于 `/object_info` 查未知输入/必填缺失/连线悬空/slot 越界；④ `resolve_models` 动态解析带子目录前缀的模型名 | `import derive_api as D`<br>`api = D.resolve_switches(api, {"1016": False})`<br>`api = D.prune_unreachable(api)`<br>`errs = D.validate(api)`<br>命令行自检：`python derive_api.py <模板.json>` | 从官方模板机械派生可提交 API 图；关闭 upsampler / SLG 等增益件 | 仅标准库 + 本地 ComfyUI 服务 |
 | `build_prompt.py` | 单工作流**手写版**扁平化（Qwen-Image 2.1 t2i 专用）。功能上已被 `flatten.py` 覆盖 | `python build_prompt.py euler simple` 打印结果 | ① 想看清"某个具体工作流的子图映射长什么样"时的**范本**；② `01`/`02` 以外脚本（如 `cfg_probe.py`）沿用了它的 `PROMPT/SEED/STEPS/CFG` 常量 | `flatten` 无需；本文件依赖工作流固定路径 |
 
